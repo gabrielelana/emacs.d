@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# contributor: Gabriele Lana
+# name : tokio-test
+# key : tt
+# uuid: ef4a3915-6ae4-41ec-bc5b-ed248e3c0fff
+# --
+#[tokio::test]
+async fn ${1:test_name}() {
+    $0
+
+    assert!(true);
+}
