@@ -513,7 +513,7 @@
 ;; Multiple cursors
 (use-package multiple-cursors
   ;; TODO: restore hydra
-  :bind (("M-\\" . mc/mark-next-line-like-this)
+  :bind (("M-\\" . mc/mark-next-like-this)
          :map mc/keymap
          ("<return>" . nil)
          ("C-'" . mc-hide-unmatched-lines-mode)))
@@ -590,7 +590,8 @@
   (js-indent-level 2))
 
 ;; Dockerfile
-(use-package dockerfile-mode)
+(use-package dockerfile-mode
+  :hook ((flycheck-mode . dockerfile-mode)))
 
 ;; CSV
 (use-package csv-mode)
@@ -620,7 +621,7 @@
     (eldoc-mode))
   :hook ((emacs-lisp-mode . cc/--setup-emacs-lisp))
   :bind (:map emacs-lisp-mode-map
-              ("C-w" . backward-kill-sexp))
+              ("C-<backspace>" . backward-kill-sexp))
   :mode (("\\.el\\'" . emacs-lisp-mode)
          ("*scratch*" . emacs-lisp-mode)))
 
@@ -697,13 +698,13 @@
 
 ;; TODO: LSP
 ;; TODO: language Rust
+;; TODO: modeline
 
 ;; TODO: YAML language server https://github.com/redhat-developer/yaml-language-server
 ;; TODO: Docker language server
 ;; TODO: M-q should not join line which begins with `-`,`TODO`,...
 ;; TODO: hydra
 ;; TODO: expand-region or combobulate
-;; TODO: modeline
 ;; TODO: dabbrev
 ;; TODO: hippie-exp
 ;; TODO: org-mode
@@ -713,7 +714,6 @@
 ;; TODO: language C/C++ with LSP server and linter configured
 ;; TODO: Makefile
 ;; TODO: JSON
-;; TODO: Dockerfile
 ;; TODO: Dockerfile linter ???
 ;; TODO: Dockerfile language server ???
 ;; TODO: TOML
@@ -722,6 +722,8 @@
 ;; TODO: NYXT integration
 ;; TODO: tree-sitter setup
 ;; TODO: TLA+
+;; TODO: Grammarly integration
+;; TODO: Dictionary integration
 ;; TODO: grok consult
 ;; TODO: grok embark
 ;; TODO: grok magit
