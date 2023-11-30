@@ -48,12 +48,13 @@
 (load custom-file)
 
 ;; Allow pasting selection outside of Emacs
-(setq x-select-enable-clipboard t)
+(setq select-enable-clipboard t)
 
 ;; Auto refresh buffers
 (global-auto-revert-mode 1)
 
 ;; Also auto refresh dired, but be quiet about it
+(require 'autorevert)
 (setq global-auto-revert-non-file-buffers t)
 (setq auto-revert-verbose nil)
 
@@ -85,8 +86,8 @@
 ;; Remove text in active region if inserting text
 (delete-selection-mode 1)
 
-;; Don't highlight matches with jump-char - it's distracting
-(setq jump-char-lazy-highlight-face nil)
+;; ;; Don't highlight matches with jump-char - it's distracting
+;; (setq jump-char-lazy-highlight-face nil)
 
 ;; Always display line and column numbers
 (setq line-number-mode t)
@@ -101,6 +102,7 @@
 (setq byte-compile-warnings nil)
 
 ;; Save a list of recent files visited. (open recent file with C-x f)
+(require 'recentf)
 (recentf-mode 1)
 (setq recentf-max-saved-items 100) ;; just 20 is too recent
 
@@ -141,6 +143,7 @@
 (setq uniquify-buffer-name-style 'forward)
 
 ;; A saner ediff
+(require 'ediff)
 (setq ediff-diff-options "-w")
 (setq ediff-split-window-function 'split-window-horizontally)
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
@@ -165,6 +168,7 @@
 (add-to-list 'find-file-not-found-functions 'cc/create-non-existent-directory)
 
 ;; Personal profile
+(require 'straight)
 (setq user-full-name "Gabriele Lana")
 (setq user-mail-address "gabriele.lana@gmail.com")
 (setq straight-host-usernames '((github . "gabrielelana")
@@ -172,13 +176,14 @@
                                 (bitbucket . "gabrielelana")))
 
 ;; Tramp
+(require 'tramp)
 (setq tramp-terminal-type "dumb")
 (setq tramp-default-method "ssh")
-(setq tramp-remote-shell "/bin/sh")
+(setq tramp-default-remote-shell "/bin/sh")
 
 ;; Dont't backup files
 (setq make-backup-files nil)
-(setq create-lock-files nil)
+(setq create-lockfiles nil)
 (setq auto-save-default nil)
 (setq create-lockfiles nil)
 
@@ -187,9 +192,6 @@
 
 ;; When scroll to the bottom/top then place the cursor to the very last/first line
 (customize-set-variable 'scroll-error-top-bottom t)
-
-;; Do not wait to have fully rendered the buffer before accepting inputs
-(setq redisplay-dont-pause nil)
 
 ;; Highlight current line
 (global-hl-line-mode)
@@ -200,6 +202,7 @@
 (setq show-paren-style 'parenthesis)
 
 ;; More room in the macro's kill ring
+(require 'kmacro)
 (setq kmacro-ring-max 100)
 
 ;; More room for echo area, up to 75% of the current window
