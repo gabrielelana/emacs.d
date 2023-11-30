@@ -41,6 +41,9 @@
       frame-resize-pixelwise t
       split-width-threshold 100)
 
+;; Windows
+(setq help-window-select t)
+
 ;; Put custom configurations aside
 (setq custom-file "~/.emacs.d/custom.el")
 (when (not (file-exists-p custom-file))
