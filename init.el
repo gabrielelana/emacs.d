@@ -350,6 +350,70 @@
                       company-files
                       company-dabbrev)))
 
+;; LSP
+(use-package lsp-mode
+  :commands lsp
+  :bind (:map lsp-mode-map
+              ("M-." . lsp-find-definition)
+              ("M-?" . lsp-find-references)
+              ("H-a" . lsp-execute-code-action)
+              ("H-d" . lsp-describe-thing-at-point))
+  :hook ((lsp-mode . flycheck-mode))
+  :custom
+  (read-process-output-max (* 1024 1024))
+  (lsp-keymap-prefix "H-l")
+  (lsp-auto-configure t)
+  (lsp-auto-guess-root t)
+  (lsp-completion-enable t)
+  (lsp-completion-show-detail t)
+  (lsp-completion-show-kind t)
+  (lsp-headerline-breadcrumb-enable nil)
+  (lsp-inlay-hint-enable nil)
+  (lsp-lens-enable nil)
+  (lsp-idle-delay 0.5)
+  (lsp-prefer-capf t)
+  (lsp-print-io nil)
+  (lsp-log-io nil))
+
+(use-package lsp-ui
+  :preface
+  (defun cc/--setup-lsp-ui-theme ()
+    (let ((default-foreground (face-attribute 'default :foreground))
+          (default-background (face-attribute 'default :background)))
+      (set-face-attribute 'lsp-details-face nil
+                          :height 2)
+      (set-face-attribute 'lsp-ui-doc-background nil
+                          :foreground default-foreground
+                          :background default-background)
+      (set-face-attribute 'lsp-ui-doc-header nil
+                          :foreground default-foreground
+                          :background default-background
+                          :weight 'bold
+                          :height 2
+                          :slant 'italic)
+      (setq lsp-ui-doc-border default-foreground)))
+  :hook ((after-load-theme . cc/--setup-lsp-ui-theme))
+  :config
+  (cc/--setup-lsp-ui-theme)
+  (lsp-ui-sideline-mode 1)
+  (lsp-ui-doc-mode 1)
+  :custom
+  (lsp-ui-sideline-show-code-actions t)
+  (lsp-ui-sideline-show-diagnostics t)
+  (lsp-ui-sideline-show-hover nil)
+  (lsp-ui-sideline-delay 0.5)
+  (lsp-ui-doc-show-with-cursor t)
+  (lsp-ui-doc-show-with-mouse nil)
+  (lsp-ui-doc-alignment 'window)
+  (lsp-ui-doc-header nil)
+  (lsp-ui-doc-include-signature t)
+  (lsp-ui-doc-max-height 100)
+  (lsp-ui-doc-max-width 200)
+  (lsp-ui-doc-position 'bottom)
+  (lsp-ui-doc-text-scale-level 6)
+  (lsp-ui-doc-use-childframe t)
+  (lsp-ui-doc-delay 0.5))
+
 ;; Magit
 (use-package magit
   :preface
@@ -655,6 +719,22 @@
   :config
   (esf-initialize))
 
+;; Rust
+(use-package rustic
+  ;; :requires lsp
+  :commands rustic-mode
+  ;; :hook ((rust-mode . rustic-mode)
+  ;;        (rustic-mode . lsp))
+  :bind (:map rustic-mode-map
+              ("H-l s" . lsp-rust-analyzer-status))
+  ;; :mode ("\\.rs\\'" . rustic-mode)
+  :custom
+  (rustic-format-on-save nil))
+
+(use-package rust-playground)
+(use-package toml-mode)
+
+
 ;; Bindings
 (bind-key "RET" 'newline-and-indent)
 (bind-key "H-p" #'cc/open-line-above)
@@ -708,15 +788,28 @@
 (global-set-key (kbd "C-c u u") "∪")
 (global-set-key (kbd "C-c u i") "∩")
 
-
-;; TODO: LSP
-;; TODO: language Rust
+;; TODO: emoji support with better font
+;; TODO: language JavaScript/TypeScript
+;; TODO: language Haskell
+;; TODO: language Zig
+;; TODO: language C/C++, see LSP tutorial
+;; TODO: language Assembly ???
+;; TODO: evil with setup so that emacs mode is the default
+;; TODO: hydra, look at pretty-hydra (https://github.com/jerrypnz/major-mode-hydra.el)
 ;; TODO: modeline
+;; FIX: lisp indent with https://gitlab.com/magus/mes/-/blob/main/lisp/mes-dev-elisp.el?ref_type=heads#L19
+;; FIX: apheleia is formatting elisp files in a weird way, why?
+;; TODO: look-at https://gitlab.com/magus/mes/-/blob/main/lisp/mes-usability.el
+;; - https://gitlab.com/magus/mes/-/blob/main/lisp/mes-usability.el#L238
+;; - unicode fonts?
 
 ;; TODO: YAML language server https://github.com/redhat-developer/yaml-language-server
 ;; TODO: Docker language server
 ;; TODO: M-q should not join line which begins with `-`,`TODO`,...
 ;; TODO: hydra
+;; TODO: LSP imenu?
+;; TODO: LSP indentation?
+;; TODO: LSP dap?
 ;; TODO: expand-region or combobulate
 ;; TODO: dabbrev
 ;; TODO: hippie-exp
@@ -737,13 +830,20 @@
 ;; TODO: TLA+
 ;; TODO: Grammarly integration
 ;; TODO: Dictionary integration
+;; TODO: try theme https://github.com/catppuccin/emacs
+;; TODO: replace Cask with https://emacs-eldev.github.io/eldev ???
+;; TODO: spell checker https://github.com/minad/jinx
+;; TODO: look at https://github.com/minad/cape
 ;; TODO: grok consult
 ;; TODO: grok embark
 ;; TODO: grok magit
 ;; TODO: grok dabbrev
-;; TODO: grok hippie-exp
+;; TODO: Better than rg ? https://github.com/Wilfred/deadgrep
+;; TODO: https://www.reddit.com/r/emacs/comments/179t67l/window_management_share_your_displaybufferalist
 ;; TODO: H-v rename buffer with NAME-PROJECT-P
 ;; TODO: H-v in dired will create a terminal in that directory SHELL-DIRED
+;; TODO: create haskell-playground like rust-playground
+;; TODO: show full error at point, depends on major mode, flycheck doesn't have the original message
 
 (provide 'init)
 
