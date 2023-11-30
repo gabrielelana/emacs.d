@@ -604,7 +604,7 @@
 
 ;; Dockerfile
 (use-package dockerfile-mode
-  :hook ((flycheck-mode . dockerfile-mode)))
+  :hook ((dockerfile-mode . flycheck-mode)))
 
 ;; CSV
 (use-package csv-mode)
