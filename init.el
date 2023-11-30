@@ -41,6 +41,19 @@
 (setq user-emacs-directory (file-name-directory user-init-file))
 (add-to-list 'load-path (concat user-emacs-directory "local-packages"))
 
+;; Appearance as early as possible
+(scroll-bar-mode -1)
+(tool-bar-mode -1)
+(tooltip-mode -1)
+(menu-bar-mode -1)
+(horizontal-scroll-bar-mode -1)
+(blink-cursor-mode -1)
+(electric-indent-mode +1)
+(setq visible-bell nil
+      inhibit-splash-screen t
+      frame-resize-pixelwise t
+      split-width-threshold 100)
+
 ;; Native compilation
 (require 'comp)
 (setq native-comp-speed 2
@@ -70,9 +83,6 @@
 (require 'personal-functions)
 (require 'color-functions)
 
-;; Defaults of built-in stuff
-(require 'better-defaults)
-
 ;; Font
 (set-frame-font "PragmataPro Mono 22")
 
@@ -94,6 +104,9 @@
 (straight-use-package 'use-package)
 (when (boundp 'straight-use-package-by-default)
   (setq straight-use-package-by-default t))
+
+;; Defaults of built-in stuff
+(require 'better-defaults)
 
 ;; Libraries
 (use-package bind-key)

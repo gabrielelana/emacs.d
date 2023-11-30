@@ -28,19 +28,6 @@
 
 ;;; Code:
 
-;; Appearance
-(scroll-bar-mode -1)
-(tool-bar-mode -1)
-(tooltip-mode -1)
-(menu-bar-mode -1)
-(horizontal-scroll-bar-mode -1)
-(blink-cursor-mode -1)
-(electric-indent-mode +1)
-(setq visible-bell nil
-      inhibit-splash-screen t
-      frame-resize-pixelwise t
-      split-width-threshold 100)
-
 ;; Windows
 (setq help-window-select t)
 
