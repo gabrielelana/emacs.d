@@ -737,13 +737,10 @@
 
 ;; Rust
 (use-package rustic
-  ;; :requires lsp
   :commands rustic-mode
-  ;; :hook ((rust-mode . rustic-mode)
-  ;;        (rustic-mode . lsp))
+  :hook ((rustic-mode . lsp))
   :bind (:map rustic-mode-map
               ("H-l s" . lsp-rust-analyzer-status))
-  ;; :mode ("\\.rs\\'" . rustic-mode)
   :custom
   (rustic-format-on-save nil))
 
