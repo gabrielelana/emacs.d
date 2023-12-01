@@ -763,6 +763,23 @@
   :custom
   (typescript-indent-level 2))
 
+;; Haskell
+(use-package haskell-mode
+  :hook ((haskell-mode . lsp))
+  :custom
+  (haskell-prompt-regexp "^\\(> *\\|| *\\)+")
+  (haskell-process-type 'ghci)
+  (haskell-process-path-ghci (executable-find "stack"))
+  (haskell-process-args-ghci '("ghci"))
+  (inferior-haskell-root-dir "/tmp")
+  :config
+  (require 'cc-haskell))
+
+(use-package lsp-haskell
+  :requires haskell
+  :custom
+  (lsp-log-io nil))
+
 ;; Bindings
 (bind-key "RET" 'newline-and-indent)
 (bind-key "H-p" #'cc/open-line-above)
@@ -816,11 +833,12 @@
 (global-set-key (kbd "C-c u u") "∪")
 (global-set-key (kbd "C-c u i") "∩")
 
-;; TODO: language Haskell
 ;; TODO: language Zig
 ;; TODO: language C/C++, see LSP tutorial
+;; TODO: rename all local packages in cc-*
 ;; TODO: language Assembly ???
 ;; FIX: consult-* like consult-apropos "failed to define function"
+;; FIX: completing in interactive-haskell-mode is not done through vertico/orderless/marginalia..
 ;; TODO: evil with setup so that emacs mode is the default
 ;; TODO: hydra, look at pretty-hydra (https://github.com/jerrypnz/major-mode-hydra.el)
 ;; TODO: modeline
@@ -830,6 +848,7 @@
 ;; - https://gitlab.com/magus/mes/-/blob/main/lisp/mes-usability.el#L238
 
 ;; TODO: YAML language server https://github.com/redhat-developer/yaml-language-server
+;; TODO: Top level comments with triple ; to work as outlines as per documentation https://www.gnu.org/software/emacs/manual/html_node/elisp/Comment-Tips.html
 ;; TODO: Docker language server
 ;; TODO: M-q should not join line which begins with `-`,`TODO`,...
 ;; TODO: LSP imenu?
