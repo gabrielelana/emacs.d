@@ -162,6 +162,22 @@
 ;; (cc/load-theme 'night-owl t)           ; dark
 ;; (cc/load-theme 'subatomic)             ; dark
 
+;; Unicode, Icons & Emoji
+(use-package nerd-icons
+  :config
+  (setq nerd-icons-scale-factor 1.1))
+
+(use-package unicode-fonts
+  :ensure t
+  :config
+  (unicode-fonts-setup))
+
+;; One day I'll be able to make "Noto Color Emoji" work, now stick with Segoe
+(setq use-default-font-for-symbols nil)
+(let ((emoji-font "Segoe UI Emoji"))
+  (when (member emoji-font (font-family-list))
+    (set-fontset-font t 'symbol emoji-font nil 'prepend)
+    (set-fontset-font t 'emoji emoji-font nil 'prepend)))
 
 ;; Completion system
 (use-package vertico
@@ -788,7 +804,7 @@
 (global-set-key (kbd "C-c u u") "∪")
 (global-set-key (kbd "C-c u i") "∩")
 
-;; TODO: emoji support with better font
+;; FIX: consult-* like consult-apropos "failed to define function"
 ;; TODO: language JavaScript/TypeScript
 ;; TODO: language Haskell
 ;; TODO: language Zig
