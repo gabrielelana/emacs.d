@@ -750,6 +750,21 @@
 (use-package rust-playground)
 (use-package toml-mode)
 
+;; JavaScript
+(use-package js
+  :straight (:type built-in)
+  :mode "\\.jsx?\\'"
+  :hook ((js-mode . lsp))
+  :custom
+  (js-indent-level 2)
+  (js-switch-indent-offset t))
+
+;; TypeScript
+(use-package typescript-mode
+  :mode "\\.tsx?\\'"
+  :hook ((typescript-mode . lsp))
+  :custom
+  (typescript-indent-level 2))
 
 ;; Bindings
 (bind-key "RET" 'newline-and-indent)
