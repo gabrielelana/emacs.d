@@ -819,42 +819,32 @@
 (global-set-key (kbd "C-c u u") "∪")
 (global-set-key (kbd "C-c u i") "∩")
 
-;; FIX: consult-* like consult-apropos "failed to define function"
-;; TODO: language JavaScript/TypeScript
 ;; TODO: language Haskell
 ;; TODO: language Zig
 ;; TODO: language C/C++, see LSP tutorial
 ;; TODO: language Assembly ???
+;; FIX: consult-* like consult-apropos "failed to define function"
 ;; TODO: evil with setup so that emacs mode is the default
 ;; TODO: hydra, look at pretty-hydra (https://github.com/jerrypnz/major-mode-hydra.el)
 ;; TODO: modeline
+;; TODO: org-mode
 ;; FIX: lisp indent with https://gitlab.com/magus/mes/-/blob/main/lisp/mes-dev-elisp.el?ref_type=heads#L19
-;; FIX: apheleia is formatting elisp files in a weird way, why?
 ;; TODO: look-at https://gitlab.com/magus/mes/-/blob/main/lisp/mes-usability.el
 ;; - https://gitlab.com/magus/mes/-/blob/main/lisp/mes-usability.el#L238
-;; - unicode fonts?
 
 ;; TODO: YAML language server https://github.com/redhat-developer/yaml-language-server
 ;; TODO: Docker language server
 ;; TODO: M-q should not join line which begins with `-`,`TODO`,...
-;; TODO: hydra
 ;; TODO: LSP imenu?
 ;; TODO: LSP indentation?
 ;; TODO: LSP dap?
 ;; TODO: expand-region or combobulate
 ;; TODO: dabbrev
 ;; TODO: hippie-exp
-;; TODO: org-mode
-;; TODO: language TypeScript
-;; TODO: language Haskell
 ;; TODO: language Elixir
-;; TODO: language C/C++ with LSP server and linter configured
 ;; TODO: Makefile
-;; TODO: JSON
 ;; TODO: Dockerfile linter ???
 ;; TODO: Dockerfile language server ???
-;; TODO: TOML
-;; TODO: YAML
 ;; TODO: OpenAI integration
 ;; TODO: NYXT integration
 ;; TODO: tree-sitter setup
