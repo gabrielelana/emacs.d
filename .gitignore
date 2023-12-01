@@ -4,3 +4,5 @@
 /transient/
 *.eld
 /projects
+/var
+/multisession
