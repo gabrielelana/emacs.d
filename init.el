@@ -252,7 +252,6 @@
          ("C-M-#" . consult-register)
          ;; Other custom bindings
          ("M-y" . consult-yank-pop)                ;; orig. yank-pop
-         ("C-h a" . consult-apropos)               ;; orig. apropos-command
          ;; M-g bindings (goto-map)
          ("M-g e" . consult-compile-error)
          ("M-g f" . consult-flycheck)              ;; Alternative: consult-flycheck
@@ -840,7 +839,6 @@
 ;; TODO: language C/C++, see LSP tutorial
 ;; TODO: rename all local packages in cc-*
 ;; TODO: language Assembly ???
-;; FIX: consult-* like consult-apropos "failed to define function"
 ;; FIX: completing in interactive-haskell-mode is not done through vertico/orderless/marginalia..
 ;; TODO: evil with setup so that emacs mode is the default
 ;; TODO: hydra, look at pretty-hydra (https://github.com/jerrypnz/major-mode-hydra.el)
