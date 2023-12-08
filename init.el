@@ -782,6 +782,10 @@
   :custom
   (lsp-log-io nil))
 
+;; Zig
+(use-package zig-mode
+  :hook ((zig-mode . lsp)))
+
 ;; Bindings
 (bind-key "RET" 'newline-and-indent)
 (bind-key "H-p" #'cc/open-line-above)
