@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# contributor: Gabriele Lana
+# name : derive
+# key : de
+# uuid: 4b4a6764-cfe7-432c-b571-f397bcc8d099
+# --
+#[derive($0)]

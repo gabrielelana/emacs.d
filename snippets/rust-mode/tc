@@ -5,6 +5,6 @@
 # uuid: 74f7ac1d-7d84-4e2f-be5c-e7504f48e3a5
 # --
 #[test]
-fn $1() {
+fn ${1:shall_pass}() {
    $0
 }

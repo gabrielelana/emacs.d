@@ -9,7 +9,7 @@ mod ${1:tests} {
     use super::*;
 
     #[test]
-    fn ${2:test_name}() {
+    fn ${2:shall_pass}() {
        $0
     }
 }
