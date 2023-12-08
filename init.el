@@ -850,6 +850,14 @@
 ;; TODO: look-at https://gitlab.com/magus/mes/-/blob/main/lisp/mes-usability.el
 ;; - https://gitlab.com/magus/mes/-/blob/main/lisp/mes-usability.el#L238
 
+;; PROJECT: Minor mode for Rust to be able to run `cargo build` on the current
+;; project, split on every error, create a read only buffer to be able to
+;; navigate through the errors. The original source file should be linked. On
+;; the bottom of the buffer should be the full explanation of the error retrived
+;; by cargo
+
+;; TODO: Hoogle for Haskell?
+;; TODO: Create a shell *root-shell* when emacs starts, add keybinding to switch to it
 ;; TODO: YAML language server https://github.com/redhat-developer/yaml-language-server
 ;; TODO: Top level comments with triple ; to work as outlines as per documentation https://www.gnu.org/software/emacs/manual/html_node/elisp/Comment-Tips.html
 ;; TODO: Docker language server
