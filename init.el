@@ -373,7 +373,9 @@
               ("M-." . lsp-find-definition)
               ("M-?" . lsp-find-references)
               ("H-a" . lsp-execute-code-action)
-              ("H-d" . lsp-describe-thing-at-point))
+              ("H-d" . lsp-describe-thing-at-point)
+              ("H-i" . lsp-inlay-hints-mode)
+              ("H-l h i" . lsp-inlay-hints-mode))
   :hook ((lsp-mode . flycheck-mode))
   :custom
   (read-process-output-max (* 1024 1024))
@@ -414,6 +416,7 @@
   (lsp-ui-sideline-mode 1)
   (lsp-ui-doc-mode 1)
   :custom
+  (lsp-inlay-hint-enable nil)
   (lsp-ui-sideline-show-code-actions t)
   (lsp-ui-sideline-show-diagnostics t)
   (lsp-ui-sideline-show-hover nil)
@@ -423,12 +426,12 @@
   (lsp-ui-doc-alignment 'window)
   (lsp-ui-doc-header nil)
   (lsp-ui-doc-include-signature t)
-  (lsp-ui-doc-max-height 100)
-  (lsp-ui-doc-max-width 200)
+  (lsp-ui-doc-max-height 40)
+  (lsp-ui-doc-max-width 120)
   (lsp-ui-doc-position 'bottom)
   (lsp-ui-doc-text-scale-level 6)
   (lsp-ui-doc-use-childframe t)
-  (lsp-ui-doc-delay 0.5))
+  (lsp-ui-doc-delay 1))
 
 ;; Magit
 (use-package magit
