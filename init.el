@@ -751,7 +751,7 @@
 (use-package toml-mode)
 
 ;; JavaScript
-(use-package js
+(use-package js-mode
   :straight (:type built-in)
   :mode "\\.jsx?\\'"
   :hook ((js-mode . lsp))
