@@ -128,12 +128,11 @@
   "Run `after-enable-theme-hook'."
   (run-hooks 'after-enable-theme-hook))
 
-(advice-add 'enable-theme :after #'run-after-enable-theme-hook)
-
 (defun cc/load-theme (theme)
   "Load THEME first disabling the all the enabled custom themes."
   (mapc #'disable-theme custom-enabled-themes)
-  (load-theme theme :no-confirm))
+  (load-theme theme :no-confirm)
+  (run-after-enable-theme-hook))
 
 (use-package kaolin-themes)
 (use-package dracula-theme)
