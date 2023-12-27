@@ -796,6 +796,14 @@
   :custom
   (lsp-log-io nil))
 
+(use-package cc-mode
+  :straight (:type built-in)
+  :hook ((c-mode . lsp))
+  :mode (("\\.c\\'" . c-mode)
+         ("\\.h\\'" . c-mode))
+  :bind (:map c-mode-map
+              ("C-c C-c" . compile)))
+
 ;; Zig
 (use-package zig-mode
   :hook ((zig-mode . lsp)))
