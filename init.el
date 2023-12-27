@@ -504,11 +504,13 @@
 (use-package vterm
   :preface
   ;; TODO: projectile integration
-  ;; - add terminal buffer to project's buffer (possible?)
+  ;; - add terminal buffer as project's buffer (possible?)
   ;; - close project's terminal buffer when close project (hook?)
   ;; - completing-read between terminals of current project
   ;; TODO: improve cc/project-vterm-other-window
   ;; - with C-u completeting-read which directory of the project start the terminal
+  ;; - rename cc/vterm-other-window-dwim
+  ;; - when not in a project puts `global` as prefix for the buffer
   (defun cc/--setup-vterm ()
     (setq-local global-hl-line-mode nil)
     (setq-local line-spacing nil))
@@ -861,12 +863,10 @@
 (global-set-key (kbd "C-c u u") "∪")
 (global-set-key (kbd "C-c u i") "∩")
 
-;; TODO: language Zig
-;; TODO: language C/C++, see LSP tutorial
+;; TODO: evil with setup so that emacs mode is the default
 ;; TODO: rename all local packages in cc-*
 ;; TODO: language Assembly ???
 ;; FIX: completing in interactive-haskell-mode is not done through vertico/orderless/marginalia..
-;; TODO: evil with setup so that emacs mode is the default
 ;; TODO: hydra, look at pretty-hydra (https://github.com/jerrypnz/major-mode-hydra.el)
 ;; TODO: modeline
 ;; TODO: org-mode
@@ -880,7 +880,19 @@
 ;; the bottom of the buffer should be the full explanation of the error retrived
 ;; by cargo
 
+;; FEATURE: H-f/H-b forward-symbols/backward-symbols jump to next/previous group
+;; of non words, learn about syntax table of current major mode
+
+;; FEATURE: command to increment a numerical value or date following point
+;; (trying guessing format if there are leading zeros)
+
+;; FEATURE: when duplicating
+;; line check if there are stuff to increment and try to guess the correct order
+;; to increment/decrement in the line to create, increment all the things
+;; incrementable in the line
+
 ;; TODO: Hoogle for Haskell?
+;; TODO: consult-lsp
 ;; TODO: Create a shell *root-shell* when emacs starts, add keybinding to switch to it
 ;; TODO: YAML language server https://github.com/redhat-developer/yaml-language-server
 ;; TODO: Top level comments with triple ; to work as outlines as per documentation https://www.gnu.org/software/emacs/manual/html_node/elisp/Comment-Tips.html
