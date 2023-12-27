@@ -410,7 +410,8 @@
                           :height 2
                           :slant 'italic)
       (setq lsp-ui-doc-border default-foreground)))
-  :hook ((after-load-theme . cc/--setup-lsp-ui-theme))
+  :init
+  (add-hook 'after-enable-theme-hook #'cc/--setup-lsp-ui-theme)
   :config
   (cc/--setup-lsp-ui-theme)
   (lsp-ui-sideline-mode 1)
@@ -481,7 +482,6 @@
          ("C-c g r" . git-gutter:revert-hunk)
          ("C-c g a" . git-gutter:stage-hunk)
          ("C-c g u" . git-gutter:update-all-windows))
-  :hook ((after-load-theme . cc/--setup-git-gutter-theme))
   :custom
   (git-gutter:window-width 2)
   (git-gutter:added-sign "\uf067")
@@ -489,6 +489,8 @@
   (git-gutter:modified-sign "\uf054")
   (git-gutter:hide-gutter nil)
   (global-git-gutter-mode 1)
+  :init
+  (add-hook 'after-enable-theme-hook #'cc/--setup-git-gutter-theme)
   :config
   (cc/--setup-git-gutter-theme))
 
@@ -639,7 +641,8 @@
                           :underline nil)
       (setq flymake-error-bitmap nil
             flymake-warning-bitmap nil)))
-  :hook ((after-load-theme . cc/--setup-flymake-theme))
+  :init
+  (add-hook 'after-enable-theme-hook #'cc/--setup-flymake-theme)
   :config
   (cc/--setup-flymake-theme))
 
@@ -658,7 +661,8 @@
       (set-face-attribute 'flycheck-info nil
                           :box `(:line-width 1 :color ,default-foreground :style nil)
                           :underline nil)))
-  :hook ((after-load-theme . cc/--setup-flymake-theme))
+  :init
+  (add-hook 'after-enable-theme-hook #'cc/--setup-flycheck-theme)
   :custom
   (flycheck-check-syntax-automatically '(mode-enabled save))
   (flycheck-idle-change-delay 0.5)
