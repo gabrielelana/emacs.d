@@ -170,7 +170,6 @@
   (setq nerd-icons-scale-factor 1.1))
 
 (use-package unicode-fonts
-  :ensure t
   :config
   (unicode-fonts-setup))
 
