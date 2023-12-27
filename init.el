@@ -103,7 +103,10 @@
 ;; Integrate use-package with straight
 (straight-use-package 'use-package)
 (when (boundp 'straight-use-package-by-default)
-  (setq straight-use-package-by-default t))
+  (setq straight-use-package-by-default t
+        use-package-verbose t
+        use-package-expand-minimally t
+        debug-on-error nil))
 
 ;; Defaults of built-in stuff
 (require 'better-defaults)
