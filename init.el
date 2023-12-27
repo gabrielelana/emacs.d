@@ -134,8 +134,8 @@
   (load-theme theme :no-confirm)
   (run-after-enable-theme-hook))
 
+(use-package catppuccin-theme)
 (use-package kaolin-themes)
-(use-package dracula-theme)
 (use-package night-owl-theme)
 (use-package apropospriate-theme)
 (use-package subatomic-theme
