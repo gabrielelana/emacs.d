@@ -156,7 +156,13 @@
   :custom
   subatomic-more-visible-comment-delimiters t)
 
-(cc/load-theme 'modus-operandi)        ; light
+(progn
+  (setq catppuccin-flavor 'latte)
+  (cc/load-theme 'catppuccin))
+(progn
+  (setq catppuccin-flavor 'macchiato)
+  (cc/load-theme 'catppuccin))
+;; (cc/load-theme 'modus-operandi)        ; light
 ;; (cc/load-theme 'kaolin-light t)	  ; light
 ;; (cc/load-theme 'apropospriate-light t) ; light
 ;; (cc/load-theme 'dracula t)             ; dark
