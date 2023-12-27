@@ -602,6 +602,9 @@
 
 ;; Prettify
 (use-package apheleia
+  :config
+  (setf (alist-get 'markdown-mode apheleia-mode-alist)
+        'prettier-markdown)
   :init
   (apheleia-global-mode +1))
 
