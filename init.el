@@ -464,7 +464,7 @@
   (lsp-ui-doc-max-height 40)
   (lsp-ui-doc-max-width 120)
   (lsp-ui-doc-position 'bottom)
-  (lsp-ui-doc-text-scale-level 6)
+  (lsp-ui-doc-text-scale-level 1)
   (lsp-ui-doc-use-childframe t)
   (lsp-ui-doc-delay 1))
 
