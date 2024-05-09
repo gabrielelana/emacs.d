@@ -132,19 +132,27 @@
 
 ;; Themes
 (defvar after-enable-theme-hook nil
-  "Normal hook run after enabling a theme.")
+  "Hook run after enabling a theme.")
 
-(defun run-after-enable-theme-hook (&rest _args)
-  "Run `after-enable-theme-hook'."
-  (run-hooks 'after-enable-theme-hook))
+(defvar before-enable-theme-hook nil
+  "Hook run after enabling a theme.")
 
 (defun cc/load-theme (theme)
   "Load THEME first disabling the all the enabled custom themes."
+  (run-hooks 'before-enable-theme-hook)
   (mapc #'disable-theme custom-enabled-themes)
   (load-theme theme :no-confirm)
-  (run-after-enable-theme-hook))
+  (run-hooks 'after-enable-theme-hook))
 
-(use-package catppuccin-theme)
+(use-package catppuccin-theme
+  :config
+  ;; TODO: do this only if current theme is catppuccin and remove after, use hooks
+  ;; (set-face-attribute 'git-commit-overlong-summary nil :inherit 'error)
+  :custom
+  (catppuccin-height-title-1 1.0)
+  (catppuccin-height-title-2 1.0)
+  (catppuccin-height-title-3 1.0)
+  (catppuccin-height-doc-title 1.0))
 (use-package kaolin-themes)
 (use-package night-owl-theme)
 (use-package apropospriate-theme)
