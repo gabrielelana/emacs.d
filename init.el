@@ -355,6 +355,9 @@
   (embark-collect-mode . consult-preview-at-point-mode))
 
 ;; Projectile
+(use-package ripgrep)
+(use-package projectile-ripgrep
+  :requires (projectile))
 (use-package projectile
   :bind (:map projectile-mode-map
               ("C-c p" . projectile-command-map))
