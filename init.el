@@ -204,6 +204,13 @@
     (set-fontset-font t 'symbol emoji-font nil 'prepend)
     (set-fontset-font t 'emoji emoji-font nil 'prepend)))
 
+;; Local projects
+(use-package retro
+  :straight `(retro :local-repo ,(expand-file-name "~/code/retro.el")))
+
+(use-package chip8
+  :straight `(chip8 :local-repo ,(expand-file-name "~/code/emacs-chip-8")))
+
 ;; Completion system
 (use-package vertico
   :preface
