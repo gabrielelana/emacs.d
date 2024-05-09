@@ -107,6 +107,9 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
+;; Make sure to use the Melpa version of org-mode
+(straight-use-package 'org)
+
 ;; Integrate use-package with straight
 (straight-use-package 'use-package)
 (when (boundp 'straight-use-package-by-default)
@@ -166,9 +169,9 @@
 (progn
   (setq catppuccin-flavor 'latte)
   (cc/load-theme 'catppuccin))
-(progn
-  (setq catppuccin-flavor 'macchiato)
-  (cc/load-theme 'catppuccin))
+;; (progn
+;;   (setq catppuccin-flavor 'macchiato)
+;;   (cc/load-theme 'catppuccin))
 ;; (cc/load-theme 'modus-operandi)        ; light
 ;; (cc/load-theme 'kaolin-light t)	  ; light
 ;; (cc/load-theme 'apropospriate-light t) ; light
@@ -817,6 +820,50 @@
 (use-package zig-mode
   :hook ((zig-mode . lsp)))
 
+;; Org
+(use-package ob-http)
+(use-package ob-mongo)
+(use-package org
+  :bind (("C-c c" . org-capture)
+         ("C-M-<return>" . org-insert-todo-subheading)
+         :map org-mode-map
+         ("M-<down>" . org-metadown)
+         ("M-<up>" . org-metaup)
+         ("M-<right>" . org-demote-subtree)
+         ("M-<left>" . org-promote-subtree)
+         ("C-x c s" . org-cut-subtree)
+         ("C-c C-x C-i" . org-clock-in))
+  :custom
+  (org-edit-src-content-indentation 0)
+  (org-src-preserve-indentation nil)
+  (org-src-tab-acts-natively t)
+  (org-src-fontify-natively t)
+  (org-src-mode t)
+  (org-use-property-inheritance t)
+  (org-confirm-babel-evaluate nil)
+  (org-catch-invisible-edits 'error)
+  (org-tags-column -100)
+  (org-startup-indented t)
+  (org-return-follows-link t)
+  (org-src-fontify-natively t)
+  (org-link-frame-setup '((file . find-file)))
+  (org-support-shift-select 'always)
+  (org-tag-persistent-alist '(("drill" . ?r)
+                              ("doing" . ?d)
+                              ("next" . ?n)
+                              ("today" . ?t)
+                              ("blocked" . ?b)))
+  :config
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((emacs-lisp . t)
+     (haskell . t)
+     (http . t)
+     (mongo . t)
+     (sql . t)
+     (js . t)
+     (shell . t))))
+
 ;; Bindings
 (bind-key "RET" 'newline-and-indent)
 (bind-key "H-p" #'cc/open-line-above)
@@ -856,6 +903,9 @@
 (bind-key "C-c e e" #'toggle-debug-on-error)
 (bind-key "C-c e s" #'scratch)
 (bind-key "C-c e m" #'view-echo-area-messages)
+;; The following is needed to override a strange behaviour from latest org-mode
+;; which ovverides the standard keybiding
+(bind-key* "C-x C-s" #'save-buffer)
 
 (global-set-key (kbd "C-c u l") "λ")
 (global-set-key (kbd "C-c u a") "∧")
