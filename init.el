@@ -481,6 +481,7 @@
   :custom
   (magit-section-visibility-indicator nil)
   (transient-display-buffer-action '(display-buffer-below-selected))
+  (git-commit-style-convention-checks '(overlong-summary-line non-empty-second-line))
   :config
   (transient-bind-q-to-quit))
 
