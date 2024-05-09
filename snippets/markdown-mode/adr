@@ -1,0 +1,47 @@
+# -*- mode: snippet -*-
+# contributor: Gabriele Lana
+# name : adr
+# key : adr
+# uuid: 10636f2e-cd2c-4981-97ac-e1860b210a16
+# --
+# ${0:`(string-join (mapcar #'capitalize (or (cdr (string-split (file-name-base (buffer-file-name)) "-")) "")) " ")`}
+
+* ID: ADR-`(or (car (string-split (file-name-base (buffer-file-name)) "-")) "0000")`
+* Status: proposed | rejected | accepted | deprecated | superseded by [ADR-0005](0005-example.md)
+* Authors: List everyone involved in the decision
+* Date: `(format-time-string "%Y-%m-%d" (current-time))`
+
+## Problem
+
+Describe the architectural design issue you're addressing, leaving no questions
+about why you're addressing this issue now. Following a minimalist approach,
+address and document only the issues that need addressing at various points in
+the life cycle. You may want to articulate the problem in form of a question.
+
+## Solution
+
+Briefly describe the chosen solution with an optional link to one of the
+considered options below. List the actions that will follow to implement this
+solution.
+
+## Decision Drivers
+
+List of constraints, evaluation criteria, requirements, needed or desidered
+properties, concerns, forces, blocks, ...
+
+## Expected Outcome
+
+Why did we choose the solution above and what are our expectations.
+
+## Considered Options
+
+List all the considered options starting from the solution.
+
+### Option NAME
+
+Explain the gist of the solution, how it works and why it was considered.
+
+* Good, because ..., refer to the decision drivers
+* Bad, because ..., refer to the decision drivers
+
+<!-- https://github.com/joelparkerhenderson/architecture-decision-record -->
