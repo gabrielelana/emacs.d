@@ -23,16 +23,6 @@
 
 ;;; Commentary:
 
-;; Bootstrap configuration
-
-;; Compile Emacs with the following commands
-;;     $ git nuke && git pull && git checkout emacs-29.1.90
-;;     $ ./autogen.sh && ./configure CFLAGS="-O2 -march=native" --prefix=/home/coder/opt/emacs-29.1.90 --bindir=/home/coder/opt/emacs-29.1.90/bin --with-json --with-tree-sitter --with-imagemagick --with-x --with-x-toolkit=gtk3 --with-xwidgets --without-dbus --with-native-compilation=aot --with-wide-int --with-mailutils --with-harfbuzz
-;;     $ make -j8 && make install
-
-;; Start Emacs with the following commands
-;;     $ ~/opt/emacs-29.1.90/bin/emacs -Q --load=~/code/emacs-experimental/init.el &
-
 ;;; Code:
 
 ;; The following two lines can be removed when done and when this

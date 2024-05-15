@@ -7,3 +7,5 @@
 /var
 /multisession
 projectile.cache
+/custom.el
+/eln-cache/
