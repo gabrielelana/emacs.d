@@ -187,19 +187,24 @@
   :config
   (unicode-fonts-setup))
 
-;; One day I'll be able to make "Noto Color Emoji" work, now stick with Segoe
-(setq use-default-font-for-symbols nil)
-(let ((emoji-font "Segoe UI Emoji"))
+;; ;; One day I'll be able to make "Noto Color Emoji" work, now stick with Segoe  "Segoe UI Emoji"
+(let ((emoji-font "Noto Color Emoji"))
   (when (member emoji-font (font-family-list))
     (set-fontset-font t 'symbol emoji-font nil 'prepend)
     (set-fontset-font t 'emoji emoji-font nil 'prepend)))
 
 ;; Local projects
-(use-package retro
-  :straight `(retro :local-repo ,(expand-file-name "~/code/retro.el")))
+(when (file-exists-p (expand-file-name "~/code/retro.el"))
+  (use-package retro
+    :straight `(retro :local-repo ,(expand-file-name "~/code/retro.el"))))
 
-(use-package chip8
-  :straight `(chip8 :local-repo ,(expand-file-name "~/code/emacs-chip-8")))
+(when (file-exists-p (expand-file-name "~/code/emacs-nes"))
+  (use-package nes
+    :straight `(nes :local-repo ,(expand-file-name "~/code/emacs-nes"))))
+
+(when (file-exists-p (expand-file-name "~/code/emacs-chip-8"))
+  (use-package chip8
+    :straight `(chip8 :local-repo ,(expand-file-name "~/code/emacs-chip-8"))))
 
 ;; Completion system
 (use-package vertico
