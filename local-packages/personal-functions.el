@@ -26,6 +26,8 @@
 ;; Collection of functions for everyday use
 
 ;;; Code:
+(require 'subr-x)
+(require 'dash)
 
 (defun cc/pick-random (l)
   "Pick a random element from a list L."
@@ -128,7 +130,7 @@ The point will be left in the original position inside the
         (if below?
             (comment-region start end)
           (comment-region (+ start (- end start)) (+ end (- end start) 1))))
-      (when below? (next-line (count-lines start end))))))
+      (when below? (forward-line (count-lines start end))))))
 
 (defun cc/smarter-move-beginning-of-line ()
   "Move point back to indentation of beginning of line.
@@ -197,6 +199,7 @@ the beginning of the line."
       (message "Deleted file %s" filename))))
 
 (require 'ansi-color)
+(require 'compile)
 (defun cc/colorize-compilation ()
   "Colorize from `compilation-filter-start' to `point'."
   (let ((inhibit-read-only t))
@@ -224,7 +227,6 @@ options you can do it calling `(cc/shell-command-on-current-file
 Copy the line above if DIRECTION is -1.
 Copy the line below if DIRECTION is 1."
   (let (character-to-copy
-        (origin (point))
         (column-where-to-copy (current-column)))
     (save-excursion
       (forward-line direction)
