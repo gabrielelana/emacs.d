@@ -69,10 +69,6 @@
     (message "Garbage collection settings restored."))
   (add-hook 'emacs-startup-hook #'cc/restore-gc-settings))
 
-;; Libraries
-(require 'personal-functions)
-(require 'color-functions)
-
 ;; Font
 ;; Main typeface
 (set-face-attribute 'default nil :family "PragmataPro Mono" :height 220)
@@ -119,6 +115,10 @@
 (use-package uuidgen)
 (use-package dash)
 (use-package request)
+
+;; Libraries
+(require 'personal-functions)
+(require 'color-functions)
 
 ;; Themes
 (defvar after-enable-theme-hook nil
