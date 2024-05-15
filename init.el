@@ -207,7 +207,7 @@
   (defun cc/--backward-kill-dwim ()
     "Kills backward component path when in file completion, backward word otherwise."
     (interactive)
-    (if-let* ((metadata (completion-metadata 'category minibuffer-completion-table minibuffer-completion-predicate))
+    (if-let* ((metadata (completion-metadata "category" minibuffer-completion-table minibuffer-completion-predicate))
               (completion-category (completion-metadata-get metadata 'category)))
         (if (eq completion-category 'file)
             (cc/backward-kill-path-component)
