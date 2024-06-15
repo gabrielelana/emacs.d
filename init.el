@@ -532,12 +532,13 @@
   ;; - close project's terminal buffer when close project (hook?)
   ;; - completing-read between terminals of current project
   ;; TODO: improve cc/project-vterm-other-window
-  ;; - with C-u completeting-read which directory of the project start the terminal
+  ;; - with C-u completing-read which directory of the project start the terminal
   ;; - rename cc/vterm-other-window-dwim
   ;; - when not in a project puts `global` as prefix for the buffer
   (defun cc/--setup-vterm ()
-    (setq-local global-hl-line-mode nil)
-    (setq-local line-spacing nil))
+    (setq-local line-spacing nil
+                hl-line-mode nil
+                global-hl-line-mode nil))
   :hook ((vterm-mode . #'cc/--setup-vterm))
   :bind (("H-v" . #'cc/project-vterm-other-window))
   :custom
