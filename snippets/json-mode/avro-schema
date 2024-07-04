@@ -1,0 +1,17 @@
+# -*- mode: snippet -*-
+# contributor: Gabriele Lana
+# name : avro-schema
+# key : avro
+# uuid: c7ae456d-12f8-410f-9eb3-7c726eab4f6a
+# --
+{
+  "type": "record",
+  "namespace": "${1}",
+  "name": "${2}",
+  "fields": [
+    {
+      "name": "id",
+      "type": "string"
+    }$0
+  ]
+}
