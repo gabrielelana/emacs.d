@@ -724,17 +724,23 @@
 ;; JSON
 (use-package json-mode
   :mode (("\\.json\\'"  . json-mode)
+         ("\\.avsc\\'"  . json-mode)
          (".babelrc" . json-mode)
          (".prettierrc" . json-mode)
          (".eslintrc" . json-mode))
-  :hook (json-mode . cc/--setup-json)
+  :hook ((json-mode . lsp)
+         (json-mode . cc/--setup-json))
   :preface
   (defun cc/--setup-json ()
-    (flycheck-mode)
-    (flycheck-disable-checker 'javascript-eslint)
+    (flycheck-mode t)
     (when (executable-find "jsonlint")
-      (flycheck-select-checker 'json-jsonlint)))
+      ;; unfortunately it needs to run after lsp, didn't found a cleaner way
+      (run-at-time 1 nil (lambda ()
+                           (flycheck-select-checker 'json-jsonlint)))))
   :custom
+  ;; look for schemas at https://www.schemastore.org/json/
+  (lsp-json-schemas
+   [((fileMatch . ["*.avsc"]) (url . "https://json.schemastore.org/avro-avsc.json"))])
   (js-indent-level 2))
 
 ;; Dockerfile
