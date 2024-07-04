@@ -639,8 +639,8 @@
 ;; Prettify
 (use-package apheleia
   :config
-  (setf (alist-get 'markdown-mode apheleia-mode-alist)
-        'prettier-markdown)
+  (push '(cuefmt . ("cue" "fmt" inplace)) apheleia-formatters)
+  (push '(cue-mode . cuefmt) apheleia-mode-alist)
   :init
   (apheleia-global-mode +1))
 
@@ -703,6 +703,10 @@
   (flycheck-indication-mode nil)
   :config
   (cc/--setup-flycheck-theme))
+
+;; CUE
+(use-package cue-mode
+  :straight (cue-mode :type git :host github :repo "russell/cue-mode"))
 
 ;; YAML
 (use-package yaml-mode
