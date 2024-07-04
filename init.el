@@ -704,6 +704,14 @@
   :config
   (cc/--setup-flycheck-theme))
 
+;;; Terraform
+(use-package terraform-mode
+  :hook ((terraform-mode . lsp))
+  :custom
+  (terraform-indent-level 2)
+  (lsp-terraform-ls-validate-on-save t)
+  (lsp-terraform-ls-prefill-required-fields t))
+
 ;; CUE
 (use-package cue-mode
   :straight (cue-mode :type git :host github :repo "russell/cue-mode"))
