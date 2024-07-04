@@ -3,6 +3,7 @@
 /recentf
 /transient/
 *.eld
+*.elc
 /projects
 /var
 /multisession
