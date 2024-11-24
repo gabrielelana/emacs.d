@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# contributor: Gabriele Lana
+# name: function test
+# key: ft
+# uuid: 59b7d557-b565-47be-956a-e8e456fa391a
+# --
+func Test$0(t *testing.T) {
+    t.Fatal("not implemented yet")
+}
