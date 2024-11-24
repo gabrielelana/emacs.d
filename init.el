@@ -71,7 +71,8 @@
 
 ;; Font
 ;; Main typeface
-(set-face-attribute 'default nil :family "PragmataPro Mono" :height 220)
+(set-face-attribute 'default nil :family "PragmataPro Mono" :height 200)
+;; (set-face-attribute 'default nil :family "PragmataPro Mono" :height 320)
 ;; Proportionately spaced typeface
 (set-face-attribute 'fixed-pitch nil :family (face-attribute 'default :family))
 ;; Monospaced typeface
@@ -103,6 +104,24 @@
         use-package-verbose t
         use-package-expand-minimally t
         debug-on-error nil))
+
+;; Constants
+(defconst JSON_FILES_RX
+  (rx (or (seq "." (or "json" "avsc"))
+          ".babelrc"
+          ".prettierrc"
+          ".eslintrc")
+      eos)
+  "Regular expression to identify files that are JSON.")
+
+(defconst BIOME_FILES_RX
+  (rx-to-string `(or (regexp ,JSON_FILES_RX)
+                     (seq "." (or "tsx" "jsx"
+                                  "ts" "js"
+                                  "mts" "mjs"
+                                  "cts" "cjs")
+                          eos)))
+  "Regular expression to identify files which sholud be handled by Biome.")
 
 ;; Defaults of built-in stuff
 (require 'better-defaults)
@@ -136,13 +155,17 @@
 
 (use-package catppuccin-theme
   :config
-  ;; TODO: do this only if current theme is catppuccin and remove after, use hooks
-  ;; (set-face-attribute 'git-commit-overlong-summary nil :inherit 'error)
+  (custom-theme-set-faces
+   'catppuccin
+   '(diff-added ((t (:inherit 'diff-indicator-added))))
+   '(diff-changed ((t (:inherit 'diff-indicator-changed))))
+   '(diff-removed ((t (:inherit 'diff-indicator-removed)))))
   :custom
   (catppuccin-height-title-1 1.0)
   (catppuccin-height-title-2 1.0)
   (catppuccin-height-title-3 1.0)
   (catppuccin-height-doc-title 1.0))
+
 (use-package kaolin-themes)
 (use-package night-owl-theme)
 (use-package apropospriate-theme)
@@ -198,9 +221,9 @@
   (use-package retro
     :straight `(retro :local-repo ,(expand-file-name "~/code/retro.el"))))
 
-(when (file-exists-p (expand-file-name "~/code/emacs-nes"))
-  (use-package nes
-    :straight `(nes :local-repo ,(expand-file-name "~/code/emacs-nes"))))
+;; (when (file-exists-p (expand-file-name "~/code/emacs-nes"))
+;;   (use-package nes
+;;     :straight `(nes :local-repo ,(expand-file-name "~/code/emacs-nes"))))
 
 (when (file-exists-p (expand-file-name "~/code/emacs-chip-8"))
   (use-package chip8
@@ -394,6 +417,29 @@
                       company-dabbrev-code
                       company-files
                       company-dabbrev)))
+
+;; AI
+(use-package gptel
+  :bind (("C-c i s" . gptel-send)
+         ("C-c i c" . gptel))
+  :preface
+  (defun cc/read-opeai-key ()
+    "Read openai key from environment variable."
+    (or (getenv "OPENAI_API_KEY")
+        (user-error "Missing environment variable OPENAI_API_KEY")))
+  :config
+  (add-to-list
+   'gptel-directives
+   `(emacs . ,(concat "You are a an emacs wizard, familiar with org-mode, elisp and emacs itself. "
+                      "Help the user write idiomatic code, suggesting built-in functions when possible."))
+   '(tech-writer . "You are a technical writer, edit items for clarity and understanding."))
+  :custom
+  (gptel-model 'gpt-4o)
+  (gptel-temperature 0)
+  (gptel-default-mode 'org-mode)
+  (gptel-api-key #'cc/read-opeai-key))
+
+;; TODO: add and configure gptel-quick
 
 ;; LSP
 (use-package lsp-mode
@@ -641,6 +687,9 @@
   :config
   (push '(cuefmt . ("cue" "fmt" inplace)) apheleia-formatters)
   (push '(cue-mode . cuefmt) apheleia-mode-alist)
+  (push '(regofmt . ("opa" "fmt" inplace)) apheleia-formatters)
+  (push '(rego-mode . regofmt) apheleia-mode-alist)
+  (push '(markdown-mode . prettier-markdown) apheleia-mode-alist)
   :init
   (apheleia-global-mode +1))
 
@@ -704,6 +753,16 @@
   :config
   (cc/--setup-flycheck-theme))
 
+;;; EPUB
+(use-package nov
+  :mode (("\\.epub\\'" . nov-mode))
+  :hook ((nov-mode . cc/--setup-nov))
+  :preface
+  (defun cc/--setup-nov ()
+    (message "cc/--setup-nov")
+    (set-window-margins
+     (car (get-buffer-window-list (current-buffer) nil t)) 2 2)))
+
 ;;; Terraform
 (use-package terraform-mode
   :hook ((terraform-mode . lsp))
@@ -716,31 +775,72 @@
 (use-package cue-mode
   :straight (cue-mode :type git :host github :repo "russell/cue-mode"))
 
+;; Mermaid
+(use-package mermaid-mode)
+
+;; Rego
+(use-package rego-mode)
+;; TODO: linting with regal
+;; TODO: evaluate rule at point
+;; TODO: support tests
+;;
+;;   :custom
+;;   (rego-repl-executable "/home/sibi/bin/opa")
+;;   (rego-opa-command "/home/sibi/bin/opa")
+
+;; HURL
+(use-package hurl-mode
+  :straight (hurl-mode :type git :host github :repo "jaszhe/hurl-mode")
+  :mode (("\\.hurl\\'" . hurl-mode)
+         ("*hurl-response*" . hurl-response-mode)))
+
+;; Biome
+(use-package lsp-biome
+  :straight (lsp-biome :type git :host github :repo "cxa/lsp-biome")
+  :custom
+  (lsp-biome-active-file-types (list BIOME_FILES_RX))
+  (lsp-biome-organize-imports-on-save t)
+  (lsp-biome-format-on-save t))
+
 ;; YAML
 (use-package yaml-mode
   :mode (("\\.yaml\\'" . yaml-mode)
-         ("\\.neon\\'" . yaml-mode)))
+         ("\\.neon\\'" . yaml-mode))
+  :hook ((yaml-mode . lsp))
+  ;; :custom
+  ;; ;; TODO: apparently the format is wrong
+  ;; ;; look for schemas at https://www.schemastore.org/json/
+  ;; (lsp-yaml-schemas
+  ;;  [((fileMatch . ["*docker-compose*"])
+  ;;    (url . "https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"))])
+  )
 
 ;; JSON
 (use-package json-mode
-  :mode (("\\.json\\'"  . json-mode)
-         ("\\.avsc\\'"  . json-mode)
-         (".babelrc" . json-mode)
-         (".prettierrc" . json-mode)
-         (".eslintrc" . json-mode))
   :hook ((json-mode . lsp)
          (json-mode . cc/--setup-json))
   :preface
   (defun cc/--setup-json ()
-    (flycheck-mode t)
-    (when (executable-find "jsonlint")
-      ;; unfortunately it needs to run after lsp, didn't found a cleaner way
-      (run-at-time 1 nil (lambda ()
-                           (flycheck-select-checker 'json-jsonlint)))))
+    (cond ((executable-find "biome")
+           (flycheck-mode -1)
+           (apheleia-mode 1)
+           ;; XXX: we are letting apheleia do his job, biome/lsp-biome adds an
+           ;; extra `}` at the end of the file for some reason
+           (setq-local lsp-biome-format-on-save nil)
+           )
+          ((executable-find "jsonlint")
+           (flycheck-mode t)
+           ;; NOTE: needed to override the JSON lsp server will
+           (run-at-time 1 nil (lambda ()
+                                (flycheck-select-checker 'json-jsonlint))))))
+  :init
+  ;; cannot use :mode macro because mode list contains a non literal value
+  (add-to-list 'auto-mode-alist `(,JSON_FILES_RX . json-mode))
   :custom
   ;; look for schemas at https://www.schemastore.org/json/
   (lsp-json-schemas
-   [((fileMatch . ["*.avsc"]) (url . "https://json.schemastore.org/avro-avsc.json"))])
+   [((fileMatch . ["*.avsc"])
+     (url . "https://json.schemastore.org/avro-avsc.json"))])
   (js-indent-level 2))
 
 ;; Dockerfile
@@ -808,19 +908,116 @@
 (use-package rust-playground)
 (use-package toml-mode)
 
+;; Golang
+(use-package go-mode
+  :hook ((go-mode . lsp))
+  :custom
+  (tab-width 4)
+  (standard-indent 4))
+
+;; TODO: run golangci-lint before save, apheleia?
+;; TODO: run goimports before save, apheleia?
+;; TODO: run staticcheck before save, apheleia?
+
+(use-package go-tag
+  :after go-mode
+  :custom
+  (go-tag-args '("-transform" "camelcase")))
+
+;; (use-package go-mode
+;;   :straight t
+;;   :after lsp-mode
+;;   :mode ("\\.go\\'" . go-mode)
+;;   :preface
+;;   (defun rk-go--modules-p ()
+;;     "Return non-nil if this buffer is part of a Go Modules project."
+;;     (locate-dominating-file default-directory "go.mod"))
+
+;;   (defun rk-go--setup-go ()
+;;     "Run setup for Go buffers."
+;;     (if (rk-go--modules-p)
+;;         (setenv "GO111MODULE" "on")
+;;       (setenv "GO111MODULE" "auto"))
+;;     (if-let ((gopath (getenv "GOPATH")))
+;;         (setq lsp-go-gopls-server-path (f-join gopath "bin/gopls")))
+;;     (lsp-deferred))
+;;   :hook
+;;   (go-mode . rk-go--setup-go))
+
+;; (add-hook 'paredit-mode-hook #'clojure-paredit-setup nil 'local)
+
+;; (add-hook 'compilation-finish-functions 'switch-to-buffer-other-window 'compilation)
+
+;; '(display-buffer-alist '(("\\*Buffer List\\*" (my-switch-to-buffer-list))))
+
+(use-package cc-go-run
+  :straight nil
+  :after go-mode
+  :bind (:map go-mode-map
+              ("H-l t ." . cc/go-run-test-current-function)
+              ("H-l t t" . cc/go-run-test-current-suite)
+              ("H-l t p" . cc/go-run-test-current-package)
+              ("H-l t P" . cc/go-run-test-current-packages)
+              ("H-l t n" . cc/go-run-test-with-names)
+              ("H-l e s" . cc/go-run-on-save)
+              ("H-l e e" . cc/go-run-main))
+  :preface
+  (defvar cc/go-run-on-save nil)
+  (defun cc/go-run-on-save-toggle ()
+    "Toggle run current main file after save."
+    (if cc/go-run-on-save
+        (remove-hook 'after-save-hook 'cc/go-run-main t)
+      (add-hook 'after-save-hook 'cc/go-run-main t))
+    (setq cc/go-run-on-save (not cc/go-run-on-save))))
+
+;; (use-package rk-go-run
+;;   :after go-mode
+;;   :init
+;;   (rk-local-leader-def :keymaps 'go-mode-map
+;;     "."   '(gofmt :wk "fmt")
+;;     "t"   '(:ignore t :wk "test")
+;;     "t t" '(rk-go-run-test-current-function :wk "current fn")
+;;     "t s" '(rk-go-run-test-current-suite :wk "current suite")
+;;     "t p" '(rk-go-run-package-tests :wk "package")
+;;     "t P" '(rk-go-run-package-tests-nested :wk "package (nested)")
+;;     "x"   '(rk-go-run-main :wk "run"))
+;;   :config
+;;   (add-to-list 'display-buffer-alist
+;;                `(,(rx bos "*go " (or "test" "run") "*" eos)
+;;                  (display-buffer-reuse-window
+;;                   display-buffer-in-side-window)
+;;                  (reusable-frames . visible)
+;;                  (side            . bottom)
+;;                  (slot            . 0)
+;;                  (window-height   . 0.2))))
+
 ;; JavaScript
 (use-package js-mode
   :straight (:type built-in)
-  :mode "\\.jsx?\\'"
-  :hook ((js-mode . lsp))
+  :mode "\\.jsx?\\'"            ; TODO: add other file types, see BIOME_FILES_RX
+  :hook ((js-mode . lsp)
+         (js-mode . cc/--setup-js))
+  :preface
+  (defun cc/--setup-js ()
+    "Configure JavaScript buffer."
+    (apheleia-mode -1)
+    (setq-local lsp-enable-on-type-formatting nil
+                lsp-enable-indentation nil))
   :custom
   (js-indent-level 2)
   (js-switch-indent-offset t))
 
 ;; TypeScript
 (use-package typescript-mode
-  :mode "\\.tsx?\\'"
-  :hook ((typescript-mode . lsp))
+  :mode "\\.tsx?\\'"            ; TODO: add other file types, see BIOME_FILES_RX
+  :hook ((typescript-mode . lsp)
+         (typescript-mode . cc/--setup-ts))
+  :preface
+  (defun cc/--setup-ts ()
+    "Configure TypeScript buffer."
+    (apheleia-mode -1)
+    (setq-local lsp-enable-on-type-formatting nil
+                lsp-enable-indentation nil))
   :custom
   (typescript-indent-level 2))
 
@@ -856,12 +1053,14 @@
 ;; Org
 (use-package ob-http)
 (use-package ob-mongo)
+(use-package ob-mermaid)
+(use-package org-present)
 (use-package org
   :bind (("C-c c" . org-capture)
          ("C-M-<return>" . org-insert-todo-subheading)
          :map org-mode-map
-         ("M-<down>" . org-metadown)
-         ("M-<up>" . org-metaup)
+         ("M-<down>" . org-shiftup)
+         ("M-<up>" . org-shiftdown)
          ("M-<right>" . org-demote-subtree)
          ("M-<left>" . org-promote-subtree)
          ("C-x c s" . org-cut-subtree)
@@ -893,6 +1092,7 @@
      (haskell . t)
      (http . t)
      (mongo . t)
+     (mermaid . t)
      (sql . t)
      (js . t)
      (shell . t))))
@@ -955,11 +1155,9 @@
 
 ;; TODO: evil with setup so that emacs mode is the default
 ;; TODO: rename all local packages in cc-*
-;; TODO: language Assembly ???
 ;; FIX: completing in interactive-haskell-mode is not done through vertico/orderless/marginalia..
 ;; TODO: hydra, look at pretty-hydra (https://github.com/jerrypnz/major-mode-hydra.el)
-;; TODO: modeline
-;; TODO: org-mode
+;; TODO: modeline with https://github.com/seagle0128/doom-modeline or https://gitlab.com/jessieh/mood-line
 ;; FIX: lisp indent with https://gitlab.com/magus/mes/-/blob/main/lisp/mes-dev-elisp.el?ref_type=heads#L19
 ;; TODO: look-at https://gitlab.com/magus/mes/-/blob/main/lisp/mes-usability.el
 ;; - https://gitlab.com/magus/mes/-/blob/main/lisp/mes-usability.el#L238
@@ -976,10 +1174,11 @@
 ;; FEATURE: command to increment a numerical value or date following point
 ;; (trying guessing format if there are leading zeros)
 
-;; FEATURE: when duplicating
-;; line check if there are stuff to increment and try to guess the correct order
-;; to increment/decrement in the line to create, increment all the things
-;; incrementable in the line
+;; FEATURE: when duplicating line check if there are stuff to increment and try
+;; to guess the correct order to increment/decrement in the line to create,
+;; increment all the things incrementable in the line
+
+;; LOOK-AT: https://github.com/akirak/emacs-config/blob/b85e113743ba2ec4e074e40a2e66da190f66eae2/emacs-config.org
 
 ;; TODO: Hoogle for Haskell?
 ;; TODO: consult-lsp
@@ -988,9 +1187,6 @@
 ;; TODO: Top level comments with triple ; to work as outlines as per documentation https://www.gnu.org/software/emacs/manual/html_node/elisp/Comment-Tips.html
 ;; TODO: Docker language server
 ;; TODO: M-q should not join line which begins with `-`,`TODO`,...
-;; TODO: LSP imenu?
-;; TODO: LSP indentation?
-;; TODO: LSP dap?
 ;; TODO: expand-region or combobulate
 ;; TODO: dabbrev
 ;; TODO: hippie-exp
@@ -1018,6 +1214,8 @@
 ;; TODO: H-v in dired will create a terminal in that directory SHELL-DIRED
 ;; TODO: create haskell-playground like rust-playground
 ;; TODO: show full error at point, depends on major mode, flycheck doesn't have the original message
+
+(require 'personal-functions-after)
 
 (provide 'init)
 

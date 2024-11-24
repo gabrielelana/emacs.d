@@ -28,6 +28,9 @@
 ;;; Code:
 (require 'subr-x)
 (require 'dash)
+;; (require 'vterm)
+;; (require 'projectile)
+;; (require 'flyspell)
 
 (defun cc/pick-random (l)
   "Pick a random element from a list L."
@@ -285,26 +288,6 @@ specified or at the project root directory otherwise."
        (if (string-prefix-p project-root file-path)
            (concat (substring file-path (length project-root)) ":" (number-to-string line-number))
          (concat file-path ":" (number-to-string line-number)))))))
-
-(defun cc/project-vterm-other-window (&optional terminal-name)
-  "Create a terminal in other window named *{PROJECT-NAME}-{TERMINAL-NAME}*."
-  (interactive "sName: ")
-  (require 'vterm)
-  (if (not (projectile-project-p))
-      (error "ERROR: seems like you are not currently in a project")
-    (let* ((-project-name (projectile-project-name))
-           (-project-root-directory (projectile-project-root))
-           (-current-directory default-directory)
-           (-current-vterm-buffer-name vterm-buffer-name)
-           (-terminal-buffer-name (format "*%s-%s*" -project-name terminal-name)))
-      (unwind-protect
-          (progn
-            (setq default-directory -project-root-directory
-                  vterm-buffer-name -terminal-buffer-name)
-            (vterm-other-window -terminal-buffer-name)
-            (c-update-modeline))
-        (setq default-directory -current-directory
-              vterm-buffer-name -current-vterm-buffer-name)))))
 
 ;;; Programming
 (defmacro cc/measure-time (name &rest body)
