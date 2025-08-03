@@ -1258,6 +1258,10 @@
       )
 
     (add-hook 'agda2-mode-hook #'cc/--setup-agda)))
+
+;; Misc
+(use-package font-lock-studio)
+
 ;; Org
 (use-package ob-http)
 (use-package ob-mongo)
