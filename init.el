@@ -1144,10 +1144,11 @@
 (use-package haskell-mode
   :hook ((haskell-mode . lsp))
   :custom
-  (haskell-prompt-regexp "^\\(> *\\|| *\\)+")
+  ;; (haskell-prompt-regexp "^\\(> *\\|| *\\)+")
+  (haskell-prompt-regexp "^ghci[^>]*>")
   (haskell-process-type 'ghci)
-  (haskell-process-path-ghci (executable-find "stack"))
-  (haskell-process-args-ghci '("ghci"))
+  (haskell-process-path-ghci (executable-find "ghci"))
+  (haskell-process-args-ghci nil)
   (inferior-haskell-root-dir "/tmp")
   :config
   (require 'cc-haskell))
