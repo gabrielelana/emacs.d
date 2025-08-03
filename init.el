@@ -197,12 +197,18 @@
 ;;   (setq catppuccin-flavor 'macchiato)
 ;;   (cc/load-theme 'catppuccin))
 ;; (cc/load-theme 'modus-operandi)        ; light
-;; (cc/load-theme 'kaolin-light t)	  ; light
-;; (cc/load-theme 'apropospriate-light t) ; light
-;; (cc/load-theme 'dracula t)             ; dark
-;; (cc/load-theme 'nord t)		  ; dark
-;; (cc/load-theme 'night-owl t)           ; dark
+;; (cc/load-theme 'kaolin-light)	  ; light
+;; (cc/load-theme 'apropospriate-light) ; light
+;; (cc/load-theme 'dracula)             ; dark
+;; (cc/load-theme 'nord)		  ; dark
+;; (cc/load-theme 'night-owl)           ; dark
 ;; (cc/load-theme 'subatomic)             ; dark
+;; (cc/load-theme 'modus-vivendi-tinted)
+;; (cc/load-theme 'modus-operandi-tinted)
+;;; TODO: try https://github.com/crmsnbleyd/evangelion-theme
+;;; TODO: try https://github.com/petergardfjall/emacs-immaterial-theme
+;;; TODO: try https://github.com/muirdm/emacs-nova-theme
+;;; TODO: try https://github.com/purcell/color-theme-sanityinc-tomorrow
 
 ;; Unicode, Icons & Emoji
 (use-package nerd-icons
