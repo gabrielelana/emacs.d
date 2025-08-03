@@ -71,14 +71,11 @@
 
 ;; Font
 ;; Main typeface
-(set-face-attribute 'default nil :family "PragmataPro Mono" :height 200)
-;; (set-face-attribute 'default nil :family "PragmataPro Mono" :height 320)
+(set-face-attribute 'default nil :family "PragmataPro Mono" :height 120)
 ;; Proportionately spaced typeface
 (set-face-attribute 'fixed-pitch nil :family (face-attribute 'default :family))
 ;; Monospaced typeface
 (set-face-attribute 'variable-pitch nil :family (face-attribute 'default :family))
-
-;; (set-frame-font "PragmataPro Mono 22")
 
 ;; Bootstrap straight
 (defvar bootstrap-version)
