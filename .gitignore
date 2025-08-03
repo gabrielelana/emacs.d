@@ -2,6 +2,8 @@
 /straight/
 /recentf
 /transient/
+/tree-sitter/
+/tutorial/
 /elpa
 .*
 *.eld
