@@ -1169,6 +1169,43 @@
 (use-package zig-mode
   :hook ((zig-mode . lsp)))
 
+;; Scala
+(use-package scala-ts-mode
+  :hook ((scala-ts-mode . cc/--setup-scala))
+  :mode (("\\.scala\\'" . scala-ts-mode))
+  :preface
+  (defun cc/--setup-scala ()
+    (setq-local treesit-font-lock-level 4
+                scala-indent:step 2)
+    (treesit-font-lock-recompute-features)
+    (lsp)
+    (company-mode)))
+
+(use-package sbt-mode
+  :commands sbt-start sbt-command
+  :config
+  ;; WORKAROUND: https://github.com/ensime/emacs-sbt-mode/issues/31
+  ;; allows using SPACE when in the minibuffer
+  (substitute-key-definition
+   'minibuffer-complete-word
+   'self-insert-command
+   minibuffer-local-completion-map)
+  ;; sbt-supershell kills sbt-mode:  https://github.com/hvesalai/emacs-sbt-mode/issues/152
+  (setq sbt:program-options '("-Dsbt.supershell=false")))
+
+(use-package lsp-metals
+  :config
+  ;; remove the association (apparently forced by `lsp-metals`) between scala
+  ;; files with scala-mode, otherwise `scala-ts-mode` will not be considered in
+  ;; auto-mode-alist
+  (while (rassoc 'scala-mode auto-mode-alist)
+    (setq auto-mode-alist
+          (assq-delete-all (car (rassoc 'scala-mode auto-mode-alist))
+                           auto-mode-alist)))
+  :custom
+  (lsp-metals-inlay-hints-enable-type-parameters t)
+  (lsp-metals-inlay-hints-enable-hints-in-pattern-match t)
+  (lsp-metals-install-scala-version "3.3.6"))
 ;; Org
 (use-package ob-http)
 (use-package ob-mongo)
