@@ -801,11 +801,15 @@
 (use-package apheleia
   :config
   (push '(cuefmt . ("cue" "fmt" inplace)) apheleia-formatters)
+  (push '(scalafmt . ("scalafmt" "--quiet" "--non-interactive" "--config" (concat (projectile-project-root) ".scalafmt.conf") inplace)) apheleia-formatters)
   (push '(cue-mode . cuefmt) apheleia-mode-alist)
   (push '(regofmt . ("opa" "fmt" inplace)) apheleia-formatters)
   (push '(rego-mode . regofmt) apheleia-mode-alist)
+  ;; TODO: only if the project has biome configured
+  (push '(biome . ("apheleia-npx" "biome" "format" "--stdin-file-path" filepath)) apheleia-formatters)
+  (push '(typescript-mode . biome) apheleia-mode-alist)
+  (push '(scala-ts-mode . scalafmt) apheleia-mode-alist)
   (push '(markdown-mode . prettier-markdown) apheleia-mode-alist)
-  :init
   (apheleia-global-mode +1))
 
 ;; Multiple cursors
