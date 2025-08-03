@@ -2,11 +2,14 @@
 /straight/
 /recentf
 /transient/
+/elpa
+.*
 *.eld
 *.elc
 /projects
 /var
 /multisession
 projectile.cache
+tramp
 /custom.el
 /eln-cache/
