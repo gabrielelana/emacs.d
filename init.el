@@ -1206,6 +1206,23 @@
   (lsp-metals-inlay-hints-enable-type-parameters t)
   (lsp-metals-inlay-hints-enable-hints-in-pattern-match t)
   (lsp-metals-install-scala-version "3.3.6"))
+
+;; Protobuf mode
+(use-package protobuf-mode
+  :mode (("\\.proto$" . protobuf-mode)
+         ("\\.proto3$" . protobuf-mode))
+  :hook ((protobuf-mode . lsp)))
+
+(with-eval-after-load 'lsp-mode
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-stdio-connection '("protobuf-language-server" "-stdio"))
+                    :activation-fn (lsp-activate-on "protobuf")
+                    :server-id 'protobuf-language-server
+                    :download-server-fn (lambda (_client callback error-callback _update?)
+                                          (lsp-async-start-process
+                                           callback
+                                           error-callback
+                                           "go" "install" "github.com/lasorda/protobuf-language-server@latest")))))
 ;; Org
 (use-package ob-http)
 (use-package ob-mongo)
