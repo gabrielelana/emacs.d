@@ -154,12 +154,15 @@
   (run-hooks 'after-enable-theme-hook))
 
 (use-package catppuccin-theme
-  :config
-  (custom-theme-set-faces
-   'catppuccin
-   '(diff-added ((t (:inherit 'diff-indicator-added))))
-   '(diff-changed ((t (:inherit 'diff-indicator-changed))))
-   '(diff-removed ((t (:inherit 'diff-indicator-removed)))))
+  :preface
+  (defun cc/--setup-catppuccin-theme ()
+    (when (eq (car custom-enabled-themes) 'catppuccin)
+      (custom-theme-set-faces
+       'catppuccin
+       '(diff-added ((t (:inherit diff-indicator-added))) t)
+       '(diff-changed ((t (:inherit diff-indicator-changed))) t)
+       '(diff-removed ((t (:inherit diff-indicator-removed))) t))))
+  (add-hook 'after-enable-theme-hook #'cc/--setup-catppuccin-theme)
   :custom
   (catppuccin-height-title-1 1.0)
   (catppuccin-height-title-2 1.0)
