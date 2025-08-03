@@ -690,11 +690,10 @@
   ;; - rename cc/vterm-other-window-dwim
   ;; - when not in a project puts `global` as prefix for the buffer
   (defun cc/--setup-vterm ()
-    (setq-local line-spacing nil
-                hl-line-mode nil
-                global-hl-line-mode nil))
-  :hook ((vterm-mode . #'cc/--setup-vterm))
-  :bind (("H-v" . #'cc/project-vterm-other-window))
+    (setq-local global-hl-line-mode nil
+                line-spacing nil))
+  :hook ((vterm-mode . cc/--setup-vterm))
+  :bind (("C-c t p" . #'cc/project-vterm-other-window))
   :custom
   (vterm-max-scrollback 32768))
 
