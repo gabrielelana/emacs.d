@@ -1367,6 +1367,12 @@
 (global-set-key (kbd "C-c u u") "∪")
 (global-set-key (kbd "C-c u i") "∩")
 
+;; VERSION=emacs-30.1
+;; CFLAGS="-O2 -fno-semantic-interposition -floop-parallelize-all -ftree-parallelize-loops=4 -g3"
+;; ./configure --prefix=~/opt/$VERSION --bindir=~/opt/$VERSION/bin --with-tree-sitter --with-imagemagick --with-pgtk --without-dbus --with-native-compilation=aot --with-wide-int --with-mailutils
+;; make -j"$(nproc)" && make install
+;; ln -ls "$HOME/opt/emacs-30.0.92/bin/emacs" "$HOME/.local/bin/emacs-30.0.92"
+
 ;; TODO: evil with setup so that emacs mode is the default
 ;; TODO: rename all local packages in cc-*
 ;; FIX: completing in interactive-haskell-mode is not done through vertico/orderless/marginalia..
