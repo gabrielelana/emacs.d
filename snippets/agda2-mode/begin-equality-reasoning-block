@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# contributor: Gabriele Lana
+# name : begin equality reasoning block
+# key : bb
+# expand-env: ((yas-indent-line 'fixed))
+# uuid: ec588b32-972b-43b7-82ce-714e76372e31
+# --
+begin
+  ? ≡⟨ ? ⟩
+  ?
+∎

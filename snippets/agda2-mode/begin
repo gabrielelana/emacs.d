@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# contributor: Gabriele Lana
+# name : begin
+# key : begin
+# expand-env: ((yas-indent-line 'fixed))
+# uuid: 0abd9295-0dd5-44af-af92-dd76abc7b61a
+# --
+begin
+  ?
+≡⟨ ? ⟩
+  ?
+∎

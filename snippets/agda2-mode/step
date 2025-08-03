@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# contributor: Gabriele Lana
+# name : step
+# key : step
+# expand-env: ((yas-indent-line 'fixed))
+# uuid: f2f9cead-c542-4117-95ee-3ada200809c1
+# --
+≡⟨ ? ⟩
+  ?

@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# contributor: Gabriele Lana
+# name : stepl
+# key : stepl
+# expand-env: ((yas-indent-line 'fixed))
+# uuid: 6e8c67f1-e53d-40bf-a1b7-c056d4c07eb7
+# --
+  ?
+≡⟨ ? ⟩
