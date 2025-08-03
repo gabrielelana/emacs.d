@@ -751,6 +751,8 @@
   :config
   (exec-path-from-shell-initialize))
 
+(use-package password-generator)
+
 (use-package visual-regexp
   :bind (("C-c v r" . vr/replace)
          ("C-c v q" . vr/query-replace)
