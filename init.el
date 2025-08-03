@@ -1223,6 +1223,41 @@
                                            callback
                                            error-callback
                                            "go" "install" "github.com/lasorda/protobuf-language-server@latest")))))
+
+;; Agda
+(when (executable-find "agda-mode")
+  (let ((coding-system-for-read 'utf-8)
+        (agda-mode-source-path (shell-command-to-string "agda-mode locate")))
+    (load-file agda-mode-source-path)
+    (native-compile-async (list agda-mode-source-path) nil t))
+
+  (with-eval-after-load 'agda2
+    (setq agda2-backend "GHC")
+
+    (defun agda2-align-equality-reasoning-block ()
+      "Align proofs in equality reasoning blocks between `begin' and `∎'"
+      (interactive)
+      (let ((region (if (region-active-p)
+                        (cons (region-beginning) (region-end))
+                      (cons (point-min) (point-max)))))
+        (align-regexp (car region) (cdr region) "\\(\\s-*\\)≡⟨.*⟩$")))
+
+    (defun cc/--setup-agda ()
+      "Setup Agda major mode after loading in buffer"
+      (keymap-set agda2-mode-map "C-c C-q"
+                  (lambda ()
+                    (interactive)
+                    (dolist (buf (buffer-list))
+                      (with-current-buffer buf
+                        (when (equal (buffer-name buf) "*Agda information*")
+                          (let ((windows (get-buffer-window-list buf)))
+                            (dolist (win windows)
+                              (delete-window win))))))))
+      ;; TODO: agda settings
+      ;; (setq agda2-program-args '("--show-implicit")))
+      )
+
+    (add-hook 'agda2-mode-hook #'cc/--setup-agda)))
 ;; Org
 (use-package ob-http)
 (use-package ob-mongo)
