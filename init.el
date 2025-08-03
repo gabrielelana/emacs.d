@@ -735,6 +735,12 @@
   (setq which-key-idle-delay 3)
   (which-key-mode))
 
+(use-package load-env-vars
+  :config
+  (let ((global-secret-env-file "~/.env"))
+    (when (file-exists-p global-secret-env-file)
+      (load-env-vars global-secret-env-file))))
+
 (use-package direnv
   :demand t
   :config (direnv-mode))
