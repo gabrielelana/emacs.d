@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# contributor: Gabriele Lana
+# name : main
+# key : main
+# uuid: b0fffa1f-f38c-4e37-9ecd-0d6e02bd6a45
+# --
+def main(args: Array[String]): Unit = ???
