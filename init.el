@@ -572,7 +572,9 @@
   (lsp-inlay-hint-enable nil)
   (lsp-lens-enable nil)
   (lsp-idle-delay 0.5)
+  (lsp-prefer-flymake nil)
   (lsp-prefer-capf t)
+  (lsp-keep-workspace-alive nil)
   (lsp-print-io nil)
   (lsp-log-io nil))
 
