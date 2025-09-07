@@ -528,21 +528,31 @@
   :bind (("C-c i s" . gptel-send)
          ("C-c i c" . gptel))
   :preface
-  (defun cc/read-opeai-key ()
+  (defun cc/read-key-from-env (key-name)
     "Read openai key from environment variable."
-    (or (getenv "OPENAI_API_KEY")
-        (user-error "Missing environment variable OPENAI_API_KEY")))
+    (or (getenv key-name)
+        (user-error (format "Missing environment variable %s" key-name))))
   :config
   (add-to-list
    'gptel-directives
    `(emacs . ,(concat "You are a an emacs wizard, familiar with org-mode, elisp and emacs itself. "
                       "Help the user write idiomatic code, suggesting built-in functions when possible."))
    '(tech-writer . "You are a technical writer, edit items for clarity and understanding."))
+  (gptel-make-anthropic "Claude"
+    :stream t
+    :key (cc/read-key-from-env "ANTHROPIC_API_KEY"))
+  (gptel-make-gemini "Gemini"
+    :stream t
+    :key (cc/read-key-from-env "GEMINI_API_KEY"))
+  (gptel-make-deepseek "DeepSeek"
+    :stream t
+    :key (cc/read-key-from-env "DEEPSEEK_API_KEY"))
   :custom
-  (gptel-model 'gpt-4o)
   (gptel-temperature 0)
   (gptel-default-mode 'org-mode)
-  (gptel-api-key #'cc/read-opeai-key))
+  (gptel-track-media t)
+  (gptel-model 'gpt-4o)
+  (gptel-api-key (cc/read-key-from-env "OPENAI_API_KEY")))
 
 ;; TODO: add and configure gptel-quick
 
