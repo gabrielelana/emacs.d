@@ -778,6 +778,7 @@
          ("C-c q k" . string-inflection-kebab-case)))
 
 (use-package drag-stuff
+  :demand t
   :custom
   (drag-stuff-except-modes '(org-mode))
   :config
@@ -1278,15 +1279,38 @@
 (use-package ob-mermaid)
 (use-package org-present)
 (use-package org
+  :preface
+  (defun cc/org-move-up ()
+    "Move current element up based on context.
+If at item, move item up. If at subtree, move subtree up.
+Otherwise use drag-stuff-up."
+    (interactive)
+    (cond
+     ((org-at-item-p) (org-move-item-up))
+     ((org-at-heading-p) (org-move-subtree-up))
+     ((org-at-table-p) (org-table-move-row 'up))
+     (t (drag-stuff-up))))
+  (defun cc/org-move-down ()
+    "Move current element down based on context.
+If at item, move item down. If at subtree, move subtree down.
+Otherwise use drag-stuff-down."
+    (interactive)
+    (cond
+     ((org-at-item-p) (org-move-item-down))
+     ((org-at-heading-p) (org-move-subtree-down))
+     ((org-at-table-p) (org-table-move-row 'down))
+     (t (drag-stuff-down))))
   :bind (("C-c c" . org-capture)
          ("C-M-<return>" . org-insert-todo-subheading)
          :map org-mode-map
-         ("M-<down>" . org-shiftup)
-         ("M-<up>" . org-shiftdown)
+         ("M-<up>" . cc/org-move-up)
+         ("M-<down>" . cc/org-move-down)
          ("M-<right>" . org-demote-subtree)
          ("M-<left>" . org-promote-subtree)
-         ("C-x c s" . org-cut-subtree)
-         ("C-c C-x C-i" . org-clock-in))
+         ("C-c k C-l" . org-insert-link)
+         ("C-x k s" . org-cut-subtree)
+         ("C-c C-x C-i" . org-clock-in)
+         ("C-c C-x C-o" . org-clock-out))
   :custom
   (org-edit-src-content-indentation 0)
   (org-src-preserve-indentation nil)
