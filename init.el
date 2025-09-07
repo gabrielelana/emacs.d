@@ -1407,6 +1407,16 @@ Otherwise use drag-stuff-down."
 ;; make -j"$(nproc)" && make install
 ;; ln -ls "$HOME/opt/emacs-30.0.92/bin/emacs" "$HOME/.local/bin/emacs-30.0.92"
 
+;;; BUILD INSTALL LATEST IGC BRANCH
+;; export VERSION=emacs-igc
+;; export CFLAGS="-Os -march=native -mtune=native -fno-semantic-interposition -floop-parallelize-all -ftree-parallelize-loops=4 -g0"
+;; # You will need the mps library, checkout the library https://github.com/Ravenbrook/mps.git compile and install artifacts into /home/coder/opt/mps
+;; export CPPFLAGS="-I/home/coder/opt/mps"
+;; export LDFLAGS="-L/home/coder/opt/mps"
+;; ./configure --prefix=~/opt/$VERSION --bindir=~/opt/$VERSION/bin --with-tree-sitter --with-imagemagick --with-pgtk --without-dbus --with-native-compilation=aot --with-wide-int --with-mailutils --with-mps
+;; make -j"$(nproc)" && make install
+;; ln -ls "$HOME/opt/$VERSION/bin/emacs" "$HOME/.local/bin/$VERSION"
+
 ;; TODO: evil with setup so that emacs mode is the default
 ;; TODO: rename all local packages in cc-*
 ;; FIX: completing in interactive-haskell-mode is not done through vertico/orderless/marginalia..
