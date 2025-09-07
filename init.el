@@ -554,7 +554,15 @@
   (gptel-model 'gpt-4o)
   (gptel-api-key (cc/read-key-from-env "OPENAI_API_KEY")))
 
-;; TODO: add and configure gptel-quick
+(use-package gptel-magit
+  :after magit
+  :hook (magit-mode . gptel-magit-install)
+  :custom
+  (gptel-magit-commit-prompt
+   (let ((prompt-file (f-join user-emacs-directory "prompts" "conventional-commit.md")))
+     (if (f-exists-p prompt-file)
+         (f-read-text prompt-file)
+       gptel-magit-prompt-conventional-commits))))
 
 ;; LSP
 (use-package lsp-mode
