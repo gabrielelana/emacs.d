@@ -711,7 +711,7 @@
     (setq-local global-hl-line-mode nil
                 line-spacing nil))
   :hook ((vterm-mode . cc/--setup-vterm))
-  :bind (("C-c t p" . #'cc/project-vterm-other-window))
+  :bind (("C-c t p" . #'cc/projectile-vterm-other-window))
   :custom
   (vterm-max-scrollback 32768))
 

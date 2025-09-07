@@ -27,7 +27,7 @@
 (require 'vterm)
 (require 'projectile)
 
-(defun cc/project-vterm-other-window (&optional terminal-name)
+(defun cc/projectile-vterm-other-window (&optional terminal-name)
   "Create a terminal in other window named *{PROJECT-NAME}-{TERMINAL-NAME}*."
   (interactive "sName: ")
   (if (not (projectile-project-p))
