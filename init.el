@@ -890,6 +890,27 @@
   :config
   (cc/--setup-flycheck-theme))
 
+;;; Treesit
+(use-package treesit
+  :straight (:type built-in)
+  :config
+  ;; Add to the alist instead of overriding
+  (add-to-list 'treesit-language-source-alist
+               '(typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src"))
+  (add-to-list 'treesit-language-source-alist
+               '(tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src"))
+  (add-to-list 'treesit-language-source-alist
+               '(scala "https://github.com/tree-sitter/tree-sitter-scala" "master" "src"))
+  ;; Auto-install missing grammars when needed
+  (defun cc/--ensure-treesit-grammars ()
+    "Install tree-sitter grammars if they are missing."
+    (interactive)
+    (dolist (grammar '(typescript tsx scala))
+      (unless (treesit-language-available-p grammar)
+        (treesit-install-language-grammar grammar))))
+  ;; Run once at startup to ensure grammars are installed
+  (cc/--ensure-treesit-grammars))
+
 ;;; EPUB
 (use-package nov
   :mode (("\\.epub\\'" . nov-mode))
