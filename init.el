@@ -1197,7 +1197,10 @@
 (use-package lsp-haskell
   :requires haskell
   :custom
-  (lsp-log-io nil))
+  (lsp-log-io nil)
+  (lsp-haskell-plugin-eval-global-on t)
+  (lsp-haskell-plugin-import-lens-global-on t)
+  (lsp-haskell-plugin-hlint-global-on t))
 
 (use-package cc-mode
   :straight (:type built-in)
