@@ -979,18 +979,16 @@
          (json-mode . cc/--setup-json))
   :preface
   (defun cc/--setup-json ()
-    (cond ((executable-find "biome")
-           (flycheck-mode -1)
-           (apheleia-mode 1)
-           ;; XXX: we are letting apheleia do his job, biome/lsp-biome adds an
-           ;; extra `}` at the end of the file for some reason
-           (setq-local lsp-biome-format-on-save nil)
-           )
-          ((executable-find "jsonlint")
-           (flycheck-mode t)
-           ;; NOTE: needed to override the JSON lsp server will
-           (run-at-time 1 nil (lambda ()
-                                (flycheck-select-checker 'json-jsonlint))))))
+    (when (executable-find "biome")
+      (apheleia-mode 1)
+      ;; XXX: we are letting apheleia do his job, biome/lsp-biome adds an
+      ;; extra `}` at the end of the file for some reason
+      (setq-local lsp-biome-format-on-save nil))
+    (when (executable-find "jsonlint")
+      (flycheck-mode t)
+      ;; NOTE: needed to override the JSON lsp server will
+      (run-at-time 1 nil (lambda ()
+                           (flycheck-select-checker 'json-jsonlint)))))
   :init
   ;; cannot use :mode macro because mode list contains a non literal value
   (add-to-list 'auto-mode-alist `(,JSON_FILES_RX . json-mode))
