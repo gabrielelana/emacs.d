@@ -1202,6 +1202,13 @@
   (lsp-haskell-plugin-import-lens-global-on t)
   (lsp-haskell-plugin-hlint-global-on t))
 
+(use-package consult-hoogle
+  :straight (consult-hoogle :type git :host nil :repo "https://codeberg.org/rahguzar/consult-hoogle")
+  :after consult
+  :bind (:map haskell-mode-map
+              ("C-c h p" . consult-hoogle-project)))
+
+;; C
 (use-package cc-mode
   :straight (:type built-in)
   :hook ((c-mode . lsp))
