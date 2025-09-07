@@ -1137,10 +1137,14 @@
   (js-switch-indent-offset t))
 
 ;; TypeScript
-(use-package typescript-mode
-  :mode "\\.tsx?\\'"            ; TODO: add other file types, see BIOME_FILES_RX
-  :hook ((typescript-mode . lsp)
-         (typescript-mode . cc/--setup-ts))
+(use-package typescript-ts-mode
+  :straight (:type built-in)
+  :mode (("\\.ts\\'" . typescript-ts-mode)
+         ("\\.tsx\\'" . tsx-ts-mode))
+  :hook ((typescript-ts-mode . lsp)
+         (tsx-ts-mode . lsp)
+         (typescript-ts-mode . cc/--setup-ts)
+         (tsx-ts-mode . cc/--setup-ts))
   :preface
   (defun cc/--setup-ts ()
     "Configure TypeScript buffer."
@@ -1148,7 +1152,7 @@
     (setq-local lsp-enable-on-type-formatting nil
                 lsp-enable-indentation nil))
   :custom
-  (typescript-indent-level 2))
+  (typescript-ts-mode-indent-offset 2))
 
 ;; Haskell
 (use-package haskell-mode
