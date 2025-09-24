@@ -3,13 +3,11 @@ commit message that summarizes the changes.
 
 The commit message should be structured as follows:
 
-```
-<type>([scope]): <description>
+    <type>([scope]): <description>
 
-[body]
+    [body]
 
-[footer]
-```
+    [footer]
 
 The first line is the subject line. The scope is optional. The body is optional.
 The footer is optional. Everything else is required.
@@ -67,45 +65,45 @@ Rules to follow:
 - Use the imperative mood in the subject line
 - Keep the body short and concise (omit it entirely if not useful)
 
-Examples of good commits are the following:
+Examples of good commits are the following, between @@@> and @@@< delimiters, do
+not include the delimiters in the commit message.
 
 - Commit message with description and breaking change footer
-
-  ```
+  @@@>
   feat: allow provided config object to extend other configs
 
   BREAKING CHANGE: 'extends' key in config file is now used for extending other config files.
-  ```
+  @@@<
 
 - Commit message with ! to draw attention to a breaking change
-
-  ```
+  @@@>
   feat!: send an email to the customer when a product is shipped
-  ```
+  @@@<
 
 - Commit message with scope and ! to draw attention to a breaking change
-  ```
+  @@@>
   feat(api)!: send an email to the customer when a product is shipped
-  ```
-- Commit message with both ! and BREAKING CHANGE footer
+  @@@<
 
-  ```
+- Commit message with both ! and BREAKING CHANGE footer
+  @@@>
   chore!: drop support for Node 6
 
   BREAKING CHANGE: use JavaScript features not available in Node 6.
-  ```
+  @@@<
 
 - Commit message with no body
-  ```
+  @@@>
   docs: correct spelling of CHANGELOG
-  ```
-- Commit message with scope
-  ```
-  feat(lang): add Polish language
-  ```
-- Commit message with multi-paragraph body and multiple footers
+  @@@<
 
-  ```
+- Commit message with scope
+  @@@>
+  feat(lang): add Polish language
+  @@@<
+
+- Commit message with multi-paragraph body and multiple footers
+  @@@>
   fix: prevent racing of requests
 
   Introduce a request id and a reference to latest request. Dismiss
@@ -116,34 +114,31 @@ Examples of good commits are the following:
 
   Reviewed-by: Z
   Refs: #123
-  ```
+  @@@<
 
 - Commit message for a minor bug fix
-
-  ```
+  @@@>
   fix(ui): resolve issue with dropdown menu alignment
 
   The dropdown menu was misaligned on the profile page due to CSS conflicts.
   Updated the styles to ensure proper alignment across different screen sizes.
   Fixes issue #789.
-  ```
+  @@@<
 
 - Commit message for adding a new test
-
-  ```
+  @@@>
   test: add unit tests for user authentication module
 
   Added unit tests for the user authentication module to cover login, registration, and token verification functionalities.
   Ensured all tests pass with the new authentication logic.
   Refs: #456
-  ```
+  @@@<
 
 - Commit message for a configuration change
-
-  ```
+  @@@>
   chore(config): update ESLint configuration to support latest standards
 
   Updated the ESLint configuration to support the latest JavaScript standards and best practices.
   Included new rules for code formatting and improved error detection.
   Reviewed-by: A, B
-  ```
+  @@@<
