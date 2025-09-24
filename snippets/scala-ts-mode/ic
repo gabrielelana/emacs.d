@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
 # contributor: Gabriele Lana
 # name : Import Scala Cats
-# key : icats
+# key : ic
 # uuid: 20dde1d6-787c-4bc1-8ac0-9ba118a4a289
 # --
 import cats.*
