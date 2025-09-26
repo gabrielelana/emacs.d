@@ -584,10 +584,12 @@ The path will be absolute. Only works if the current buffer is in
   :bind (:map lsp-mode-map
               ("M-." . lsp-find-definition)
               ("M-?" . lsp-find-references)
-              ;; ("H-a" . lsp-execute-code-action)
-              ;; ("H-d" . lsp-describe-thing-at-point)
-              ;; ("H-i" . lsp-inlay-hints-mode)
-              ;; ("H-l h i" . lsp-inlay-hints-mode)
+              ("C-c l a" . lsp-execute-code-action)
+              ("C-c l d" . lsp-describe-thing-at-point)
+              ;; TODO: "C-c l i" should be a command that toggles inlay hints and lenses
+              ;; ("C-c l i" . lsp-inlay-hint-enable)
+              ("C-c l r" . lsp-rename)
+              ("C-c l e" . lsp-ui-flycheck-list)
               )
   :hook ((lsp-mode . flycheck-mode))
   :custom
@@ -657,8 +659,11 @@ The path will be absolute. Only works if the current buffer is in
     (interactive)
     (shell-command (concat "git add -f " (shell-quote-argument buffer-file-name))))
   :bind (("C-c g s" . magit-status)
-         ("C-c g f" . cc/git-add-with-force-current-buffer)
-         ("H-s" . magit-status))
+         ("C-c g d" . magit-dispatch)
+         ("C-c g f" . magit-file-dispatch)
+         ("C-x g" . magit-status)
+         ("C-x M-g" . magit-dispatch)
+         ("C-c g !" . cc/git-add-with-force-current-buffer))
   :custom
   (magit-section-visibility-indicator nil)
   (transient-display-buffer-action '(display-buffer-below-selected))
@@ -821,7 +826,7 @@ The path will be absolute. Only works if the current buffer is in
 
 (use-package consult-yasnippet
   :requires consult
-  :bind (("H-y" . consult-yasnippet)))
+  :bind (("C-x y" . consult-yasnippet)))
 
 (use-package highlight-indent-guides
   :hook ((yaml-mode . highlight-indent-guides-mode)
@@ -1071,7 +1076,7 @@ The path will be absolute. Only works if the current buffer is in
   :commands rustic-mode
   :hook ((rustic-mode . lsp))
   :bind (:map rustic-mode-map
-              ("H-l s" . lsp-rust-analyzer-status))
+              ("C-c l s" . lsp-rust-analyzer-status))
   :custom
   (rustic-format-on-save nil))
 
@@ -1124,13 +1129,13 @@ The path will be absolute. Only works if the current buffer is in
   :straight nil
   :after go-mode
   :bind (:map go-mode-map
-              ("H-l t ." . cc/go-run-test-current-function)
-              ("H-l t t" . cc/go-run-test-current-suite)
-              ("H-l t p" . cc/go-run-test-current-package)
-              ("H-l t P" . cc/go-run-test-current-packages)
-              ("H-l t n" . cc/go-run-test-with-names)
-              ("H-l e s" . cc/go-run-on-save)
-              ("H-l e e" . cc/go-run-main))
+              ("C-c l t ." . cc/go-run-test-current-function)
+              ("C-c l t t" . cc/go-run-test-current-suite)
+              ("C-c l t p" . cc/go-run-test-current-package)
+              ("C-c l t P" . cc/go-run-test-current-packages)
+              ("C-c l t n" . cc/go-run-test-with-names)
+              ("C-c l e s" . cc/go-run-on-save)
+              ("C-c l e e" . cc/go-run-main))
   :preface
   (defvar cc/go-run-on-save nil)
   (defun cc/go-run-on-save-toggle ()
@@ -1402,18 +1407,19 @@ Otherwise use drag-stuff-down."
 
 ;; Bindings
 (bind-key "RET" 'newline-and-indent)
-(bind-key "H-p" #'cc/open-line-above)
-(bind-key "H-n" #'cc/open-line-below)
-(bind-key "H-<return>" #'cc/open-line-here)
-(bind-key "M-<space>" #'rectangle-mark-mode)
-(bind-key "H-u" #'cc/copy-character-from-above)
-(bind-key "H-d" #'cc/copy-character-from-below)
-(bind-key "H-<right>" #'windmove-swap-states-right)
-(bind-key "H-<left>" #'windmove-swap-states-left)
-(bind-key "H-<up>" #'windmove-swap-states-up)
-(bind-key "H-<down>" #'windmove-swap-states-down)
-(bind-key "H-+" #'text-scale-increase)
-(bind-key "H--" #'text-scale-decrease)
+(bind-key "C-c C-p" #'cc/open-line-above)
+(bind-key "C-c C-n" #'cc/open-line-below)
+;;; TODO replace with other bindings C-c d enter special keymap `j` or `n` copy below, `k` or `p` copy above
+;; (bind-key "H-u" #'cc/copy-character-from-above)
+;; (bind-key "H-d" #'cc/copy-character-from-below)
+(bind-key "C-c w <right>" #'windmove-swap-states-right)
+(bind-key "C-c w <left>" #'windmove-swap-states-left)
+(bind-key "C-c w <up>" #'windmove-swap-states-up)
+(bind-key "C-c w <down>" #'windmove-swap-states-down)
+(bind-key "C-c w l" #'windmove-swap-states-right)
+(bind-key "C-c w h" #'windmove-swap-states-left)
+(bind-key "C-c w k" #'windmove-swap-states-up)
+(bind-key "C-c w j" #'windmove-swap-states-down)
 (bind-key "C-a" #'cc/smarter-move-beginning-of-line)
 (bind-key "C-^" #'cc/join-with-next-line)
 (bind-key "C-;" #'cc/comment-or-uncomment-line-or-region)
