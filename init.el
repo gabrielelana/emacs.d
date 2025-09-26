@@ -404,6 +404,8 @@ The path will be absolute. Only works if the current buffer is in
   (setq shackle-rules
         '(
           ("*Help*"          :select t :other t :align right :same nil)
+          ;; buffer created by `shr-render-buffer'
+          ("*html*"          :select t :inhibit-window-quit t :same t)
           (magit-status-mode :select t :inhibit-window-quit t :same t)
           (magit-log-mode    :select t :other t)
           (compilation-mode :select nil :other t :align below :size 0.3)
@@ -1477,6 +1479,16 @@ Otherwise use drag-stuff-down."
 (global-set-key (kbd "C-c u e") "∊")
 (global-set-key (kbd "C-c u u") "∪")
 (global-set-key (kbd "C-c u i") "∩")
+
+;;; Small functions to relocate somewhere else
+
+(defun cc/shr-render-current-buffer ()
+  "Render current HTML buffer."
+  (interactive)
+  (unless (eq major-mode 'mhtml-mode) (error "Not an HTML buffer, nothing to render here"))
+  (shr-render-buffer (current-buffer))
+  (switch-to-buffer "*html*")
+  (read-only-mode t))
 
 ;; VERSION=emacs-30.1
 ;; CFLAGS="-O2 -fno-semantic-interposition -floop-parallelize-all -ftree-parallelize-loops=4 -g3"
