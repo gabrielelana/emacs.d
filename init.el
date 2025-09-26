@@ -1243,11 +1243,25 @@ The path will be absolute. Only works if the current buffer is in
 ;; Scala
 (use-package scala-ts-mode
   :hook ((scala-ts-mode . cc/--setup-scala))
-  :mode (("\\.scala\\'" . scala-ts-mode))
+  :mode (("\\.scala\\'" . scala-ts-mode)
+         ("\\.sbt\\'" . scala-ts-mode)
+         ("\\.sc\\'" . scala-ts-mode))
   :preface
+  (defun cc/ensure-scala-ts-mode ()
+    "Ensure scala-ts-mode is used instead of scala-mode for all Scala files."
+    ;; Remove all scala-mode associations from auto-mode-alist
+    (setq auto-mode-alist
+          (seq-remove (lambda (pair)
+                        (eq (cdr pair) 'scala-mode))
+                      auto-mode-alist))
+    ;; Ensure scala-ts-mode is used for all Scala files
+    (add-to-list 'auto-mode-alist '("\\.scala\\'" . scala-ts-mode))
+    (add-to-list 'auto-mode-alist '("\\.sbt\\'" . scala-ts-mode))
+    (add-to-list 'auto-mode-alist '("\\.sc\\'" . scala-ts-mode)))
   (defun cc/--setup-scala ()
     (setq-local treesit-font-lock-level 4
                 scala-indent:step 2)
+    (eldoc-mode -1)
     (treesit-font-lock-recompute-features)
     (lsp)
     (company-mode)))
@@ -1265,18 +1279,20 @@ The path will be absolute. Only works if the current buffer is in
   (setq sbt:program-options '("-Dsbt.supershell=false")))
 
 (use-package lsp-metals
+  :after scala-ts-mode  ; Load after scala-ts-mode to ensure proper ordering
   :config
-  ;; remove the association (apparently forced by `lsp-metals`) between scala
-  ;; files with scala-mode, otherwise `scala-ts-mode` will not be considered in
-  ;; auto-mode-alist
-  (while (rassoc 'scala-mode auto-mode-alist)
-    (setq auto-mode-alist
-          (assq-delete-all (car (rassoc 'scala-mode auto-mode-alist))
-                           auto-mode-alist)))
+  (cc/ensure-scala-ts-mode)
   :custom
+  ;; TODO: create a transient menu to enable/disable inlays
+  (lsp-metals-inlay-hints-enable-implicit-arguments t)
+  (lsp-metals-inlay-hints-enable-implicit-conversions t)
+  (lsp-metals-inlay-hints-enable-inferred-types t)
   (lsp-metals-inlay-hints-enable-type-parameters t)
   (lsp-metals-inlay-hints-enable-hints-in-pattern-match t)
   (lsp-metals-install-scala-version "3.3.6"))
+
+(with-eval-after-load 'scala-mode
+  (cc/ensure-scala-ts-mode))
 
 ;; Protobuf mode
 (use-package protobuf-mode
