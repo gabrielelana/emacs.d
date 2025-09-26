@@ -788,9 +788,8 @@
 
 (use-package drag-stuff
   :demand t
-  :custom
-  (drag-stuff-except-modes '(org-mode))
   :config
+  (add-to-list 'drag-stuff-except-modes 'org-mode)  ; Set this before enabling
   (drag-stuff-define-keys)
   (drag-stuff-global-mode 1))
 
