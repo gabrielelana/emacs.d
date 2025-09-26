@@ -359,7 +359,21 @@
 (use-package embark
   :bind (("C-." . embark-act)
          ("C-," . embark-dwim)
-         ("C-h B" . embark-bindings))
+         ("C-h B" . embark-bindings)
+         :map embark-file-map
+         ("O" . cc/embark-org-insert-link))
+  :preface
+  (defun cc/embark-org-insert-link (file)
+    "Insert an org-mode link to FILE in the current buffer.
+The path will be absolute. Only works if the current buffer is in
+`org-mode'. Prompts for link description, defaulting to the filename."
+    (unless (derived-mode-p 'org-mode)
+      (user-error "Cannot insert an org mode link in a not org mode buffer"))
+    (let* ((default-description (file-name-nondirectory file))
+           (description (read-string
+                         (format "Description (default %s): " default-description)
+                         nil nil default-description)))
+      (insert (org-link-make-string (concat "file:" file) description))))
   :custom
   ;; optionally replace the key help with a completing-read interface
   (prefix-help-command #'embark-prefix-help-command)
