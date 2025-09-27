@@ -131,6 +131,7 @@
 (use-package bind-key)
 (use-package s :demand t)
 (use-package f :demand t)
+(use-package plz)
 (use-package ht)
 (use-package uuidgen)
 (use-package dash)
