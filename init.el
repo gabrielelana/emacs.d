@@ -1017,7 +1017,11 @@ The path will be absolute. Only works if the current buffer is in
      (url . "https://json.schemastore.org/avro-avsc.json"))])
   (js-indent-level 2))
 
-;; Dockerfile
+;; Docker
+(use-package docker
+  :ensure t
+  :bind ("C-c d" . docker))
+
 (use-package dockerfile-mode
   :hook ((dockerfile-mode . flycheck-mode)))
 
