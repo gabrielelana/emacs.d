@@ -44,6 +44,10 @@
       frame-resize-pixelwise t
       split-width-threshold 100)
 
+;; Scratch buffer
+(setq initial-scratch-message
+      ";; -*- lexical-binding: t; -*-\n;; Welcome to Emacs! Happy hacking ;-)\n\n")
+
 ;; Native compilation
 (require 'comp)
 (setq native-comp-speed 2
