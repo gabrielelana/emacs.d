@@ -1055,7 +1055,9 @@ The path will be absolute. Only works if the current buffer is in
   :bind (:map emacs-lisp-mode-map
               ("C-<backspace>" . backward-kill-sexp))
   :mode (("\\.el\\'" . emacs-lisp-mode)
-         ("*scratch*" . emacs-lisp-mode)))
+         ("*scratch*" . emacs-lisp-mode))
+  :custom
+  (lisp-indent-function 'common-lisp-indent-function))
 
 (use-package cask-mode)
 (use-package package-lint)
