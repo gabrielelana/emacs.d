@@ -560,12 +560,20 @@ The path will be absolute. Only works if the current buffer is in
   (gptel-make-deepseek "DeepSeek"
     :stream t
     :key (cc/read-key-from-env "DEEPSEEK_API_KEY"))
+  (require 'gptel-tools)
   :custom
-  (gptel-temperature 0)
+  (gptel-api-key (cc/read-key-from-env "OPENAI_API_KEY"))
+  (gptel-prompt-prefix-alist '((markdown-mode . "# PROMPT⟩ ")
+                               (org-mode . "* PROMPT⟩ ")
+                               (text-mode . "# PROMPT⟩ ")))
+  (gptel-response-prefix-alist '((markdown-mode . "\n")
+                                 (org-mode . "\n")
+                                 (text-mode . "\n")))
   (gptel-default-mode 'org-mode)
-  (gptel-track-media t)
+  (gptel-include-reasoning 'ignore)
   (gptel-model 'gpt-4o)
-  (gptel-api-key (cc/read-key-from-env "OPENAI_API_KEY")))
+  (gptel-temperature 0)
+  (gptel-track-media t))
 
 (use-package gptel-magit
   :after magit
@@ -814,7 +822,9 @@ The path will be absolute. Only works if the current buffer is in
 (use-package page-break-lines
   :demand t
   :config
-  (global-page-break-lines-mode))
+  (global-page-break-lines-mode)
+  :custom
+  (page-break-lines-max-width 80))
 
 (use-package yasnippet
   :custom
