@@ -117,7 +117,8 @@
 (setq scroll-preserve-screen-position t)
 (setq auto-window-vscroll nil)
 (setq hscroll-step 1)
-(setq hscroll-margin 0)
+(setq hscroll-margin 16)
+(setq auto-hscroll-mode t)
 
 ;; Allow recursive minibuffers
 (setq enable-recursive-minibuffers t)
