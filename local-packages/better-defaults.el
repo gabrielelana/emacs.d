@@ -113,7 +113,7 @@
 (setq-default truncate-lines t)
 
 ;; Better scrolling
-(setq scroll-conservatively 101) ; > 100
+(setq scroll-conservatively 128) ; > 100
 (setq scroll-preserve-screen-position t)
 (setq auto-window-vscroll nil)
 (setq hscroll-step 1)
