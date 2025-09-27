@@ -545,11 +545,6 @@ The path will be absolute. Only works if the current buffer is in
 (use-package gptel
   :bind (("C-c i s" . gptel-send)
          ("C-c i c" . gptel))
-  :preface
-  (defun cc/read-key-from-env (key-name)
-    "Read openai key from environment variable."
-    (or (getenv key-name)
-        (user-error (format "Missing environment variable %s" key-name))))
   :config
   (add-to-list
    'gptel-directives

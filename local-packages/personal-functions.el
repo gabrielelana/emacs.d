@@ -32,6 +32,11 @@
 ;; (require 'projectile)
 ;; (require 'flyspell)
 
+(defun cc/read-key-from-env (key-name)
+  "Read KEY-NAME from environment."
+  (or (getenv key-name)
+      (user-error (format "Missing environment variable %s" key-name))))
+
 (defun cc/pick-random (l)
   "Pick a random element from a list L."
   (nth (random (length l)) l))
