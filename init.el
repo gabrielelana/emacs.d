@@ -1523,6 +1523,41 @@ Otherwise use drag-stuff-down."
 ;; make -j"$(nproc)" && make install
 ;; ln -ls "$HOME/opt/$VERSION/bin/emacs" "$HOME/.local/bin/$VERSION"
 
+;; TODO: gptel explore presets and how to select them
+;; TODO: gptel-prompt to compose prompts
+;; TODO: add prompt "Never use first level heading in your response, only use headings from level 2 to level 6."
+;; TODO: add prompt to instruct on using tools
+;; TODO: add prompt to agentic coding (https://github.com/gregoryg/AIPIHKAL/blob/main/the-one-true-holy-and-apostolic-coding-and-tool-usage-prompt.org)
+;; TODO: add prompt to look at /docs/TOOLS.md with libraries and the url where an LLM can find their documentation
+
+;; https://github.com/ksqsf/emacs-config/blob/99efd403d4b8be96e612a8d2ad2f7a9b42fba098/modules/prelude-ai.el
+
+;; TODO: tools category emacs_reflection (https://github.com/gregoryg/emacs-gregoryg?tab=readme-ov-file#custom-tools)
+;; TODO: - emacs_package_readme
+;; TODO: - emacs_package_description
+;; TODO: - emacs_package_source
+;; TODO: - emacs_packages_list
+;; TODO: - emacs_function_source
+;; TODO: - emacs_function_documentation
+;; TODO: - emacs_variable_documentation
+;; TODO: - emacs_lisp_eval
+
+;; TODO: tools category agentic
+;; TODO: - current_directory probably unnecessary?
+;; TODO: - list_files
+;; TODO: - read_file
+;; TODO: - write_file
+;; TODO: - run_format
+;; TODO: - run_checks
+;; TODO: - run_tests
+
+;; TODO: tools category web
+;; TODO: - search
+;; TODO: - read_url
+
+;; TODO: copy the (flycheck) error at point
+;; TODO: open the documentation of thing at point given lsp-mode
+
 ;; TODO: evil with setup so that emacs mode is the default
 ;; TODO: rename all local packages in cc-*
 ;; FIX: completing in interactive-haskell-mode is not done through vertico/orderless/marginalia..
@@ -1541,21 +1576,13 @@ Otherwise use drag-stuff-down."
 ;; FEATURE: H-f/H-b forward-symbols/backward-symbols jump to next/previous group
 ;; of non words, learn about syntax table of current major mode
 
-;; FEATURE: command to increment a numerical value or date following point
-;; (trying guessing format if there are leading zeros)
-
-;; FEATURE: when duplicating line check if there are stuff to increment and try
-;; to guess the correct order to increment/decrement in the line to create,
-;; increment all the things incrementable in the line
-
 ;; LOOK-AT: https://github.com/akirak/emacs-config/blob/b85e113743ba2ec4e074e40a2e66da190f66eae2/emacs-config.org
-
+;; LOOK-AT: https://github.com/ksqsf/emacs-config/blob/99efd403d4b8be96e612a8d2ad2f7a9b42fba098/modules
 ;; TODO: Hoogle for Haskell?
 ;; TODO: consult-lsp
 ;; TODO: Create a shell *root-shell* when emacs starts, add keybinding to switch to it
 ;; TODO: YAML language server https://github.com/redhat-developer/yaml-language-server
 ;; TODO: Top level comments with triple ; to work as outlines as per documentation https://www.gnu.org/software/emacs/manual/html_node/elisp/Comment-Tips.html
-;; TODO: Docker language server
 ;; TODO: M-q should not join line which begins with `-`,`TODO`,...
 ;; TODO: expand-region or combobulate
 ;; TODO: dabbrev
@@ -1566,7 +1593,6 @@ Otherwise use drag-stuff-down."
 ;; TODO: Dockerfile language server ???
 ;; TODO: OpenAI integration
 ;; TODO: NYXT integration
-;; TODO: tree-sitter setup
 ;; TODO: TLA+
 ;; TODO: Grammarly integration
 ;; TODO: Dictionary integration
