@@ -37,6 +37,11 @@
   (or (getenv key-name)
       (user-error (format "Missing environment variable %s" key-name))))
 
+(defun cc/kill-current-buffer ()
+  "Kill the current buffer without prompting for a name."
+  (interactive)
+  (kill-buffer (current-buffer)))
+
 (defun cc/kill-to-host-clipboard ()
   "Send the top of the kill ring to host clipboard."
   (interactive)

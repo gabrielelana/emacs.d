@@ -73,6 +73,11 @@
     (message "Garbage collection settings restored."))
   (add-hook 'emacs-startup-hook #'cc/restore-gc-settings))
 
+;; Kill keymap
+(defvar cc/kill-keymap (make-sparse-keymap)
+  "A keymap for custom buffer-killing commands under the `C-x k' prefix.")
+(global-set-key (kbd "C-x k") cc/kill-keymap)
+
 ;; Font
 ;; Main typeface
 (set-face-attribute 'default nil :family "PragmataPro Mono" :height 120)
@@ -1727,6 +1732,9 @@ Otherwise use drag-stuff-down."
 (bind-key "C-c i n" #'cc/gptel-guess-next-line)
 (bind-key "C-c i N" #'cc/gptel-guess-next-n-lines)
 (bind-key "C-c i C-n" #'cc/gptel-guess-complete-pattern)
+
+(define-key cc/kill-keymap (kbd "b") #'cc/kill-current-buffer)
+(define-key cc/kill-keymap (kbd "w") #'kill-buffer-and-window)
 
 (global-set-key (kbd "C-c u l") "λ")
 (global-set-key (kbd "C-c u a") "∧")
