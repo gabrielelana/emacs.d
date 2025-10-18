@@ -28,6 +28,18 @@
 
 ;;; Code:
 
+;; Disable package.el completely in favor of straight.el
+(setq package-enable-at-startup nil)
+(setq package-archives nil)
+(setq package-quickstart nil)
+;; Prevent package.el from loading packages automatically
+(setq package-load-list '((all nil)))
+;; Completely disable package.el initialization
+(setq package-user-dir (expand-file-name "elpa" user-emacs-directory))
+(setq package-gnupghome-dir (expand-file-name "elpa/gnupg" user-emacs-directory))
+;; Prevent package.el from auto-loading
+(defvar package--initialized t)
+
 ;; Suppress lexical-binding warnings for external packages
 (defun cc/suppress-lexical-binding-warnings (original-function &rest args)
   "Suppress `lexical-binding' warnings for external packages.
