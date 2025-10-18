@@ -45,11 +45,13 @@
   "Suppress `lexical-binding' warnings for external packages.
 
 To be used as an advice around an ORIGINAL-FUNCTION with ARGS."
-  (let ((file (car args)))
-    (if (and file
-             (or (string-match-p "/straight/build/" file)
-                 (string-match-p "/agda2\\.el" file)
-                 (string-match-p "/elpa/" file)))
+  (let ((message (nth 1 args)))
+    (if (and (stringp message)
+             (string-match-p "lexical-binding" message)
+             (or (string-match-p "/straight/build/" message)
+                 (string-match-p "/agda2.*\\.el" message)
+                 (string-match-p "/.mc-lists\\.el" message)
+                 (string-match-p "/elpa/" message)))
         nil
       (apply original-function args))))
 
