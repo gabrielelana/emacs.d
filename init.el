@@ -1214,9 +1214,7 @@ The buffer will be named *{PROJECT-NAME}-{CHAT-NAME}* and the
   :bind (:map emacs-lisp-mode-map
               ("C-<backspace>" . backward-kill-sexp))
   :mode (("\\.el\\'" . emacs-lisp-mode)
-         ("*scratch*" . emacs-lisp-mode))
-  :custom
-  (lisp-indent-function 'common-lisp-indent-function))
+         ("*scratch*" . emacs-lisp-mode)))
 
 (use-package cask-mode)
 (use-package package-lint)
