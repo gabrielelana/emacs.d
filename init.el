@@ -993,6 +993,12 @@ The buffer will be named *{PROJECT-NAME}-{CHAT-NAME}* and the
   (push '(biome . ("apheleia-npx" "biome" "format" "--stdin-file-path" filepath)) apheleia-formatters)
   (push '(typescript-mode . biome) apheleia-mode-alist)
   (push '(scala-ts-mode . scalafmt) apheleia-mode-alist)
+  (setq apheleia-mode-alist
+        (cl-remove-if (lambda (entry)
+                        (member (car entry) '(python-mode python-ts-mode)))
+                      apheleia-mode-alist))
+  (push '(python-ts-mode . (ruff ruff-isort)) apheleia-mode-alist)
+  (push '(python-mode . (ruff ruff-isort)) apheleia-mode-alist)
   (push '(markdown-mode . prettier-markdown) apheleia-mode-alist)
   (apheleia-global-mode +1))
 
@@ -1499,6 +1505,104 @@ The buffer will be named *{PROJECT-NAME}-{CHAT-NAME}* and the
       )
 
     (add-hook 'agda2-mode-hook #'cc/--setup-agda)))
+
+;;; Python
+(use-package python-ts-mode
+  :straight (:type built-in)
+  :mode (("\\.py\\'" . python-ts-mode)
+         ("\\.pyi\\'" . python-ts-mode))
+  :hook ((python-ts-mode . lsp)
+         (python-ts-mode . cc/--setup-python))
+  :preface
+  (defun cc/--setup-python ()
+    "Configure Python buffer."
+    (setq-local lsp-enable-on-type-formatting nil
+                lsp-enable-indentation nil
+                python-indent-offset 4
+                tab-width 4)
+    (apheleia-mode 1))
+  :custom
+  (python-ts-mode-indent-offset 4))
+
+(use-package lsp-pyright
+  :after lsp-mode
+  :custom
+  ;; Use pyright instead of the default python-language-server
+  (lsp-pyright-python-language-server "pyright")
+  ;; Configure pyright settings
+  (lsp-pyright-venv-path nil)  ; Let pyright auto-detect virtual environments
+  (lsp-pyright-use-library-code-for-types t)
+  (lsp-pyright-diagnostics-enable t)
+  (lsp-pyright-completion-enabled t)
+  (lsp-pyright-hover-enabled t)
+  (lsp-pyright-organize-imports-enabled t)
+  :config
+  ;; Set up pyright as the default Python language server
+  (setq lsp-disabled-clients '(pyls)  ; Disable python-language-server
+        lsp-prefer-capf t))
+
+(use-package python
+  :straight (:type built-in)
+  ;; Even if we use python-ts-mode as major mode this package will be used for
+  ;; - REPL integration
+  ;; - Test running
+  ;; - Code execution
+  ;; - Shell interaction
+  :bind (:map python-ts-mode-map
+              ("C-c r" . run-python)
+              ("C-c C-t" . python-run-tests)
+              ("C-c C-c" . python-shell-send-buffer)
+              ("C-c C-z" . python-shell-switch-to-shell)
+              ("C-c C-r" . python-shell-send-region))
+  :custom
+  ;; Use pytest for testing
+  (python-test-runner 'pytest)
+  ;; Configure Python shell
+  (python-shell-interpreter "python")
+  (python-shell-interpreter-args "-i")
+  (python-shell-prompt-regexp ">>> ")
+  (python-shell-prompt-output-regexp "...")
+  (python-shell-prompt-block-regexp "[.][.][.]")
+  (python-shell-completion-setup-code "from IPython.core.completerlib import module_completion"))
+
+(use-package pytest
+  :after python-ts-mode
+  :bind (:map python-ts-mode-map
+              ("C-c t a" . pytest-all)
+              ("C-c t f" . pytest-file)
+              ("C-c t t" . pytest-function)
+              ("C-c t r" . pytest-rerun))
+  :custom
+  (pytest-project-root-files '("pyproject.toml" "setup.cfg" "tox.ini" ".pytest_cache"))
+  (pytest-cmd-flags '("-v" "-s")))
+
+(use-package pyvenv
+  :after direnv
+  :config
+  (pyvenv-mode 1)
+  :custom
+  (pyvenv-mode-line-indicator
+   '(pyvenv-virtual-env-name ("[🐍 " pyvenv-virtual-env-name "]")))
+  :preface
+  (defun cc/pyvenv-sync-with-direnv ()
+    "Sync pyvenv with direnv's VIRTUAL_ENV."
+    (if-let ((venv-path (getenv "VIRTUAL_ENV")))
+        (let ((venv-dir (file-name-as-directory venv-path)))
+          (unless (equal pyvenv-virtual-env venv-dir)
+            (pyvenv-activate venv-path)))
+      (when pyvenv-virtual-env
+        (pyvenv-deactivate))))
+
+  ;; Advice to run after direnv updates the environment
+  (advice-add 'direnv-update-directory-environment :after
+              (lambda (&rest _)
+                (cc/pyvenv-sync-with-direnv))))
+
+(use-package poetry
+  :after python-ts-mode
+  :hook (python-ts-mode . poetry-tracking-mode)
+  :custom
+  (poetry-tracking-mode t))
 
 ;; Misc
 (use-package font-lock-studio)
