@@ -5,6 +5,6 @@
 # expand-env: ((yas-indent-line 'fixed))
 # uuid: e3ec12a6-f609-4b9e-a32e-df43769e5fb5
 # --
-#+BEGIN_SRC ${1:Language}
+#+begin_src ${1:Language}
 $0
-#+END_SRC
+#+end_src
