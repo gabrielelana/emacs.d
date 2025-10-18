@@ -31,7 +31,7 @@
   "Create a terminal in other window named *{PROJECT-NAME}-{TERMINAL-NAME}*."
   (interactive "sName: ")
   (if (not (projectile-project-p))
-      (error "ERROR: seems like you are not currently in a project")
+      (user-error "ERROR: seems like you are not currently in a project")
     (let* ((-project-name (projectile-project-name))
            (-project-root-directory (projectile-project-root))
            (-current-directory default-directory)
