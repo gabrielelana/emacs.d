@@ -37,6 +37,24 @@
   (or (getenv key-name)
       (user-error (format "Missing environment variable %s" key-name))))
 
+(defun cc/kill-to-host-clipboard ()
+  "Send the top of the kill ring to host clipboard."
+  (interactive)
+  (let ((hostname "starbuck.local")
+        (killed-text (substring-no-properties (current-kill 0))))
+    (when killed-text
+      (with-temp-buffer
+        (insert killed-text)
+        (call-process-region (point-min) (point-max)
+                             "/usr/bin/ssh"
+                             nil
+                             nil
+                             nil
+                             "-i" (expand-file-name "~/.ssh/id_rsa.gabrielelana")
+                             hostname
+                             "pbcopy"))
+      (message "%d bytes sent to %s's clipboard" (length killed-text) hostname))))
+
 (defun cc/pick-random (l)
   "Pick a random element from a list L."
   (nth (random (length l)) l))

@@ -1709,6 +1709,7 @@ Otherwise use drag-stuff-down."
 (bind-key "C-c k f p" #'cc/kill-current-file-path)
 (bind-key "C-c k k" #'kill-whole-line)
 (bind-key "C-c k l" #'org-store-link)
+(bind-key "C-c k w" #'cc/kill-to-host-clipboard)
 (bind-key "C-c e b" #'eval-buffer emacs-lisp-mode-map)
 (bind-key "C-c e d" #'eval-defun emacs-lisp-mode-map)
 (bind-key "C-c e f" #'emacs-lisp-byte-compile-and-load emacs-lisp-mode-map)
