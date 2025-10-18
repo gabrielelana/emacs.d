@@ -546,11 +546,28 @@ The path will be absolute. Only works if the current buffer is in
   :bind (("C-c i s" . gptel-send)
          ("C-c i c" . gptel))
   :config
+  (require 'cc-gptel-prompts)
   (add-to-list
    'gptel-directives
-   `(emacs . ,(concat "You are a an emacs wizard, familiar with org-mode, elisp and emacs itself. "
-                      "Help the user write idiomatic code, suggesting built-in functions when possible."))
-   '(tech-writer . "You are a technical writer, edit items for clarity and understanding."))
+   `(emacs-wizard . ,(cc/gptel-build-prompt "emacs-wizard.md" "formatting.md")))
+  (add-to-list
+   'gptel-directives
+   `(scala-wizard . ,(cc/gptel-build-prompt "scala-wizard.md" "formatting.md")))
+  (add-to-list
+   'gptel-directives
+   `(typescript-wizard . ,(cc/gptel-build-prompt "typescript-wizard.md" "formatting.md")))
+  (add-to-list
+   'gptel-directives
+   `(frontend-ninja . ,(cc/gptel-build-prompt "frontend-ninja.md" "formatting.md")))
+  (add-to-list
+   'gptel-directives
+   `(haskell-tutor . ,(cc/gptel-build-prompt "haskell-tutor.md" "formatting.md")))
+  (add-to-list
+   'gptel-directives
+   `(programming-tutor . ,(cc/gptel-build-prompt "programming-tutor.md")))
+  (add-to-list
+   'gptel-directives
+   `(technical-writer . ,(cc/gptel-build-prompt "technical-writer.md" "formatting.md")))
   (gptel-make-anthropic "Claude"
     :stream t
     :key (cc/read-key-from-env "ANTHROPIC_API_KEY"))
