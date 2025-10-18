@@ -728,8 +728,8 @@ The buffer will be named *{PROJECT-NAME}-{CHAT-NAME}* and the
               ;; TODO: "C-c l i" should be a command that toggles inlay hints and lenses
               ;; ("C-c l i" . lsp-inlay-hint-enable)
               ("C-c l r" . lsp-rename)
-              ("C-c l e" . lsp-ui-flycheck-list)
-              )
+              ("C-c l f" . lsp-format-buffer)
+              ("C-c l e" . lsp-ui-flycheck-list))
   :hook ((lsp-mode . flycheck-mode))
   :custom
   (read-process-output-max (* 1024 1024))
