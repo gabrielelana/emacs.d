@@ -117,11 +117,8 @@
 
 (defconst BIOME_FILES_RX
   (rx-to-string `(or (regexp ,JSON_FILES_RX)
-                     (seq "." (or "tsx" "jsx"
-                                  "ts" "js"
-                                  "mts" "mjs"
-                                  "cts" "cjs")
-                          eos)))
+                  (seq "." (or "tsx" "jsx" "ts" "js" "mts" "mjs" "cts" "cjs")
+                   eos)))
   "Regular expression to identify files which sholud be handled by Biome.")
 
 ;; Defaults of built-in stuff
