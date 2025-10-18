@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# contributor: Gabriele Lana
+# name : prompt-block
+# key : <p
+# expand-env: ((yas-indent-line 'fixed))
+# uuid: 9444a98b-aa74-4825-99e1-9a4fd5e0a8fb
+# --
+#+begin_prompt
+$0
+#+end_prompt
