@@ -513,6 +513,7 @@ The path will be absolute. Only works if the current buffer is in
 
 ;; Company
 (use-package company
+  :diminish company-mode
   :bind (("C-<tab>" . company-complete)
          :map company-active-map
          ("M-n" . nil)
@@ -540,6 +541,7 @@ The path will be absolute. Only works if the current buffer is in
 
 ;; AI
 (use-package gptel
+  :diminish (gptel-mode . " ✨")
   :bind (("C-c i s" . gptel-send)
          ("C-c i c" . gptel))
   :config
@@ -778,6 +780,7 @@ The path will be absolute. Only works if the current buffer is in
   :bind (("C-c g t" . git-timemachine)))
 
 (use-package git-gutter
+  :diminish git-gutter-mode
   :preface
   (defun cc/--setup-git-gutter-theme ()
     "Configure git gutter in accordance to the current theme."
@@ -856,6 +859,11 @@ The path will be absolute. Only works if the current buffer is in
 ;; Utilities
 (use-package scratch)
 (use-package rainbow-mode)
+(use-package diminish
+  :config
+  (diminish 'org-src-mode)
+  (diminish 'org-indent-mode)
+  (diminish 'eldoc-mode " [DOC]"))
 
 (use-package savehist
   ;; Saves minibuffer history
@@ -871,6 +879,7 @@ The path will be absolute. Only works if the current buffer is in
   (setq-default uniquify-buffer-name-style 'forward))
 
 (use-package which-key
+  :diminish which-key-mode
   :config
   (setq which-key-idle-delay 3)
   (which-key-mode))
@@ -910,6 +919,7 @@ The path will be absolute. Only works if the current buffer is in
 
 (use-package drag-stuff
   :demand t
+  :diminish drag-stuff-mode
   :config
   (add-to-list 'drag-stuff-except-modes 'org-mode)  ; Set this before enabling
   (drag-stuff-define-keys)
@@ -917,12 +927,14 @@ The path will be absolute. Only works if the current buffer is in
 
 (use-package page-break-lines
   :demand t
+  :diminish page-break-lines-mode
   :config
   (global-page-break-lines-mode)
   :custom
   (page-break-lines-max-width 80))
 
 (use-package yasnippet
+  :diminish yas-minor-mode
   :custom
   (yas-snippet-dirs (list (concat user-emacs-directory "snippets")))
   (yas-new-snippet-default nil)
@@ -941,6 +953,7 @@ The path will be absolute. Only works if the current buffer is in
 
 ;; Prettify
 (use-package apheleia
+  :diminish (apheleia-mode . " ↕↕")
   :config
   (push '(cuefmt . ("cue" "fmt" inplace)) apheleia-formatters)
   (push '(scalafmt . ("scalafmt" "--quiet" "--non-interactive" "--config" (concat (projectile-project-root) ".scalafmt.conf") inplace)) apheleia-formatters)
@@ -1169,6 +1182,7 @@ The path will be absolute. Only works if the current buffer is in
 (use-package package-lint)
 
 (use-package paredit
+  :diminish paredit-mode
   :hook (emacs-lisp-mode . enable-paredit-mode))
 
 (use-package eval-sexp-fu
