@@ -46,7 +46,7 @@
 
 ;; Scratch buffer
 (setq initial-scratch-message
-      ";; -*- lexical-binding: t; -*-\n;; Welcome to Emacs! Happy hacking ;-)\n\n")
+      ";;; -*- lexical-binding: t; -*-\n;; Welcome to Emacs! Happy hacking ;-)\n\n")
 
 ;; Native compilation
 (require 'comp)
