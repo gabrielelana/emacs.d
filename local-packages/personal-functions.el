@@ -301,8 +301,8 @@ specified or at the project root directory otherwise."
 It will print \"{NAME}: xx.yyyyyys\"."
   (declare (indent defun))
   `(let ((time (current-time)))
-     ,@body
-     (message "%s: %.06fs" ,name (float-time (time-since time)))))
+    ,@body
+    (message "%s: %.06fs" ,name (float-time (time-since time)))))
 
 (defun cc/buffer-base-name ()
   "Current buffer file name without directory and suffix."
@@ -336,13 +336,13 @@ matter what, at the end the file will be deleted."
   (declare (indent defun))
   (cl-assert (and name (symbolp name) t "NAME must be a symbol"))
   `(let ((,name (make-temp-file "wcf-macro")))
-     (unwind-protect
-         (cl-assert (or (stringp ,content) (seq-every-p 'stringp ,content)) t
-                    "CONTENT must be a string or a list of strings")
-       (progn (with-temp-file ,name
-                (insert (mapconcat 'identity ,content "\n")))
-              ,@body)
-       (delete-file ,name))))
+    (unwind-protect
+        (cl-assert (or (stringp ,content) (seq-every-p 'stringp ,content)) t
+         "CONTENT must be a string or a list of strings")
+      (progn (with-temp-file ,name
+              (insert (mapconcat 'identity ,content "\n")))
+       ,@body)
+      (delete-file ,name))))
 
 (defun cc/goto-error-p (_buffer _action)
   "Is currently executed command a `next-error' or similar."
