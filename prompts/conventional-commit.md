@@ -65,8 +65,9 @@ Rules to follow:
 - Use the imperative mood in the subject line
 - Keep the body short and concise (omit it entirely if not useful)
 
-Examples of good commits are the following, between @@@> and @@@< delimiters, do
-not include the delimiters in the commit message.
+What follows is a list of good commits, every commit is delimited between @@@>
+and @@@< tokens, the commit starts **after** the opening token @@@> and ends
+**before** the closing token @@@<
 
 - Commit message with description and breaking change footer
   @@@>
@@ -142,3 +143,6 @@ not include the delimiters in the commit message.
   Included new rules for code formatting and improved error detection.
   Reviewed-by: A, B
   @@@<
+
+Do not include the tokens in the commit message you will generate. Do not wrap
+the commit message in a markdown code block. Write only the commit message.
