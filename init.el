@@ -578,6 +578,88 @@ The path will be absolute. Only works if the current buffer is in
     :stream t
     :key (cc/read-key-from-env "DEEPSEEK_API_KEY"))
   (require 'gptel-tools)
+  (gptel-make-openai "OpenRouter"
+    :host "openrouter.ai"
+    :endpoint "/api/v1/chat/completions"
+    :stream t
+    :key (cc/read-key-from-env "OPENROUTER_API_KEY")
+    :models '((z-ai/glm-4.6
+               :description "As the latest iteration in the GLM series, GLM-4.6 achieves comprehensive enhancements across multiple domains, including real-world coding, long-context processing, reasoning, searching, writing, and agentic applications."
+               :capabilities (reasoning tool-use json url media)
+               :input-cost 0.5
+               :output-cost 1.75
+               :context-window 200
+               :cutoff-date "30-09-2025")
+              (x-ai/grok-code-fast-1
+               :description "Grok Code Fast 1 is a speedy and economical reasoning model that excels at agentic coding. With reasoning traces visible in the response, developers can steer Grok Code for high-quality work flows."
+               :capabilities (reasoning tool-use json url media)
+               :input-cost 0.2
+               :output-cost 0.5
+               :context-window 2000
+               :cutoff-date "19-09-2025")
+              (openai/gpt-5-codex
+               :description "GPT-5-Codex is a specialized version of GPT-5 optimized for software engineering and coding workflows. It is designed for both interactive development sessions and long, independent execution of complex engineering tasks."
+               :capabilities (reasoning tool-use json url media)
+               :input-cost 1.25
+               :output-cost 10.00
+               :context-window 400
+               :cutoff-date "23-09-2025")
+              (anthropic/claude-haiku-4.5
+               :description "Claude Haiku 4.5 is Anthropic’s fastest and most efficient model, delivering near-frontier intelligence at a fraction of the cost and latency of larger Claude models."
+               :capabilities (reasoning tool-use json url media)
+               :input-cost 1
+               :output-cost 5
+               :context-window 200
+               :cutoff-date "15-10-2025")
+              (google/gemini-2.5-flash-lite-preview-09-2025
+               :description "Gemini 2.5 Flash-Lite is a lightweight reasoning model in the Gemini 2.5 family, optimized for ultra-low latency and cost efficiency. It offers improved throughput, faster token generation, and better performance across common benchmarks compared to earlier Flash models"
+               :capabilities (reasoning tool-use json url media)
+               :input-cost 0.1
+               :output-cost 0.4
+               :context-window 1000
+               :cutoff-date "25-09-2025")
+              (qwen/qwen3-coder-plus
+               :description "Qwen3 Coder Plus is Alibaba's proprietary version of the Open Source Qwen3 Coder 480B A35B. It is a powerful coding agent model specializing in autonomous programming via tool calling and environment interaction, combining coding proficiency with versatile general-purpose abilities."
+               :capabilities (reasoning tool-use json url media)
+               :input-cost 1
+               :output-cost 5
+               :context-window 128
+               :cutoff-date "23-09-2025")
+              (qwen/qwen3-coder:free
+               :description "Is a Mixture-of-Experts (MoE) code generation model developed by the Qwen team. It is optimized for agentic coding tasks such as function calling, tool use, and long-context reasoning over repositories"
+               :capabilities (reasoning tool-use json url)
+               :input-cost 0
+               :output-cost 0
+               :context-window 256
+               :cutoff-date "20-07-2025")))
+  (gptel-make-ollama "Ollama"
+    :host "starbuck.local:11434"
+    :stream t
+    :models '((devstral:24b
+               :description "Advanced model for complex tasks; optimized for reasoning and code generation"
+               :capabilities (reasoning tool-use json url media)
+               :mime-types ("image/jpeg" "image/png" "image/gif" "image/webp")
+               :context-window 128)
+              (qwen2.5-coder:32b
+               :description "Flagship model for code generation and reasoning; achieves state-of-the-art performance among open-source models"
+               :capabilities (code-generation code-repair code-reasoning tool-use json url media)
+               :mime-types ("image/jpeg" "image/png" "image/gif" "image/webp")
+               :context-window 32)
+              (qwen3:30b
+               :description "Advanced model for complex reasoning and agent capabilities; excels in mathematics, code generation, and logical reasoning"
+               :capabilities (reasoning code-generation tool-use json url media)
+               :mime-types ("image/jpeg" "image/png" "image/gif" "image/webp")
+               :context-window 256)
+              (qwen3-coder:30b
+               :description "Advanced model for complex reasoning and agent capabilities tuned for coding"
+               :capabilities (reasoning code-generation tool-use json url media)
+               :mime-types ("image/jpeg" "image/png" "image/gif" "image/webp")
+               :context-window 256)
+              (codegemma:code
+               :description "A a 7b pretrained variant of CodeGemma that specializes in code completion and generation from code prefixes and/or suffixes"
+               :capabilities (code-generation tool-use json url media)
+               :mime-types ("image/jpeg" "image/png" "image/gif" "image/webp")
+               :context-window 8)))
   :custom
   (gptel-api-key (cc/read-key-from-env "OPENAI_API_KEY"))
   (gptel-prompt-prefix-alist '((markdown-mode . "# PROMPT⟩ ")
