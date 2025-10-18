@@ -1730,6 +1730,7 @@ Otherwise use drag-stuff-down."
 (bind-key "C-c e e" #'toggle-debug-on-error)
 (bind-key "C-c e s" #'scratch)
 (bind-key "C-c e m" #'view-echo-area-messages)
+(bind-key "C-x 8 e c" #'cc/consult-emoji)
 ;; The following is needed to override a strange behaviour from latest org-mode
 ;; which ovverides the standard keybiding
 (bind-key* "C-x C-s" #'save-buffer)
