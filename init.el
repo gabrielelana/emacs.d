@@ -1454,6 +1454,13 @@ The buffer will be named *{PROJECT-NAME}-{CHAT-NAME}* and the
   (lsp-metals-inlay-hints-enable-hints-in-pattern-match t)
   (lsp-metals-install-scala-version "3.3.6"))
 
+;; NOTE: to send custom settings to a language server in a specific project, this is the right way
+;; NOTE: this is to set the configuration for additional dependencies for scalafix
+;; NOTE: this is the content of .dir-locals.el file in project root
+;; ((nil . ((eval . (lsp-register-custom-settings
+;;                   '(("metals.scalafix-rules-dependencies" ["org.typelevel:typelevel-scalafix_2.13:0.5.0"
+;;                                                            "io.github.dedis::scapegoat-scalafix:1.1.4"])))))))
+
 (with-eval-after-load 'scala-mode
   (cc/ensure-scala-ts-mode))
 
