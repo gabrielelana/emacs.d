@@ -704,6 +704,14 @@ The buffer will be named *{PROJECT-NAME}-{CHAT-NAME}* and the
          (f-read-text prompt-file)
        gptel-magit-prompt-conventional-commits))))
 
+(use-package macher
+  :straight (macher :type git :host github :repo "kmontag/macher")
+  :after gptel
+  :custom
+  (macher-action-buffer-ui 'org)
+  :config
+  (macher-install))
+
 ;; LSP
 (use-package lsp-mode
   :commands lsp
