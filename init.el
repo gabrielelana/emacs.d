@@ -543,7 +543,28 @@ The path will be absolute. Only works if the current buffer is in
 (use-package gptel
   :diminish (gptel-mode . " ✨")
   :bind (("C-c i s" . gptel-send)
-         ("C-c i c" . gptel))
+         ("C-c i c" . gptel)
+         ("C-c i p" . #'cc/projectile-gptel-other-window))
+  :after projectile
+  :preface
+  (defun cc/projectile-gptel-other-window (&optional chat-name)
+    "Create a gptel chat session in another window for the current project.
+
+The buffer will be named *{PROJECT-NAME}-{CHAT-NAME}* and the
+=default-directory' in that buffer will be the project root."
+    (interactive "sName: ")
+    (if (not (projectile-project-p))
+        (user-error "Not in a projectile project")
+      (let* ((-project-name (projectile-project-name))
+             (-project-root (projectile-project-root))
+             (-buffer-name (format "*%s-%s*" -project-name chat-name))
+             (-current-directory default-directory))
+        (unwind-protect
+            (progn
+              (setq default-directory -project-root)
+              (let ((gptel-buffer (gptel -buffer-name)))
+                (switch-to-buffer-other-window gptel-buffer)))
+          (setq default-directory -current-directory)))))
   :config
   (require 'cc-gptel-prompts)
   (add-to-list
