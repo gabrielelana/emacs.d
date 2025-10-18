@@ -566,6 +566,7 @@ The buffer will be named *{PROJECT-NAME}-{CHAT-NAME}* and the
                 (switch-to-buffer-other-window gptel-buffer)))
           (setq default-directory -current-directory)))))
   :config
+  (require 'cc-gptel-tools)
   (require 'cc-gptel-prompts)
   (add-to-list
    'gptel-directives
@@ -597,7 +598,6 @@ The buffer will be named *{PROJECT-NAME}-{CHAT-NAME}* and the
   (gptel-make-deepseek "DeepSeek"
     :stream t
     :key (cc/read-key-from-env "DEEPSEEK_API_KEY"))
-  (require 'gptel-tools)
   (gptel-make-openai "OpenRouter"
     :host "openrouter.ai"
     :endpoint "/api/v1/chat/completions"
