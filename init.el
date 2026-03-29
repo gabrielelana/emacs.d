@@ -143,6 +143,10 @@
 (require 'personal-functions)
 (require 'color-functions)
 
+;; Modeline
+(setq mode-line-misc-info
+      (append mode-line-misc-info '((:eval (cc/marked-window-indicator)))))
+
 ;; Themes
 (defvar after-enable-theme-hook nil
   "Hook run after enabling a theme.")

@@ -32,6 +32,36 @@
 ;; (require 'projectile)
 ;; (require 'flyspell)
 
+(defvar cc/marked-windows '(nil nil)
+  "Pair of windows marked to be toggled between.")
+
+(defun cc/mark-current-window ()
+  "Mark a window to be toggled from."
+  (interactive)
+  (setq cc/marked-windows (take 2 (cons (selected-window) cc/marked-windows)))
+  (force-mode-line-update t))
+
+(defun cc/toggle-window ()
+  "Toggle current window to the other marked window."
+  (interactive)
+  (let* ((current-window (selected-window))
+         (other-windows (seq-filter (lambda (w)
+                                      (and
+                                       (window-live-p w)
+                                       (not (eq current-window w))))
+                                    cc/marked-windows)))
+    (when (> (length other-windows) 0)
+      (select-window (car other-windows)))))
+
+(defun cc/marked-window-indicator ()
+  "Return modeline indicator for marked windows.
+Shows =[W1]= for first marked window, =[W2]= for second, nothing otherwise."
+  (let ((current-window (selected-window)))
+    (cond
+     ((eq current-window (nth 0 cc/marked-windows)) (propertize "[W1]" 'face 'bold))
+     ((eq current-window (nth 1 cc/marked-windows)) (propertize "[W2]" 'face 'bold))
+     (t ""))))
+
 (defun cc/read-key-from-env (key-name)
   "Read KEY-NAME from environment."
   (or (getenv key-name)
@@ -95,7 +125,6 @@ and must be placed and can be found under
 
 (defun cc/remove-flyspell-errors (begin end _)
   "Remove all flyspell overlays on region between BEGIN and END."
-  (require 'flyspell)
   (flyspell-delete-region-overlays begin end))
 
 (advice-add #'uncomment-region :after #'cc/remove-flyspell-errors)
