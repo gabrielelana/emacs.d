@@ -1655,7 +1655,10 @@ The buffer will be named *{PROJECT-NAME}-{CHAT-NAME}* and the
 (use-package ob-http)
 (use-package ob-mongo)
 (use-package ob-mermaid)
-(use-package org-present)
+
+;; replaced by cc-org-present
+;; (use-package org-present)
+
 (use-package org
   :preface
   (defun cc/org-move-up ()
@@ -1712,6 +1715,7 @@ Otherwise use drag-stuff-down."
                               ("today" . ?t)
                               ("blocked" . ?b)))
   :config
+  (require 'cc-org-present-mode)
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((emacs-lisp . t)
