@@ -1481,7 +1481,8 @@ The buffer will be named *{PROJECT-NAME}-{CHAT-NAME}* and the
 
 ;; Haskell
 (use-package haskell-mode
-  :hook ((haskell-mode . lsp))
+  :hook ((haskell-mode . lsp)
+         (haskell-mode . cc/--setup-haskell))
   :custom
   ;; (haskell-prompt-regexp "^\\(> *\\|| *\\)+")
   (haskell-prompt-regexp "^ghci[^>]*>")
@@ -1489,6 +1490,10 @@ The buffer will be named *{PROJECT-NAME}-{CHAT-NAME}* and the
   (haskell-process-path-ghci (executable-find "ghci"))
   (haskell-process-args-ghci nil)
   (inferior-haskell-root-dir "/tmp")
+  :preface
+  (defun cc/--setup-haskell ()
+    "Configure Haskell buffer."
+    (setq-local lsp-enable-format-at-save t))
   :config
   (require 'cc-haskell))
 
