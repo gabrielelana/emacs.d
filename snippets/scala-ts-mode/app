@@ -1,0 +1,13 @@
+# -*- mode: snippet -*-
+# contributor: Gabriele Lana
+# name : cats effect simple application template
+# key : app
+# uuid: c48dd20b-d07e-4ec9-b86d-9f0e0adb1100
+# --
+import cats.effect.{IO, IOApp}
+
+object ${1:`(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`} extends IOApp.Simple:
+
+  ${0:// Your code goes here}
+
+  val run: IO[Unit] = IO.println("Hello from Cats")

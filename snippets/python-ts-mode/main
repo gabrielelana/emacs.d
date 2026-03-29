@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# contributor: Gabriele Lana
+# name : call main when run directly
+# key : main
+# uuid: 8e3731e1-70b5-4b66-9096-f6fbe639cebb
+# --
+if __name__ == "__main__":
+    ${main}()

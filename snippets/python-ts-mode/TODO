@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# contributor: Gabriele Lana
+# name : Not Implemented
+# key : TODO
+# uuid: 3164d13c-57b1-4eac-81a3-8476224bfdaa
+# --
+raise NotImplementedError
