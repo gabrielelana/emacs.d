@@ -730,6 +730,24 @@ The buffer will be named *{PROJECT-NAME}-{CHAT-NAME}* and the
   :after gptel
   :custom
   (macher-action-buffer-ui 'org)
+(use-package cc-gptel-flash
+  :straight nil
+  :load-path "local-packages"
+  :after gptel
+  :commands (cc/gptel-flash)
+  :preface
+  (defun cc/gptel-flash-pair ()
+    "Open a flash gptel buffer."
+    (interactive)
+    (cc/gptel-flash
+     (gptel-get-backend "OpenRouter")
+     'openai/gpt-5.4
+     (cc/gptel-build-prompt "programming-pair.md" "use_tools.md")
+     '(("web" "search")
+       ("web" "read_url")
+       ("reflection" "emacs_visible_buffers"))))
+  :bind (("C-c i i" . cc/gptel-flash-pair)))
+
   :config
   (macher-install))
 
