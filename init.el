@@ -1792,6 +1792,7 @@ Otherwise use drag-stuff-down."
   (org-startup-indented t)
   (org-return-follows-link t)
   (org-src-fontify-natively t)
+  (org-use-sub-superscripts nil)
   (org-link-frame-setup '((file . find-file)))
   (org-support-shift-select 'always)
   (org-tag-persistent-alist '(("drill" . ?r)
