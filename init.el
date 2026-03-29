@@ -1831,6 +1831,8 @@ Otherwise use drag-stuff-down."
 (bind-key "M-p" #'cc/duplicate-line-or-region-above)
 (bind-key "M-n" #'cc/duplicate-line-or-region-below)
 (bind-key "M-o" #'other-window)
+(bind-key "C-`" #'cc/toggle-window)
+(bind-key "C-!" #'cc/mark-current-window)
 (bind-key "C-M-y" #'yank-pop)
 (bind-key "C-c D" #'cc/delete-current-buffer-and-file)
 (bind-key "C-c R" #'cc/rename-current-buffer-and-file)
