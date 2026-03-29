@@ -844,9 +844,17 @@ The buffer will be named *{PROJECT-NAME}-{CHAT-NAME}* and the
               ;; TODO: "C-c l i" should be a command that toggles inlay hints and lenses
               ;; ("C-c l i" . lsp-inlay-hint-enable)
               ("C-c l r" . lsp-rename)
+              ("C-c l l" . lsp-avy-lens)
               ("C-c l f" . lsp-format-buffer)
               ("C-c l e" . lsp-ui-flycheck-list))
   :hook ((lsp-mode . flycheck-mode))
+  :config
+  (with-eval-after-load 'lsp-lens
+    (set-face-attribute 'lsp-lens-face nil
+                        :inherit 'shadow
+                        :height 0.9)
+    (set-face-attribute 'lsp-lens-mouse-face nil
+                        :inherit 'highlight))
   :custom
   (read-process-output-max (* 1024 1024))
   (lsp-keymap-prefix "C-c l")
@@ -855,6 +863,7 @@ The buffer will be named *{PROJECT-NAME}-{CHAT-NAME}* and the
   (lsp-completion-enable t)
   (lsp-completion-show-detail t)
   (lsp-completion-show-kind t)
+  (lsp-signature-render-documentation nil)
   (lsp-headerline-breadcrumb-enable nil)
   (lsp-inlay-hint-enable t)
   (lsp-lens-enable t)
@@ -899,8 +908,8 @@ The buffer will be named *{PROJECT-NAME}-{CHAT-NAME}* and the
   (lsp-ui-doc-alignment 'window)
   (lsp-ui-doc-header nil)
   (lsp-ui-doc-include-signature t)
-  (lsp-ui-doc-max-height 40)
-  (lsp-ui-doc-max-width 120)
+  (lsp-ui-doc-max-height 10)
+  (lsp-ui-doc-max-width 60)
   (lsp-ui-doc-position 'bottom)
   (lsp-ui-doc-text-scale-level 1)
   (lsp-ui-doc-use-childframe t)
@@ -1608,14 +1617,25 @@ The buffer will be named *{PROJECT-NAME}-{CHAT-NAME}* and the
 
 (with-eval-after-load 'lsp-mode
   (lsp-register-client
-   (make-lsp-client :new-connection (lsp-stdio-connection '("protobuf-language-server" "-stdio"))
+   (make-lsp-client :new-connection (lsp-stdio-connection '("protols"))
                     :activation-fn (lsp-activate-on "protobuf")
                     :server-id 'protobuf-language-server
                     :download-server-fn (lambda (_client callback error-callback _update?)
                                           (lsp-async-start-process
                                            callback
                                            error-callback
-                                           "go" "install" "github.com/lasorda/protobuf-language-server@latest")))))
+                                           "cargo" "install" "protols"))))
+
+  ;; (lsp-register-client
+  ;;  (make-lsp-client :new-connection (lsp-stdio-connection '("protobuf-language-server" "-stdio"))
+  ;;                   :activation-fn (lsp-activate-on "protobuf")
+  ;;                   :server-id 'protobuf-language-server
+  ;;                   :download-server-fn (lambda (_client callback error-callback _update?)
+  ;;                                         (lsp-async-start-process
+  ;;                                          callback
+  ;;                                          error-callback
+  ;;                                          "go" "install" "github.com/lasorda/protobuf-language-server@latest"))))
+  )
 
 ;; Agda
 (when (executable-find "agda-mode")
