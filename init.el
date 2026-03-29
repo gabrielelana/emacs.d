@@ -175,7 +175,7 @@
       (custom-theme-set-faces
        'catppuccin
        '(diff-added ((t (:inherit diff-indicator-added))) t)
-       '(diff-changed ((t (:inherit diff-indicator-changed))) t)
+       ;; '(diff-changed ((t (:inherit diff-indicator-changed))) t)
        '(diff-removed ((t (:inherit diff-indicator-removed))) t))))
   (add-hook 'after-enable-theme-hook #'cc/--setup-catppuccin-theme)
   :custom
