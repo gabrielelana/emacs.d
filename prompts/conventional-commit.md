@@ -65,84 +65,113 @@ Rules to follow:
 - Use the imperative mood in the subject line
 - Keep the body short and concise (omit it entirely if not useful)
 
-What follows is a list of good commits, every commit is delimited between @@@>
-and @@@< tokens, the commit starts **after** the opening token @@@> and ends
-**before** the closing token @@@<
+Do not wrap the commit message in a markdown code block. Write only the commit
+message.
 
-- Commit message with description and breaking change footer
-  @@@>
-  feat: allow provided config object to extend other configs
+    <good-commit-message-examples>
+      <example>
+        <description>
+        Commit message with description and breaking change footer
+        </description>
+        <commit-message>
+        feat: allow provided config object to extend other configs
 
-  BREAKING CHANGE: 'extends' key in config file is now used for extending other config files.
-  @@@<
+        BREAKING CHANGE: 'extends' key in config file is now used for extending other config files.
+        </commit-message>
+      </example>
+      <example>
+        <description>
+        Commit message with ! to draw attention to a breaking change
+        </description>
+        <commit-message>
+        feat!: send an email to the customer when a product is shipped
+        </commit-message>
+      </example>
+      <example>
+        <description>
+        Commit message with scope and ! to draw attention to a breaking change
+        </description>
+        <commit-message>
+        feat(api)!: send an email to the customer when a product is shipped
+        </commit-message>
+      </example>
+      <example>
+        <description>
+        Commit message with both ! and BREAKING CHANGE footer
+        </description>
+        <commit-message>
+        chore!: drop support for Node 6
 
-- Commit message with ! to draw attention to a breaking change
-  @@@>
-  feat!: send an email to the customer when a product is shipped
-  @@@<
+        BREAKING CHANGE: use JavaScript features not available in Node 6.
+        </commit-message>
+      </example>
+      <example>
+        <description>
+        Commit message with no body
+        </description>
+        <commit-message>
+        docs: correct spelling of CHANGELOG
+        </commit-message>
+      </example>
+      <example>
+        <description>
+        Commit message with scope
+        </description>
+        <commit-message>
+        feat(lang): add Polish language
+        </commit-message>
+      </example>
+      <example>
+        <description>
+        Commit message with multi-paragraph body and multiple footers
+        </description>
+        <commit-message>
+        fix: prevent racing of requests
 
-- Commit message with scope and ! to draw attention to a breaking change
-  @@@>
-  feat(api)!: send an email to the customer when a product is shipped
-  @@@<
+        Introduce a request id and a reference to latest request. Dismiss
+        incoming responses other than from the latest request.
 
-- Commit message with both ! and BREAKING CHANGE footer
-  @@@>
-  chore!: drop support for Node 6
+        Remove timeouts which were used to mitigate the racing issue but are
+        obsolete now.
 
-  BREAKING CHANGE: use JavaScript features not available in Node 6.
-  @@@<
+        Reviewed-by: Z
+        Refs: #123
+        </commit-message>
+      </example>
+      <example>
+        <description>
+        Commit message for a minor bug fix
+        </description>
+        <commit-message>
+        fix(ui): resolve issue with dropdown menu alignment
 
-- Commit message with no body
-  @@@>
-  docs: correct spelling of CHANGELOG
-  @@@<
+        The dropdown menu was misaligned on the profile page due to CSS conflicts.
+        Updated the styles to ensure proper alignment across different screen sizes.
+        Fixes issue #789.
+        </commit-message>
+      </example>
+      <example>
+        <description>
+        Commit message for adding a new test
+        </description>
+        <commit-message>
+        test: add unit tests for user authentication module
 
-- Commit message with scope
-  @@@>
-  feat(lang): add Polish language
-  @@@<
+        Added unit tests for the user authentication module to cover login, registration, and token verification functionalities.
+        Ensured all tests pass with the new authentication logic.
+        Refs: #456
+        </commit-message>
+      </example>
+      <example>
+        <description>
+        Commit message for a configuration change
+        </description>
+        <commit-message>
+        chore(config): update ESLint configuration to support latest standards
 
-- Commit message with multi-paragraph body and multiple footers
-  @@@>
-  fix: prevent racing of requests
-
-  Introduce a request id and a reference to latest request. Dismiss
-  incoming responses other than from the latest request.
-
-  Remove timeouts which were used to mitigate the racing issue but are
-  obsolete now.
-
-  Reviewed-by: Z
-  Refs: #123
-  @@@<
-
-- Commit message for a minor bug fix
-  @@@>
-  fix(ui): resolve issue with dropdown menu alignment
-
-  The dropdown menu was misaligned on the profile page due to CSS conflicts.
-  Updated the styles to ensure proper alignment across different screen sizes.
-  Fixes issue #789.
-  @@@<
-
-- Commit message for adding a new test
-  @@@>
-  test: add unit tests for user authentication module
-
-  Added unit tests for the user authentication module to cover login, registration, and token verification functionalities.
-  Ensured all tests pass with the new authentication logic.
-  Refs: #456
-  @@@<
-
-- Commit message for a configuration change
-  @@@>
-  chore(config): update ESLint configuration to support latest standards
-
-  Updated the ESLint configuration to support the latest JavaScript standards and best practices.
-  Included new rules for code formatting and improved error detection.
-  Reviewed-by: A, B
-  @@@<
-
-Do not include the tokens in the commit message you will generate. Do not wrap
-the commit message in a markdown code block. Write only the commit message.
+        Updated the ESLint configuration to support the latest JavaScript standards and best practices.
+        Included new rules for code formatting and improved error detection.
+        Reviewed-by: A, B
+        </commit-message>
+      </example>
+    </good-commit-message-examples>
