@@ -129,6 +129,13 @@
 ;; Defaults of built-in stuff
 (require 'better-defaults)
 
+;; When you configure use-package remember the following order
+;; 1. :preface
+;; 2. :init
+;; 3. Package is loaded
+;; 4. :custom
+;; 5. :config
+
 ;; Libraries
 (use-package bind-key)
 (use-package s :demand t)
