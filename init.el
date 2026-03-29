@@ -234,7 +234,6 @@
   :config
   (unicode-fonts-setup))
 
-;; ;; One day I'll be able to make "Noto Color Emoji" work, now stick with Segoe  "Segoe UI Emoji"
 (let ((emoji-font "Noto Color Emoji"))
   (when (member emoji-font (font-family-list))
     (set-fontset-font t 'symbol emoji-font nil 'prepend)
