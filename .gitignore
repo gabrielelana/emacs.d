@@ -1,3 +1,4 @@
+/agent
 /history
 /straight/
 /recentf
@@ -16,3 +17,4 @@ tramp
 /custom.el
 /eln-cache/
 /url/
+/nov-places
