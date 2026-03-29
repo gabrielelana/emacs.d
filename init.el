@@ -1530,7 +1530,24 @@ The buffer will be named *{PROJECT-NAME}-{CHAT-NAME}* and the
   :mode (("\\.scala\\'" . scala-ts-mode)
          ("\\.sbt\\'" . scala-ts-mode)
          ("\\.sc\\'" . scala-ts-mode))
+  :bind (:map scala-ts-mode-map
+              ("C-c l s s" . sbt-start)
+              ("C-c l s t" . sbt-do-test)
+              ("C-c l s r" . sbt-do-run)
+              ("C-c l s c" . sbt-do-compile)
+              ("M-]" . scala3-indent-shift-right)
+              ("M-["  . scala3-indent-shift-left))
   :preface
+  (defun scala3-indent-shift-right ()
+    "Shift region right by `scala-ts-indent-offset' columns, using `python-indent-shift-right'."
+    (interactive)
+    (let ((python-indent-offset scala-ts-indent-offset))
+      (call-interactively #'python-indent-shift-right)))
+  (defun scala3-indent-shift-left ()
+    "Shift region left by `scala-ts-indent-offset' columns, using `python-indent-shift-left'."
+    (interactive)
+    (let ((python-indent-offset scala-ts-indent-offset))
+      (call-interactively #'python-indent-shift-left)))
   (defun cc/ensure-scala-ts-mode ()
     "Ensure scala-ts-mode is used instead of scala-mode for all Scala files."
     ;; Remove all scala-mode associations from auto-mode-alist
@@ -1547,8 +1564,7 @@ The buffer will be named *{PROJECT-NAME}-{CHAT-NAME}* and the
                 scala-indent:step 2)
     (eldoc-mode -1)
     (treesit-font-lock-recompute-features)
-    (lsp)
-    (company-mode)))
+    (lsp)))
 
 (use-package sbt-mode
   :commands sbt-start sbt-command
