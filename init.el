@@ -1016,9 +1016,11 @@ The buffer will be named *{PROJECT-NAME}-{CHAT-NAME}* and the
   (dired-dwim-target t))
 
 ;; Utilities
+(use-package vundo)
 (use-package scratch)
 (use-package rainbow-mode)
 (use-package diminish
+  :demand t
   :config
   (diminish 'org-src-mode)
   (diminish 'org-indent-mode)
@@ -1112,7 +1114,7 @@ The buffer will be named *{PROJECT-NAME}-{CHAT-NAME}* and the
 
 ;; Prettify
 (use-package apheleia
-  :diminish (apheleia-mode . " ↕↕")
+  :diminish (apheleia-mode . " ")
   :config
   (push '(cuefmt . ("cue" "fmt" inplace)) apheleia-formatters)
   (push '(scalafmt . ("scalafmt" "--quiet" "--non-interactive" "--config" (concat (projectile-project-root) ".scalafmt.conf") inplace)) apheleia-formatters)
@@ -1130,6 +1132,9 @@ The buffer will be named *{PROJECT-NAME}-{CHAT-NAME}* and the
   (push '(python-ts-mode . (ruff ruff-isort)) apheleia-mode-alist)
   (push '(python-mode . (ruff ruff-isort)) apheleia-mode-alist)
   (push '(markdown-mode . prettier-markdown) apheleia-mode-alist)
+  ;; go-mode
+  (push '(goimports . ("goimports")) apheleia-formatters)
+  (setf (alist-get 'go-mode apheleia-mode-alist) 'goimports)
   (apheleia-global-mode +1))
 
 ;; Multiple cursors
@@ -1281,16 +1286,18 @@ The buffer will be named *{PROJECT-NAME}-{CHAT-NAME}* and the
          (json-mode . cc/--setup-json))
   :preface
   (defun cc/--setup-json ()
-    (when (executable-find "biome")
-      (apheleia-mode 1)
-      ;; XXX: we are letting apheleia do his job, biome/lsp-biome adds an
-      ;; extra `}` at the end of the file for some reason
-      (setq-local lsp-biome-format-on-save nil))
-    (when (executable-find "jsonlint")
-      (flycheck-mode t)
-      ;; NOTE: needed to override the JSON lsp server will
-      (run-at-time 1 nil (lambda ()
-                           (flycheck-select-checker 'json-jsonlint)))))
+    (when (eq major-mode 'json-mode)
+      ;; TODO: review this
+      (when (executable-find "biome")
+        (apheleia-mode 1)
+        ;; XXX: we are letting apheleia do his job, biome/lsp-biome adds an
+        ;; extra `}` at the end of the file for some reason
+        (setq-local lsp-biome-format-on-save nil))
+      (when (executable-find "jsonlint")
+        (flycheck-mode t)
+        ;; NOTE: needed to override the JSON lsp server will
+        (run-at-time 1 nil (lambda ()
+                             (flycheck-select-checker 'json-jsonlint))))))
   :init
   ;; cannot use :mode macro because mode list contains a non literal value
   (add-to-list 'auto-mode-alist `(,JSON_FILES_RX . json-mode))
