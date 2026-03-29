@@ -363,6 +363,10 @@
   (consult-preview-key 'any)
   (consult-project-root-function #'projectile-project-root)
 
+  :config
+  ;; Use consult to filter and insert emoji
+  (require 'cc-consult-emoji)
+
   :init
   ;; Improves the register preview for `consult-register',
   ;; `consult-register-load', `consult-register-store' and the Emacs built-ins.
