@@ -656,6 +656,7 @@ The inserted format is @RELATIVE/PATH."
 The buffer will be named *{PROJECT-NAME}-{CHAT-NAME}* and the
 =default-directory' in that buffer will be the project root."
     (interactive "sName: ")
+    (require 'gptel)
     (if (not (projectile-project-p))
         (user-error "Not in a projectile project")
       (let* ((-project-name (projectile-project-name))
@@ -673,6 +674,9 @@ The buffer will be named *{PROJECT-NAME}-{CHAT-NAME}* and the
   (require 'cc-gptel-prompts)
   (add-to-list
    'gptel-directives
+   `(programming-pair . ,(cc/gptel-build-prompt "programming-pair.md" "formatting.md")))
+  (add-to-list
+   'gptel-directives
    `(emacs-wizard . ,(cc/gptel-build-prompt "emacs-wizard.md" "formatting.md")))
   (add-to-list
    'gptel-directives
@@ -688,10 +692,22 @@ The buffer will be named *{PROJECT-NAME}-{CHAT-NAME}* and the
    `(haskell-tutor . ,(cc/gptel-build-prompt "haskell-tutor.md" "formatting.md")))
   (add-to-list
    'gptel-directives
-   `(programming-tutor . ,(cc/gptel-build-prompt "programming-tutor.md")))
+   `(python-tutor . ,(cc/gptel-build-prompt "python-tutor.md" "formatting.md")))
   (add-to-list
    'gptel-directives
    `(technical-writer . ,(cc/gptel-build-prompt "technical-writer.md" "formatting.md")))
+  (add-to-list
+   'gptel-directives
+   `(accountant . ,(cc/gptel-build-prompt "accountant.md" "formatting.md")))
+  (add-to-list
+   'gptel-directives
+   `(data-engineer . ,(cc/gptel-build-prompt "data-engineer.md" "formatting.md")))
+  (add-to-list
+   'gptel-directives
+   `(principal-architect . ,(cc/gptel-build-prompt "principal-architect.md" "formatting.md")))
+  (add-to-list
+   'gptel-directives
+   `(conor-mcbride . ,(cc/gptel-build-prompt "conor-mcbride.md" "formatting.md")))
   (gptel-make-anthropic "Claude"
     :stream t
     :key (cc/read-key-from-env "ANTHROPIC_API_KEY"))
@@ -706,83 +722,75 @@ The buffer will be named *{PROJECT-NAME}-{CHAT-NAME}* and the
     :endpoint "/api/v1/chat/completions"
     :stream t
     :key (cc/read-key-from-env "OPENROUTER_API_KEY")
-    :models '((z-ai/glm-4.6
-               :description "As the latest iteration in the GLM series, GLM-4.6 achieves comprehensive enhancements across multiple domains, including real-world coding, long-context processing, reasoning, searching, writing, and agentic applications."
+    :models '((openai/gpt-5.4
+               :description "GPT-5.4 is OpenAI’s latest frontier model, unifying the Codex and GPT lines into a single system. It features a 1M+ token context window with support for text and image inputs, enabling high-context reasoning, coding, and multimodal analysis within the same workflow."
                :capabilities (reasoning tool-use json url media)
-               :input-cost 0.5
-               :output-cost 1.75
-               :context-window 200
-               :cutoff-date "30-09-2025")
-              (x-ai/grok-code-fast-1
-               :description "Grok Code Fast 1 is a speedy and economical reasoning model that excels at agentic coding. With reasoning traces visible in the response, developers can steer Grok Code for high-quality work flows."
-               :capabilities (reasoning tool-use json url media)
-               :input-cost 0.2
-               :output-cost 0.5
-               :context-window 2000
-               :cutoff-date "19-09-2025")
-              (openai/gpt-5-codex
-               :description "GPT-5-Codex is a specialized version of GPT-5 optimized for software engineering and coding workflows. It is designed for both interactive development sessions and long, independent execution of complex engineering tasks."
-               :capabilities (reasoning tool-use json url media)
-               :input-cost 1.25
-               :output-cost 10.00
-               :context-window 400
-               :cutoff-date "23-09-2025")
-              (anthropic/claude-haiku-4.5
-               :description "Claude Haiku 4.5 is Anthropic’s fastest and most efficient model, delivering near-frontier intelligence at a fraction of the cost and latency of larger Claude models."
-               :capabilities (reasoning tool-use json url media)
-               :input-cost 1
-               :output-cost 5
-               :context-window 200
-               :cutoff-date "15-10-2025")
-              (google/gemini-2.5-flash-lite-preview-09-2025
-               :description "Gemini 2.5 Flash-Lite is a lightweight reasoning model in the Gemini 2.5 family, optimized for ultra-low latency and cost efficiency. It offers improved throughput, faster token generation, and better performance across common benchmarks compared to earlier Flash models"
-               :capabilities (reasoning tool-use json url media)
-               :input-cost 0.1
-               :output-cost 0.4
+               :input-cost 2.5
+               :output-cost 15.00
                :context-window 1000
-               :cutoff-date "25-09-2025")
-              (qwen/qwen3-coder-plus
-               :description "Qwen3 Coder Plus is Alibaba's proprietary version of the Open Source Qwen3 Coder 480B A35B. It is a powerful coding agent model specializing in autonomous programming via tool calling and environment interaction, combining coding proficiency with versatile general-purpose abilities."
+               :cutoff-date "05-03-2026")
+              (openai/gpt-5.3-codex
+               :description "GPT-5.3-Codex is OpenAI’s most advanced agentic coding model, combining the frontier software engineering performance of GPT-5.2-Codex with the broader reasoning and professional knowledge capabilities of GPT-5.2"
+               :capabilities (reasoning tool-use json url media)
+               :input-cost 1.75
+               :output-cost 14.00
+               :context-window 400
+               :cutoff-date "24-02-2026")
+              (anthropic/claude-opus-4.6
+               :description "Claude Opus 4.6 is Anthropic’s frontier reasoning model optimized for complex software engineering, agentic workflows, and long-horizon computer use."
+               :capabilities (reasoning tool-use json url media)
+               :input-cost 5
+               :output-cost 25
+               :context-window 1000
+               :cutoff-date "04-02-2026")
+              (xiaomi/mimo-v2-pro
+               :description "MiMo-V2-Pro is Xiaomi's flagship foundation model, featuring over 1T total parameters and a 1M context length, deeply optimized for agentic scenarios. It is highly adaptable to general agent frameworks like OpenClaw. It ranks among the global top tier in the standard PinchBench and ClawBench benchmarks, with perceived performance approaching that of Opus 4.6."
                :capabilities (reasoning tool-use json url media)
                :input-cost 1
-               :output-cost 5
-               :context-window 128
-               :cutoff-date "23-09-2025")
-              (qwen/qwen3-coder:free
-               :description "Is a Mixture-of-Experts (MoE) code generation model developed by the Qwen team. It is optimized for agentic coding tasks such as function calling, tool use, and long-context reasoning over repositories"
-               :capabilities (reasoning tool-use json url)
+               :output-cost 3
+               :context-window 1048
+               :cutoff-date "27-03-2026")
+              (minimax/minimax-m2.7
+               :description "MiniMax-M2.7 is a next-generation large language model designed for autonomous, real-world productivity and continuous improvement. Built to actively participate in its own evolution, M2.7 integrates advanced agentic capabilities through multi-agent collaboration, enabling it to plan, execute, and refine complex tasks across dynamic environments."
+               :capabilities (reasoning tool-use json url media)
+               :input-cost 0.3
+               :output-cost 1.2
+               :context-window 204
+               :cutoff-date "04-03-2026")
+              (z-ai/glm-5
+               :description "GLM-5 is Z.ai’s flagship open-source foundation model engineered for complex systems design and long-horizon agent workflows."
+               :capabilities (reasoning tool-use json url media)
+               :input-cost 0.8
+               :output-cost 2.56
+               :context-window 200
+               :cutoff-date "11-02-2026")
+              (x-ai/grok-4.1-fast
+               :description "Grok 4.1 Fast is xAI's best agentic tool calling model that shines in real-world use cases like customer support and deep research. 2M context window."
+               :capabilities (reasoning tool-use json url media)
                :input-cost 0
                :output-cost 0
-               :context-window 256
-               :cutoff-date "20-07-2025")))
+               :context-window 2000
+               :cutoff-date "19-09-2025")
+              (google/gemini-3.1-pro-preview
+               :description "Gemini 3.1 Pro is Google’s flagship frontier model for high-precision multimodal reasoning"
+               :capabilities (reasoning tool-use json url media)
+               :input-cost 2
+               :output-cost 12
+               :context-window 1050
+               :cutoff-date "18-11-2025")))
   (gptel-make-ollama "Ollama"
     :host "starbuck.local:11434"
     :stream t
     :models '((devstral:24b
-               :description "Advanced model for complex tasks; optimized for reasoning and code generation"
                :capabilities (reasoning tool-use json url media)
-               :mime-types ("image/jpeg" "image/png" "image/gif" "image/webp")
                :context-window 128)
-              (qwen2.5-coder:32b
-               :description "Flagship model for code generation and reasoning; achieves state-of-the-art performance among open-source models"
+              (qwen3-coder-next:latest
                :capabilities (code-generation code-repair code-reasoning tool-use json url media)
-               :mime-types ("image/jpeg" "image/png" "image/gif" "image/webp")
-               :context-window 32)
-              (qwen3:30b
-               :description "Advanced model for complex reasoning and agent capabilities; excels in mathematics, code generation, and logical reasoning"
-               :capabilities (reasoning code-generation tool-use json url media)
-               :mime-types ("image/jpeg" "image/png" "image/gif" "image/webp")
-               :context-window 256)
-              (qwen3-coder:30b
-               :description "Advanced model for complex reasoning and agent capabilities tuned for coding"
-               :capabilities (reasoning code-generation tool-use json url media)
-               :mime-types ("image/jpeg" "image/png" "image/gif" "image/webp")
-               :context-window 256)
-              (codegemma:code
-               :description "A a 7b pretrained variant of CodeGemma that specializes in code completion and generation from code prefixes and/or suffixes"
-               :capabilities (code-generation tool-use json url media)
-               :mime-types ("image/jpeg" "image/png" "image/gif" "image/webp")
-               :context-window 8)))
+               :context-window 262)))
+  ;; set the default here after the backend is created, :custom is executed
+  ;; after :config
+  (setq gptel-backend (gptel-get-backend "OpenRouter")
+        gptel-model 'openai/gpt-5.4)
   :custom
   (gptel-api-key (cc/read-key-from-env "OPENAI_API_KEY"))
   (gptel-prompt-prefix-alist '((markdown-mode . "# PROMPT⟩ ")
@@ -793,8 +801,8 @@ The buffer will be named *{PROJECT-NAME}-{CHAT-NAME}* and the
                                  (text-mode . "\n")))
   (gptel-default-mode 'org-mode)
   (gptel-include-reasoning 'ignore)
-  (gptel-model 'gpt-4o)
-  (gptel-temperature 0)
+  (gptel-expert-commands t)
+  (gptel-temperature 0.3)
   (gptel-track-media t))
 
 (use-package gptel-magit
@@ -807,11 +815,11 @@ The buffer will be named *{PROJECT-NAME}-{CHAT-NAME}* and the
          (f-read-text prompt-file)
        gptel-magit-prompt-conventional-commits))))
 
-(use-package macher
-  :straight (macher :type git :host github :repo "kmontag/macher")
+(use-package gptel-agent
+  :straight (gptel-agent :type git :host github :repo "karthink/gptel-agent")
   :after gptel
-  :custom
-  (macher-action-buffer-ui 'org)
+  :config (gptel-agent-update))
+
 (use-package cc-gptel-flash
   :straight nil
   :load-path "local-packages"
@@ -830,8 +838,82 @@ The buffer will be named *{PROJECT-NAME}-{CHAT-NAME}* and the
        ("reflection" "emacs_visible_buffers"))))
   :bind (("C-c i i" . cc/gptel-flash-pair)))
 
+;;; TODO: configure agent claude with acp
+;;; TODO: configure agent https://pi.dev/
+(use-package agent-shell
+  :ensure t
+  :after direnv
+  :bind (("C-c i s" . agent-shell)
+         :map agent-shell-mode-map
+         ("C-c M-o" . cc/agent-shell-toggle-view-and-preference)
+         :map agent-shell-viewport-edit-mode-map
+         ("C-c M-o" . cc/agent-shell-toggle-view-and-preference)
+         :map agent-shell-viewport-view-mode-map
+         ("C-c M-o" . cc/agent-shell-toggle-view-and-preference))
+  :hook ((agent-shell-mode . cc/--setup-agent-shell))
+  :preface
+  (defun cc/--setup-agent-shell ()
+    (hl-line-mode -1))
+  (defun cc/agent-shell-toggle-view-and-preference ()
+    "Toggle between agent-shell chat and viewport buffers.
+
+When called from `agent-shell-mode', switch to viewport and set
+`agent-shell-prefer-viewport-interaction' to t.
+
+When called from a viewport mode, switch to chat and set
+`agent-shell-prefer-viewport-interaction' to nil.
+
+Always show the resulting preference in the echo area."
+    (interactive)
+    (cond
+     ((derived-mode-p 'agent-shell-mode)
+      (setq agent-shell-prefer-viewport-interaction t)
+      (call-interactively #'agent-shell-other-buffer)
+      (message "agent-shell prefer viewport interaction"))
+     ((or (derived-mode-p 'agent-shell-viewport-edit-mode)
+          (derived-mode-p 'agent-shell-viewport-view-mode))
+      (setq agent-shell-prefer-viewport-interaction nil)
+      (call-interactively #'agent-shell-other-buffer)
+      (message "agent-shell prefer chat interaction"))
+     (t
+      (user-error "Not in an agent-shell or agent-shell viewport buffer"))))
   :config
-  (macher-install))
+  (setq agent-shell-header-style 'text)
+  (setq agent-shell-preferred-agent-config 'opencode)
+  ;; NOTE: find out all the available models with `opencode models openrouter`
+  (setq agent-shell-opencode-default-model-id "openrouter/openai/gpt-5.4")
+  (setq agent-shell-opencode-environment
+        (agent-shell-make-environment-variables
+         :inherit-env t
+         "OPENROUTER_API_KEY" (cc/read-key-from-env "OPENROUTER_API_KEY"))))
+
+;;; TODO: macher has been moved to melpa, update the installation
+;; (use-package macher
+;;   :straight (macher :type git :host github :repo "kmontag/macher")
+;;   :after gptel
+;;   :custom
+;;   (macher-action-buffer-ui 'org)
+;;   :config
+;;   (macher-install))
+
+(use-package diff-mode
+  :straight (:type built-in)
+  :bind (:map diff-mode-map
+              ("A" . #'cc/diff-apply-all-without-questions))
+  :preface
+  (defun cc/diff-apply-all-without-questions ()
+    "Apply all hunks in the current diff buffer without any prompts.
+Automatically create missing files/directories."
+    (interactive)
+    (require 'diff)
+    (cl-letf (((symbol-function 'yes-or-no-p) (lambda (&rest _) t))
+              ((symbol-function 'y-or-n-p)   (lambda (&rest _) t)))
+      (let ((confirm-nonexistent-file-or-buffer nil))
+        (diff-apply-all-changes t)))))
+
+;; You have been provided with tool to check my current configuration and all
+;; installed packages, Can you tell me how can I customize the face used in the
+;; overlay for the lenses?
 
 ;; LSP
 (use-package lsp-mode
