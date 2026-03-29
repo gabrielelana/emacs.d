@@ -295,7 +295,11 @@
   (completion-styles '(orderless basic))
   (orderless-matching-styles '(orderless-regexp))
   (orderless-component-separator "[ &]+" "In company use `&` to separate components")
-  (completion-category-overrides '((file (styles basic partial-completion))))
+  ;; (completion-category-overrides '((file (styles basic partial-completion))))
+  (completion-category-overrides
+   '((file (styles basic partial-completion))
+     (lsp-capf (styles basic flex))
+     (capf (styles basic flex))))
   (orderless-style-dispatchers '(literal-if-equal
                                  negate-if-bang
                                  initialism-if-dot
@@ -538,33 +542,77 @@ The path will be absolute. Only works if the current buffer is in
   :init
   (rg-enable-default-bindings))
 
-;; Company
-(use-package company
-  :diminish company-mode
-  :bind (("C-<tab>" . company-complete)
-         :map company-active-map
-         ("M-n" . nil)
-         ("M-p" . nil)
-         ("M-." . company-show-location)
-         ("<tab>" . company-complete-common-or-cycle)
-         ("C-s" . company-search-candidates)
-         ("C-d" . company-show-doc-buffer)
-         ("C-n" . company-select-next)
-         ("C-p" . company-select-previous))
+;;; Corfu
+(use-package corfu
+  :bind (("C-<tab>" . completion-at-point)
+         :map corfu-map
+         ("C-n" . corfu-next)
+         ("C-p" . corfu-previous)
+         ("C-g" . corfu-quit)
+         ("C-<tab>" . corfu-complete))
   :custom
-  (company-idle-delay 0.5)
-  (company-minimum-prefix-length 1)
-  (company-selection-wrap-around t)
-  (company-show-numbers t)
-  (company-dabbrev-downcase nil)
-  (company-dabbrev-ignore-case t)
-  (company-dabbrev-other-buffers nil)
-  (company-backends '(company-nxml
-                      company-css
-                      company-capf
-                      company-dabbrev-code
-                      company-files
-                      company-dabbrev)))
+  (corfu-auto nil)
+  (corfu-cycle t)
+  (corfu-preview-current nil)
+  (corfu-preselect 'prompt)
+  (corfu-bar-width 0)
+  (corfu-count 12)
+  (corfu-min-width 30)
+  (corfu-max-width 80)
+  ;; (corfu-popupinfo-mode 1)
+  ;; (corfu-popupinfo-delay '(0.8 . 0.8))
+  (completion-cycle-threshold 3)
+  (tab-always-indent 'complete)
+  :init
+  (global-corfu-mode))
+
+(use-package kind-icon
+  :after corfu
+  :custom
+  (kind-icon-default-face 'corfu-default)
+  (kind-icon-use-icons t)
+  :config
+  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
+
+(use-package cape
+  :after corfu
+  :init
+  (add-to-list 'completion-at-point-functions #'cape-file t)
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev t)
+  (add-to-list 'completion-at-point-functions #'cape-keyword t)
+  :config
+  (setq cape-dabbrev-min-length 3
+        cape-dabbrev-check-other-buffers t
+        cape-dabbrev-ignore-case t
+        cape-dabbrev-upcase nil))
+
+;; Company
+;; (use-package company
+;;   :diminish company-mode
+;;   :bind (("C-<tab>" . company-complete)
+;;          :map company-active-map
+;;          ("M-n" . nil)
+;;          ("M-p" . nil)
+;;          ("M-." . company-show-location)
+;;          ("<tab>" . company-complete-common-or-cycle)
+;;          ("C-s" . company-search-candidates)
+;;          ("C-d" . company-show-doc-buffer)
+;;          ("C-n" . company-select-next)
+;;          ("C-p" . company-select-previous))
+;;   :custom
+;;   (company-idle-delay 0.5)
+;;   (company-minimum-prefix-length 1)
+;;   (company-selection-wrap-around t)
+;;   (company-show-numbers t)
+;;   (company-dabbrev-downcase nil)
+;;   (company-dabbrev-ignore-case t)
+;;   (company-dabbrev-other-buffers nil)
+;;   (company-backends '(company-nxml
+;;                       company-css
+;;                       company-capf
+;;                       company-dabbrev-code
+;;                       company-files
+;;                       company-dabbrev)))
 
 ;; AI
 (use-package gptel
