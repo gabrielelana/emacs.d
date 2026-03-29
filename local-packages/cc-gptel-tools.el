@@ -204,6 +204,43 @@ FILE-PATH can be relative to the configuration directory or absolute."
           :description "Path to the configuration file (relative or absolute)."
           :optional nil)))
 
+(defun cc/read-visible-buffers ()
+  "Return the contents of all buffers currently visible to the user.
+
+A buffer is considered visible if it is displayed in a live window on the
+current frame. Each buffer is included only once, even if shown in
+multiple windows.
+
+The result is a string using org mode syntax with one top level headline
+per buffer."
+  (let ((buffers (delete-dups
+                  (mapcar #'window-buffer
+                          (window-list nil 'no-minibuf)))))
+    (with-temp-buffer
+      (dolist (buffer buffers)
+        (let* ((major-mode-name (with-current-buffer buffer major-mode))
+               (lang (string-trim-right (symbol-name major-mode-name) "\\(?:-ts\\)?-mode")))
+          (insert (format "\n* buffer %s\n" (buffer-name buffer)))
+          (insert ":PROPERTIES:\n")
+          (insert (format ":MODE: %s\n" major-mode-name))
+          (when-let* ((file-name (buffer-file-name buffer)))
+            (insert (format ":FILE: %s\n" file-name)))
+          (insert ":END:\n")
+          (insert (format "#+begin_src %s\n" lang))
+          (insert (with-current-buffer buffer
+                    (buffer-substring-no-properties (point-min) (point-max))))
+          (goto-char (point-max))
+          (insert "\n#+end_src\n")))
+      (buffer-string))))
+
+(gptel-make-tool
+ :name "emacs_visible_buffers"
+ :description "Return the contents of all buffers currently visible to the user. When the user refers to something not present in the prompt but somehow visible, then use this tool to get it."
+ :category "reflection"
+ :include t
+ :function #'cc/read-visible-buffers
+ :args '())
+
 ;;; CATEGORY agentic TODO
 
 ;;; CATEGORY web
