@@ -386,7 +386,10 @@
          ("C-," . embark-dwim)
          ("C-h B" . embark-bindings)
          :map embark-file-map
-         ("O" . cc/embark-org-insert-link))
+         ("O" . cc/embark-org-insert-link)
+         ("@" . cc/embark-agent-shell-insert-link)
+         :map embark-region-map
+         ("s" . cc/embark-kill-region-as-org-src-block))
   :preface
   (defun cc/embark-org-insert-link (file)
     "Insert an org-mode link to FILE in the current buffer.
@@ -399,6 +402,27 @@ The path will be absolute. Only works if the current buffer is in
                          (format "Description (default %s): " default-description)
                          nil nil default-description)))
       (insert (org-link-make-string (concat "file:" file) description))))
+  (defun cc/embark-agent-shell-insert-link (file)
+    "Insert FILE as an agent-shell path relative to the current project root.
+The inserted format is @RELATIVE/PATH."
+    (unless (projectile-project-p)
+      (user-error "Not in a projectile project"))
+    (insert
+     (concat
+      "@"
+      (file-relative-name
+       (expand-file-name file)
+       (projectile-project-root)))))
+  (defun cc/embark-kill-region-as-org-src-block (beg end)
+    "Kill region from BEG to END and save it as an Org source block."
+    (interactive "r")
+    (unless (use-region-p)
+      (user-error "No active region"))
+    (let* ((selection (buffer-substring-no-properties beg end))
+           (lang (string-trim-right (symbol-name major-mode) "\\(?:-ts\\)?-mode"))
+           (block (format "#+begin_src %s\n%s%s#+end_src" lang selection (if (string-suffix-p "\n" selection) "" "\n"))))
+      (kill-new block)
+      (message "Killed region as org source block (%s)" lang)))
   :custom
   ;; optionally replace the key help with a completing-read interface
   (prefix-help-command #'embark-prefix-help-command)
