@@ -400,6 +400,18 @@ The path will be absolute. Only works if the current buffer is in
   (embark-collect-mode . consult-preview-at-point-mode))
 
 ;; Window management
+(use-package golden-ratio)
+
+(use-package winpulse
+  :custom
+  (winpulse-duration 1)
+  (winpulse-brightness 42)
+  (winpulse-ignore-minibuffer-focus t)
+  :config
+  (winpulse-mode +1))
+
+(use-package ace-window
+  :bind (("C-x M-o" . ace-window)))
 
 (use-package shackle
   :if (not (bound-and-true-p disable-pkg-shackle))
