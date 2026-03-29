@@ -1897,41 +1897,54 @@ Otherwise use drag-stuff-down."
 ;; # You will need the mps library, checkout the library https://github.com/Ravenbrook/mps.git compile and install artifacts into /home/coder/opt/mps
 ;; export CPPFLAGS="-I/home/coder/opt/mps"
 ;; export LDFLAGS="-L/home/coder/opt/mps"
-;; ./configure --prefix=~/opt/$VERSION --bindir=~/opt/$VERSION/bin --with-tree-sitter --with-imagemagick --with-pgtk --without-dbus --with-native-compilation=aot --with-wide-int --with-mailutils --with-mps
+;; ./configure --prefix=/home/coder/opt/$VERSION --bindir=/home/coder/opt/$VERSION/bin --with-tree-sitter --with-imagemagick --with-pgtk --without-dbus --with-native-compilation=aot --with-wide-int --with-mailutils --with-mps
 ;; make -j"$(nproc)" && make install
 ;; ln -ls "$HOME/opt/$VERSION/bin/emacs" "$HOME/.local/bin/$VERSION"
 
-;; TODO: gptel explore presets and how to select them
-;; TODO: gptel-prompt to compose prompts
-;; TODO: add prompt "Never use first level heading in your response, only use headings from level 2 to level 6."
-;; TODO: add prompt to instruct on using tools
+;; TRY: minuet with local models
+
+;; TRY: different way to use gptel: rewrite, refactor and fill in region
+;; https://github.com/karthink/gptel?tab=readme-ov-file#rewrite-refactor-or-fill-in-a-region
+
+;; FIX: layout diff-mode always reuse other window ???
+;; FIX: do not try to format JSON in a non JSON buffer
+;; TODO: gptel report on tokens sent/received, other issues?
+;; GROK: macher how it works?
+
+;; TODO: gptel try presets, define and use
+
+;; TODO: code search directly in Emacs, starting with GitHub
+
+;; TODO: open a buffer in markdown mode with full doc at point reported by lsp-mode
+;; TODO: open a buffer in ??? mode with error at point reported by flycheck || lsp-mode
+
+;; TODO: cc-gptel-fork to fork current chat with another model, after selecting
+;; the new model and suffixing the buffer with the name of the model
+
+;; TODO: cc-gptel-flash ask quick question and have back a quick answer in an
+;; org buffer (*Flash-Answer*) read only with special key bindings (`q` to kill
+;; the buffer and the window, `h` to kill the window and keep the buffer alive
+;; but changing the buffer name with timestap)
+
+;; FIX: in gptel buffer after selecting a model the current window gets splitted
+;; horizontally and the new window contains another buffer (tipically the buffer
+;; from where I started the gptel chat)
+
 ;; TODO: add prompt to agentic coding (https://github.com/gregoryg/AIPIHKAL/blob/main/the-one-true-holy-and-apostolic-coding-and-tool-usage-prompt.org)
 ;; TODO: add prompt to look at /docs/TOOLS.md with libraries and the url where an LLM can find their documentation
 
 ;; https://github.com/ksqsf/emacs-config/blob/99efd403d4b8be96e612a8d2ad2f7a9b42fba098/modules/prelude-ai.el
 
-;; TODO: tools category emacs_reflection (https://github.com/gregoryg/emacs-gregoryg?tab=readme-ov-file#custom-tools)
-;; TODO: - emacs_package_readme
-;; TODO: - emacs_package_description
-;; TODO: - emacs_package_source
-;; TODO: - emacs_packages_list
-;; TODO: - emacs_function_source
-;; TODO: - emacs_function_documentation
-;; TODO: - emacs_variable_documentation
-;; TODO: - emacs_lisp_eval
+;; TODO: https://github.com/kmontag/macher for agentic coding done the right way
 
-;; TODO: tools category agentic
-;; TODO: - current_directory probably unnecessary?
+;; TODO: tools category projectile
+;; TODO: - list_directories
 ;; TODO: - list_files
 ;; TODO: - read_file
 ;; TODO: - write_file
-;; TODO: - run_format
 ;; TODO: - run_checks
 ;; TODO: - run_tests
-
-;; TODO: tools category web
 ;; TODO: - search
-;; TODO: - read_url
 
 ;; TODO: copy the (flycheck) error at point
 ;; TODO: open the documentation of thing at point given lsp-mode
