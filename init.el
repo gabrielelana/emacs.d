@@ -1608,7 +1608,7 @@ The buffer will be named *{PROJECT-NAME}-{CHAT-NAME}* and the
     (setq agda2-backend "GHC")
 
     (defun agda2-align-equality-reasoning-block ()
-      "Align proofs in equality reasoning blocks between `begin' and `∎'"
+      "Align proofs in equality reasoningr blocks between `begin' and `∎'"
       (interactive)
       (let ((region (if (region-active-p)
                         (cons (region-beginning) (region-end))
