@@ -1324,7 +1324,6 @@ The buffer will be named *{PROJECT-NAME}-{CHAT-NAME}* and the
     (setq-local flycheck-emacs-lisp-load-path 'inherit
                 flycheck-emacs-lisp-initialize-packages 'auto)
     (flycheck-mode)
-    (company-mode)
     (eldoc-mode))
   :hook ((emacs-lisp-mode . cc/--setup-emacs-lisp))
   :bind (:map emacs-lisp-mode-map
