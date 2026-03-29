@@ -1646,6 +1646,7 @@ The buffer will be named *{PROJECT-NAME}-{CHAT-NAME}* and the
                 lsp-enable-indentation nil
                 python-indent-offset 4
                 tab-width 4)
+    (flycheck-add-next-checker 'lsp '(warning . python-mypy))
     (apheleia-mode 1))
   :custom
   (python-ts-mode-indent-offset 4))
@@ -1679,7 +1680,9 @@ The buffer will be named *{PROJECT-NAME}-{CHAT-NAME}* and the
               ("C-c C-t" . python-run-tests)
               ("C-c C-c" . python-shell-send-buffer)
               ("C-c C-z" . python-shell-switch-to-shell)
-              ("C-c C-r" . python-shell-send-region))
+              ("C-c C-r" . python-shell-send-region)
+              ("M-]" . python-indent-shift-right)
+              ("M-["  . python-indent-shift-left))
   :custom
   ;; Use pytest for testing
   (python-test-runner 'pytest)
