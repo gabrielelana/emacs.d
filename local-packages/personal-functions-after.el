@@ -20,30 +20,10 @@
 
 ;;; Commentary:
 
-;; summary
+;; Everything that should be executate after everything is setup
 
 ;;; Code:
 
-(require 'vterm)
-(require 'projectile)
-
-(defun cc/projectile-vterm-other-window (&optional terminal-name)
-  "Create a terminal in other window named *{PROJECT-NAME}-{TERMINAL-NAME}*."
-  (interactive "sName: ")
-  (if (not (projectile-project-p))
-      (user-error "ERROR: seems like you are not currently in a project")
-    (let* ((-project-name (projectile-project-name))
-           (-project-root-directory (projectile-project-root))
-           (-current-directory default-directory)
-           (-current-vterm-buffer-name vterm-buffer-name)
-           (-terminal-buffer-name (format "*%s-%s*" -project-name terminal-name)))
-      (unwind-protect
-          (progn
-            (setq default-directory -project-root-directory
-                  vterm-buffer-name -terminal-buffer-name)
-            (vterm-other-window -terminal-buffer-name))
-        (setq default-directory -current-directory
-              vterm-buffer-name -current-vterm-buffer-name)))))
 
 (provide 'personal-functions-after)
 

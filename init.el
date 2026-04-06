@@ -1077,21 +1077,101 @@ Automatically create missing files/directories."
 ;; Terminal
 (use-package vterm
   :preface
-  ;; TODO: projectile integration
-  ;; - add terminal buffer as project's buffer (possible?)
-  ;; - close project's terminal buffer when close project (hook?)
-  ;; - completing-read between terminals of current project
-  ;; TODO: improve cc/project-vterm-other-window
-  ;; - with C-u completing-read which directory of the project start the terminal
-  ;; - rename cc/vterm-other-window-dwim
-  ;; - when not in a project puts `global` as prefix for the buffer
   (defun cc/--setup-vterm ()
-    (setq-local global-hl-line-mode nil
-                line-spacing nil))
+    (hl-line-mode -1))
+
+  ;; TODO: improve
+  ;; - with C-u completing-read which directory of the project start the terminal
+  ;; - rename cc/vterm-other-window-dwim, when not in a project puts `global` as
+  ;; prefix for the buffer
+  (defun cc/vterm-terminal-for-project-in-other-window (&optional terminal-name)
+    "Open a project vterm in another window.
+
+If TERMINAL-NAME is empty, gives the buffer a random identifier."
+    (interactive "sName: ")
+    (require 'vterm)
+    (let* ((project (project-current t))
+           (project-root (project-root project))
+           (project-name (file-name-nondirectory
+                          (directory-file-name project-root)))
+           (terminal-name
+            (let ((name (string-trim (or terminal-name ""))))
+              (if (string-empty-p name)
+                  (cc/random-token 6)
+                name)))
+           (buffer-name
+            (format "*vterm:%s:%s*" project-name terminal-name))
+           (default-directory project-root))
+      (vterm-other-window buffer-name)))
   :hook ((vterm-mode . cc/--setup-vterm))
-  :bind (("C-c t p" . #'cc/projectile-vterm-other-window))
+  :bind (("C-c t p" . #'cc/vterm-terminal-for-project-in-other-window))
   :custom
   (vterm-max-scrollback 32768))
+
+;; NOTE: you will not be able to build automatically the module because you
+;; don't have the Emacs include files installed, therefore you need to build it
+;; manually in the following way in ~/.emacs.d/straight/repos/ghostel/
+
+;; export C_INCLUDE_PATH=/home/coder/src/emacs/src:$C_INCLUDE_PATH; ./build.sh
+
+;; NOTE: start claude code with CLAUDE_CODE_NO_FLICKER=1 claude
+(use-package ghostel
+  :straight (ghostel
+             :type git
+             :host github
+             :repo "dakra/ghostel"
+             :files ("*.el"
+                     "*.so"))
+  :hook ((ghostel-mode . cc/--setup-ghostel))
+  :preface
+  (defun cc/--setup-ghostel ()
+    (hl-line-mode -1)
+    (setq-local mode-name " 👻")
+    ;; (setq-local mode-line-format nil
+    ;;             header-line-format
+    ;;             '(" "
+    ;;               (:eval
+    ;;                (propertize
+    ;;                 (buffer-name)
+    ;;                 'face '(:inherit header-line :weight bold)))
+    ;;               "  👻"))
+    )
+
+  (defvar-local cc/ghostel-lock-buffer-name nil)
+
+  (defun cc/ghostel-terminal-for-project-in-other-window (&optional terminal-name)
+    "Open a ghostel terminal for the current project in another window.
+
+If TERMINAL-NAME is empty, gives the buffer a random identifier."
+    (interactive "sName: ")
+    (require 'ghostel)
+    (let* ((project (project-current t))
+           (project-root (project-root project))
+           (project-name
+            (file-name-nondirectory
+             (directory-file-name project-root)))
+           (terminal-name
+            (let ((name (string-trim (or terminal-name ""))))
+              (if (string-empty-p name)
+                  (cc/random-token 6)
+                name)))
+           (ghostel-buffer-name
+            (format "*ghostel:%s:%s*" project-name terminal-name))
+           ;; so that ghostel will not append <N> to the buffer name
+           (ghostel--buffer-counter 0)
+           (default-directory project-root))
+      (select-window (split-window-sensibly))
+      (ghostel)
+      ;; so that ghostel will not rename the buffer when I process try to rename
+      ;; a terminal session, see the override of ghostel--set-title
+      (setq-local cc/ghostel-lock-buffer-name t)))
+  ;; :custom
+  ;; (ghostel-full-redraw t)
+  :config
+  (defun ghostel--set-title (title)
+    "Update the buffer name with TITLE from the terminal."
+    (unless cc/ghostel-lock-buffer-name
+      (rename-buffer (format "*ghostel: %s*" title) t))))
 
 ;; PDF
 (use-package pdf-tools
