@@ -1194,6 +1194,13 @@ Automatically create missing files/directories."
   :custom
   (highlight-indent-guides-method 'character))
 
+(use-package cc-count-words
+  :straight nil
+  :load-path "local-packages"
+  :commands (cc/count-words cc/count-tokens-dwim)
+  :bind (("M-=" . cc/count-words)
+         ("C-x M-t" . cc/count-tokens-dwim)))
+
 ;; Prettify
 (use-package apheleia
   :diminish (apheleia-mode . " ")
