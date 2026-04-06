@@ -28,9 +28,9 @@
 ;;; Code:
 (require 'subr-x)
 (require 'dash)
-;; (require 'vterm)
-;; (require 'projectile)
-;; (require 'flyspell)
+(require 'project)
+(require 'flyspell)
+(require 'cl-lib)
 
 (defvar cc/marked-windows '(nil nil)
   "Pair of windows marked to be toggled between.")
@@ -61,6 +61,14 @@ Shows =[W1]= for first marked window, =[W2]= for second, nothing otherwise."
      ((eq current-window (nth 0 cc/marked-windows)) (propertize "[W1]" 'face 'bold))
      ((eq current-window (nth 1 cc/marked-windows)) (propertize "[W2]" 'face 'bold))
      (t ""))))
+
+(defun cc/random-token (length)
+  "Return a random lowercase alphanumeric string of LENGTH."
+  (let ((chars "abcdefghijklmnopqrstuvwxyz0123456789"))
+    (cl-loop repeat length
+             collect (aref chars (random (length chars)))
+             into result
+             finally return (apply #'string result))))
 
 (defun cc/read-key-from-env (key-name)
   "Read KEY-NAME from environment."
@@ -300,7 +308,7 @@ Copy the line below if DIRECTION is 1."
 The dot env file is the one located at DIRECTORY-PATH if
 specified or at the project root directory otherwise."
   (interactive)
-  (setq directory-path (if (stringp directory-path) directory-path (projectile-project-root)))
+  (setq directory-path (if (stringp directory-path) directory-path (project-current)))
   (let ((dot-env-file-path (concat directory-path "/.env")) env-export-lines env-export)
     (setq env-export-lines (with-temp-buffer
                              (insert-file-contents dot-env-file-path)
@@ -324,7 +332,7 @@ specified or at the project root directory otherwise."
   (interactive)
   (let ((file-name (buffer-file-name)))
     (when file-name
-      (kill-new (file-name-without-directory file-name)))))
+      (kill-new (file-name-extension file-name)))))
 
 (defun cc/kill-current-file-path ()
   "Put current buffer file path in kill ring."
@@ -334,17 +342,20 @@ specified or at the project root directory otherwise."
       (kill-new file-name))))
 
 (defun cc/kill-current-file-path-with-line ()
-  "Put current buffef file path with line in kill ring."
+  "Copy current buffer file path relative to project root plus line."
   (interactive)
-  (let* ((file-path (buffer-file-name))
-         (line-number (line-number-at-pos))
-         (project (project-current))
-         (project-root (expand-file-name (project-root project))))
-    (when file-path
-      (kill-new
-       (if (string-prefix-p project-root file-path)
-           (concat (substring file-path (length project-root)) ":" (number-to-string line-number))
-         (concat file-path ":" (number-to-string line-number)))))))
+  (let* ((file (buffer-file-name))
+         (project (project-current)))
+    (unless file
+      (user-error "Current buffer is not visiting a file"))
+    (unless project
+      (user-error "Current buffer is not part of a project"))
+    (let* ((root (project-root project))
+           (text (format "%s:%d"
+                         (file-relative-name file root)
+                         (line-number-at-pos))))
+      (kill-new text)
+      (message "Copied: %s" text))))
 
 ;;; Programming
 (defmacro cc/measure-time (name &rest body)
@@ -357,25 +368,26 @@ It will print \"{NAME}: xx.yyyyyys\"."
     (message "%s: %.06fs" ,name (float-time (time-since time)))))
 
 (defun cc/buffer-base-name ()
-  "Current buffer file name without directory and suffix."
+  "Current buffer file name without directory and extension."
   (->>
    (buffer-file-name)
-   (file-name-without-extension)
-   (file-name-without-directory)))
+   (file-name-base)))
 
-(defmacro cc/todo (&rest body)
+(defmacro cc/todo (&optional message)
   "Declare that something has to be implemented.
-No parameters or same arguments as #'error in BODY"
-  (if (null body)
-      `(error "UNIMPLEMENTED" )
-    `(error ,(format "UNIMPLEMENTED: %s" message) ,@arguments)))
 
-(defmacro cc/unreacheable (&rest body)
+Specify the reason why this has not been implemented in MESSAGE."
+  (if (null message)
+      `(error "UNIMPLEMENTED" )
+    `(error ,(format "UNIMPLEMENTED: %s" message))))
+
+(defmacro cc/unreacheable (&optional message)
   "If the execution flow reached this point something is wrong.
-No parameters or same arguments as #'error in BODY"
-  (if (null body)
+
+Specify the reason why this should be unreacheable in MESSAGE."
+  (if (null message)
       `(error "UNREACHEABLE" )
-    `(error ,(format "UNREACHEABLE: %s" message) ,@arguments)))
+    `(error ,(format "UNREACHEABLE: %s" message))))
 
 (defmacro cc/with-content-file (name content &rest body)
   "Create a unique file with a given CONTENT, eval BODY and delete it.
@@ -406,25 +418,25 @@ matter what, at the end the file will be deleted."
 The main window is the window with the bigger surface in the
 current frame.
 
-If the EXCLUDE function given a window returns 't then the window
-is exluded as a main window competitor.
+If the EXCLUDE function given a window returns t then the window is
+exluded as a main window competitor.
 
 If no candidates remains returns nil."
   (->> (window-list)
        (-map (lambda (w) (cons w (* (window-width w) (window-height w)))))
        (-sort (lambda (wl wr) (> (cdr wl) (cdr wr))))
-       (-remove (or exclude (lambda (w) nil)))
+       (-remove (or exclude (lambda (_) nil)))
        (caar)))
 
 (defun cc/main-window-no-compile ()
   "Return the current main window that is not in compile mode."
   (cc/main-window (lambda (w) (with-current-buffer (window-buffer (car w)) (derived-mode-p 'compilation-mode)))))
 
-(defun cc/display-in-main-window-no-compile (buffer _action)
-  "Display BUFFER in a window."
-  (let (window (cc/main-window-no-compile))
-    ;; (set-window-buffer window buffer)
-    window))
+;; (defun cc/display-in-main-window-no-compile (buffer _action)
+;;   "Display BUFFER in a window."
+;;   (let (window (cc/main-window-no-compile))
+;;     ;; (set-window-buffer window buffer)
+;;     window))
 
 (provide 'personal-functions)
 
