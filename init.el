@@ -455,7 +455,7 @@ The inserted format is @RELATIVE/PATH."
   (winpulse-brightness 42)
   (winpulse-ignore-minibuffer-focus t)
   :config
-  (winpulse-mode +1))
+  (winpulse-mode -1))
 
 (use-package ace-window
   :bind (("C-x M-o" . ace-window)))
