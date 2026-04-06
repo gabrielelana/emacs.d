@@ -734,6 +734,13 @@ The buffer will be named *{PROJECT-NAME}-{CHAT-NAME}* and the
                :output-cost 15.00
                :context-window 1000
                :cutoff-date "05-03-2026")
+              (openai/gpt-5.4-pro
+               :description "GPT-5.4 Pro is OpenAI's most advanced model."
+               :capabilities (reasoning tool-use json url media)
+               :input-cost 30
+               :output-cost 180
+               :context-window 1000
+               :cutoff-date "05-03-2026")
               (openai/gpt-5.3-codex
                :description "GPT-5.3-Codex is OpenAI’s most advanced agentic coding model, combining the frontier software engineering performance of GPT-5.2-Codex with the broader reasoning and professional knowledge capabilities of GPT-5.2"
                :capabilities (reasoning tool-use json url media)
@@ -748,6 +755,13 @@ The buffer will be named *{PROJECT-NAME}-{CHAT-NAME}* and the
                :output-cost 25
                :context-window 1000
                :cutoff-date "04-02-2026")
+              (qwen/qwen3.6-plus:free
+               :description "Qwen 3.6 Plus builds on a hybrid architecture that combines efficient linear attention with sparse mixture-of-experts routing, enabling strong scalability and high-performance inference."
+               :capabilities (reasoning tool-use json url media)
+               :input-cost 0
+               :output-cost 0
+               :context-window 1048
+               :cutoff-date "02-04-2026")
               (xiaomi/mimo-v2-pro
                :description "MiMo-V2-Pro is Xiaomi's flagship foundation model, featuring over 1T total parameters and a 1M context length, deeply optimized for agentic scenarios. It is highly adaptable to general agent frameworks like OpenClaw. It ranks among the global top tier in the standard PinchBench and ClawBench benchmarks, with perceived performance approaching that of Opus 4.6."
                :capabilities (reasoning tool-use json url media)
@@ -769,13 +783,6 @@ The buffer will be named *{PROJECT-NAME}-{CHAT-NAME}* and the
                :output-cost 2.56
                :context-window 200
                :cutoff-date "11-02-2026")
-              (x-ai/grok-4.1-fast
-               :description "Grok 4.1 Fast is xAI's best agentic tool calling model that shines in real-world use cases like customer support and deep research. 2M context window."
-               :capabilities (reasoning tool-use json url media)
-               :input-cost 0
-               :output-cost 0
-               :context-window 2000
-               :cutoff-date "19-09-2025")
               (google/gemini-3.1-pro-preview
                :description "Gemini 3.1 Pro is Google’s flagship frontier model for high-precision multimodal reasoning"
                :capabilities (reasoning tool-use json url media)
