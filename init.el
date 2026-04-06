@@ -396,7 +396,7 @@
 The path will be absolute. Only works if the current buffer is in
 `org-mode'. Prompts for link description, defaulting to the filename."
     (unless (derived-mode-p 'org-mode)
-      (user-error "Cannot insert an org mode link in a not org mode buffer"))
+      (user-error "Not in an org mode buffer"))
     (let* ((default-description (file-name-nondirectory file))
            (description (read-string
                          (format "Description (default %s): " default-description)
@@ -405,15 +405,19 @@ The path will be absolute. Only works if the current buffer is in
   (defun cc/embark-agent-shell-insert-link (file)
     "Insert FILE as an agent-shell path relative to the current project root.
 The inserted format is @RELATIVE/PATH."
-    (unless (projectile-project-p)
-      (user-error "Not in a projectile project"))
-    (insert
-     (concat
-      "@"
-      (file-relative-name
-       (expand-file-name file)
-       (projectile-project-root)))))
-  (defun cc/embark-kill-region-as-org-src-block (beg end)
+    (let ((project (project-current)))
+      (unless project
+        (user-error "Not in a project"))
+      (unless (derived-mode-p 'agent-shell-mode
+                              'agent-shell-viewport-view-mode
+                              'agent-shell-viewport-edit-mode)
+        (user-error "Not in an agent-shell buffer"))
+      (insert
+       (concat
+        "@"
+        (file-relative-name
+         (expand-file-name file)
+         (project-root project))))))
   (defun cc/embark-save-region-as-org-src-block (beg end)
     "Kill region from BEG to END and save it as an Org source block."
     (interactive "r")
