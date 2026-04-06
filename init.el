@@ -1077,7 +1077,17 @@ Automatically create missing files/directories."
 ;; Terminal
 (use-package vterm
   :preface
+  (defun cc/--setup-vterm-hl-line ()
+    "Keep `hl-line-mode' in sync with `vterm-copy-mode'."
+    (if (bound-and-true-p vterm-copy-mode)
+        (unless hl-line-mode
+          (hl-line-mode 1))
+      (when hl-line-mode
+        (hl-line-mode -1))))
   (defun cc/--setup-vterm ()
+    "Configure the `vterm-mode' as I want it."
+    (add-hook 'post-command-hook #'cc/--setup-vterm-hl-line nil t)
+    (setq-local global-hl-line-mode nil)
     (hl-line-mode -1))
 
   ;; TODO: improve
