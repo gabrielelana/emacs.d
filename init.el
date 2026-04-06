@@ -389,7 +389,7 @@
          ("O" . cc/embark-org-insert-link)
          ("@" . cc/embark-agent-shell-insert-link)
          :map embark-region-map
-         ("s" . cc/embark-kill-region-as-org-src-block))
+         ("s" . cc/embark-save-region-as-org-src-block))
   :preface
   (defun cc/embark-org-insert-link (file)
     "Insert an org-mode link to FILE in the current buffer.
@@ -414,6 +414,7 @@ The inserted format is @RELATIVE/PATH."
        (expand-file-name file)
        (projectile-project-root)))))
   (defun cc/embark-kill-region-as-org-src-block (beg end)
+  (defun cc/embark-save-region-as-org-src-block (beg end)
     "Kill region from BEG to END and save it as an Org source block."
     (interactive "r")
     (unless (use-region-p)
