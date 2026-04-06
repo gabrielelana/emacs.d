@@ -27,21 +27,18 @@
 ;;; TODO: create a tool to read/write the currently visible buffers
 
 (require 'gptel)
-(require 'uuidgen)
+(require 'personal-functions)
 
 (defun cc/gptel-flash--quit ()
   "Close the current flash gptel window and kill its buffer."
   (interactive)
-  (let ((buffer (current-buffer))
-        (window (selected-window)))
-    (when (window-live-p window)
-      (quit-window nil window))
-    (when (buffer-live-p buffer)
-      (kill-buffer buffer))))
+  (if (one-window-p)
+      (kill-buffer (current-buffer))
+    (kill-buffer-and-window)))
 
 (defun cc/gptel-flash--buffer-name ()
   "Return a unique buffer name for a flash gptel session."
-  (format "*gptel-flash:%s*" (uuidgen-4)))
+  (format "*gptel-flash:%s*" (cc/random-token 6)))
 
 (defun cc/gptel-flash--normalize-tools (tools)
   "Normalize TOOLS to a list of gptel tool objects."
