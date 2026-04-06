@@ -856,6 +856,7 @@
     ("💤" "zzz" "U+1F4A4" "object zzz sleep tired night"))
   "List of emoji with their names, Unicode codepoints, and descriptive tags.")
 
+;;;###autoload
 (defun cc/consult-emoji ()
   "Select and insert an emoji using consult completion.
 Shows emoji with their names and hexadecimal codepoints, with filtering."
