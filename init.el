@@ -2273,30 +2273,25 @@ Otherwise use drag-stuff-down."
 ;; make -j"$(nproc)" && make install
 ;; ln -s "$HOME/opt/$VERSION/bin/emacs" "$HOME/.local/bin/$VERSION"
 
+;; TRY: meow package to more complex buffer modifications
+;; TODO: steal from https://emacsredux.com/blog/2026/04/07/stealing-from-the-best-emacs-configs/
+;; TODO: resume dino.el implementation with better state representation and fire
+;; bonus, check if there's a bug in collision detection, extract in its own
+;; package vendoring retro.el?
+
 ;; TRY: minuet with local models
 
 ;; TRY: different way to use gptel: rewrite, refactor and fill in region
 ;; https://github.com/karthink/gptel?tab=readme-ov-file#rewrite-refactor-or-fill-in-a-region
 
 ;; FIX: layout diff-mode always reuse other window ???
-;; FIX: do not try to format JSON in a non JSON buffer
 ;; TODO: gptel report on tokens sent/received, other issues?
 ;; GROK: macher how it works?
 
-;; TODO: gptel try presets, define and use
-
 ;; TODO: code search directly in Emacs, starting with GitHub
-
-;; TODO: open a buffer in markdown mode with full doc at point reported by lsp-mode
-;; TODO: open a buffer in ??? mode with error at point reported by flycheck || lsp-mode
 
 ;; TODO: cc-gptel-fork to fork current chat with another model, after selecting
 ;; the new model and suffixing the buffer with the name of the model
-
-;; TODO: cc-gptel-flash ask quick question and have back a quick answer in an
-;; org buffer (*Flash-Answer*) read only with special key bindings (`q` to kill
-;; the buffer and the window, `h` to kill the window and keep the buffer alive
-;; but changing the buffer name with timestap)
 
 ;; FIX: in gptel buffer after selecting a model the current window gets splitted
 ;; horizontally and the new window contains another buffer (tipically the buffer
@@ -2318,14 +2313,15 @@ Otherwise use drag-stuff-down."
 ;; TODO: - run_tests
 ;; TODO: - search
 
-;; TODO: copy the (flycheck) error at point
-;; TODO: open the documentation of thing at point given lsp-mode
+;; TODO: copy the (flycheck) error at point or open a buffer with the full error
+;; TODO: open the documentation of thing at point given lsp-mode or open a buffer with the full documentation
 
-;; TODO: evil with setup so that emacs mode is the default
+;; TODO: custom modeline, see https://github.com/seagle0128/doom-modeline or
+;; https://gitlab.com/jessieh/mood-line as examples
+
 ;; TODO: rename all local packages in cc-*
 ;; FIX: completing in interactive-haskell-mode is not done through vertico/orderless/marginalia..
 ;; TODO: hydra, look at pretty-hydra (https://github.com/jerrypnz/major-mode-hydra.el)
-;; TODO: modeline with https://github.com/seagle0128/doom-modeline or https://gitlab.com/jessieh/mood-line
 ;; FIX: lisp indent with https://gitlab.com/magus/mes/-/blob/main/lisp/mes-dev-elisp.el?ref_type=heads#L19
 ;; TODO: look-at https://gitlab.com/magus/mes/-/blob/main/lisp/mes-usability.el
 ;; - https://gitlab.com/magus/mes/-/blob/main/lisp/mes-usability.el#L238
@@ -2347,6 +2343,7 @@ Otherwise use drag-stuff-down."
 ;; TODO: YAML language server https://github.com/redhat-developer/yaml-language-server
 ;; TODO: Top level comments with triple ; to work as outlines as per documentation https://www.gnu.org/software/emacs/manual/html_node/elisp/Comment-Tips.html
 ;; TODO: M-q should not join line which begins with `-`,`TODO`,...
+;; TODO: repeat-mode
 ;; TODO: expand-region or combobulate
 ;; TODO: dabbrev
 ;; TODO: hippie-exp
