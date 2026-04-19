@@ -1989,27 +1989,32 @@ Highlight syntax uses `==' markers."
   :straight (:type built-in)
   :mode (("\\.py\\'" . python-ts-mode)
          ("\\.pyi\\'" . python-ts-mode))
-  :hook ((python-ts-mode . lsp)
-         (python-ts-mode . cc/--setup-python))
+  :hook ((python-ts-mode . cc/--setup-python))
   :preface
   (defun cc/--setup-python ()
     "Configure Python buffer."
     (setq-local lsp-enable-on-type-formatting nil
                 lsp-enable-indentation nil
+                python-ts-mode-indent-offset 4
                 python-indent-offset 4
                 tab-width 4)
+    (apheleia-mode 1)
+    (lsp)
+    (lsp-ui-mode)
     (flycheck-add-next-checker 'lsp '(warning . python-mypy))
-    (apheleia-mode 1))
-  :custom
-  (python-ts-mode-indent-offset 4))
+    (setq-local completion-at-point-functions
+                (list (cape-capf-super
+                       #'lsp-completion-at-point
+                       #'cape-file
+                       #'cape-keyword)))))
 
+;; NOTE: use pyright instead of the default python-language-server
 (use-package lsp-pyright
   :after lsp-mode
   :custom
-  ;; Use pyright instead of the default python-language-server
   (lsp-pyright-python-language-server "pyright")
   ;; Configure pyright settings
-  (lsp-pyright-venv-path nil)  ; Let pyright auto-detect virtual environments
+  (lsp-pyright-venv-path nil)  ; let pyright auto-detect virtual environments
   (lsp-pyright-use-library-code-for-types t)
   (lsp-pyright-diagnostics-enable t)
   (lsp-pyright-completion-enabled t)
