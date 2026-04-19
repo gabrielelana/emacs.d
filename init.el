@@ -2212,6 +2212,7 @@ Otherwise use drag-stuff-down."
 (bind-key "C-x &" #'kmacro-call-macro)
 (bind-key "C-c k f n" #'cc/kill-current-file-name)
 (bind-key "C-c k f p" #'cc/kill-current-file-path)
+(bind-key "C-c k f l" #'cc/kill-current-file-path-with-line)
 (bind-key "C-c k k" #'kill-whole-line)
 (bind-key "C-c k l" #'org-store-link)
 (bind-key "C-c k w" #'cc/kill-to-host-clipboard)
