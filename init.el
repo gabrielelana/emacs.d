@@ -1135,26 +1135,17 @@ If TERMINAL-NAME is empty, gives the buffer a random identifier."
 
 ;; NOTE: start claude code with CLAUDE_CODE_NO_FLICKER=1 claude
 (use-package ghostel
-  :straight (ghostel
-             :type git
-             :host github
-             :repo "dakra/ghostel"
-             :files ("*.el"
-                     "*.so"))
   :hook ((ghostel-mode . cc/--setup-ghostel))
   :preface
   (defun cc/--setup-ghostel ()
     (hl-line-mode -1)
-    (setq-local mode-name " 👻")
-    ;; (setq-local mode-line-format nil
-    ;;             header-line-format
-    ;;             '(" "
-    ;;               (:eval
-    ;;                (propertize
-    ;;                 (buffer-name)
-    ;;                 'face '(:inherit header-line :weight bold)))
-    ;;               "  👻"))
-    )
+    (apheleia-mode -1)
+    (drag-stuff-mode -1)
+    (eldoc-mode -1)
+    (electric-indent-mode -1)
+    ;; (outline-mode -1)
+    ;; (org-src-mode -1)
+    (setq-local mode-name " 👻"))
 
   (defvar-local cc/ghostel-lock-buffer-name nil)
 
@@ -1184,7 +1175,10 @@ If TERMINAL-NAME is empty, gives the buffer a random identifier."
       ;; so that ghostel will not rename the buffer when I process try to rename
       ;; a terminal session, see the override of ghostel--set-title
       (setq-local cc/ghostel-lock-buffer-name t)))
-  ;; :custom
+  :custom
+  ;; NOTE: configuration available only in local branch `height-margin'
+  ;; TODO: PR upstream?
+  (ghostel-height-margin 4)
   ;; (ghostel-full-redraw t)
   :config
   (defun ghostel--set-title (title)
