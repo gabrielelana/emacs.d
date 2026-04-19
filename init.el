@@ -1605,8 +1605,38 @@ being copied to the kill ring."
   :mode (("README\\.md\\'" . gfm-mode)
          ("\\.md\\'" . markdown-mode)
          ("\\.markdown\\'" . markdown-mode))
-  :custom-face (markdown-code-face ((t (:inherit nil))))
+  :bind (:map markdown-mode-map
+              ("C-c C-s =" . #'cc/markdown-insert-highlight))
+  :preface
+  (defun cc/markdown-wrap-region-or-thing (marker)
+    "Wrap active region or thing at point with MARKER.
+
+If the region is active, wrap it. Otherwise wrap the symbol or word at
+point. If there is no suitable thing at point, insert MARKER twice and
+leave point between them."
+    (let ((bounds
+           (cond
+            ((use-region-p)
+             (cons (region-beginning) (region-end)))
+            ((bounds-of-thing-at-point 'symbol))
+            ((bounds-of-thing-at-point 'word)))))
+      (if-let ((beg (car-safe bounds))
+               (end (cdr-safe bounds)))
+          (save-excursion
+            (goto-char end)
+            (insert marker)
+            (goto-char beg)
+            (insert marker))
+        (insert marker marker)
+        (backward-char (length marker)))))
+  (defun cc/markdown-insert-highlight ()
+    "Insert Markdown highlight markup around region or thing at point.
+
+Highlight syntax uses `==' markers."
+    (interactive)
+    (cc/markdown-wrap-region-or-thing "=="))
   :custom
+  (markdown-enable-highlighting-syntax t)
   (markdown-fontify-code-blocks-natively nil)
   (markdown-command "pandoc --from markdown_github -t html5 -s"))
 
