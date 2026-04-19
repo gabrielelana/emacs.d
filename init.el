@@ -911,6 +911,9 @@ Always show the resulting preference in the echo area."
 ;;   :config
 ;;   (macher-install))
 
+;;; TODO: use https://github.com/manzaltu/claude-code-ide.el to have claude code
+;;; integration in Emacs
+
 (use-package diff-mode
   :straight (:type built-in)
   :bind (:map diff-mode-map
@@ -1256,8 +1259,6 @@ If TERMINAL-NAME is empty, gives the buffer a random identifier."
          ("C-c v m" . vr/mc-mark)))
 
 (use-package string-inflection
-  ;; TODO: cc/string-inflection-dwim interactive bound to C-*
-  ;; cicle between inflections used in the current programming language if any
   :bind (("C-*" . string-inflection-all-cycle)
          ("C-c q l" . string-inflection-lower-camelcase)
          ("C-c q c" . string-inflection-camelcase)
