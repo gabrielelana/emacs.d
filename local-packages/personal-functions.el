@@ -98,6 +98,26 @@ Shows =[W1]= for first marked window, =[W2]= for second, nothing otherwise."
                              "pbcopy"))
       (message "%d bytes sent to %s's clipboard" (length killed-text) hostname))))
 
+(defun cc/strip-common-leading-whitespace (text)
+  "Remove common leading whitespace prefix from all lines in TEXT.
+Preserves relative indentation between lines."
+  (let* ((lines (split-string text "\n"))
+         (non-empty-lines (seq-remove (lambda (l) (string-empty-p l)) lines))
+         (common-prefix
+          (if non-empty-lines
+              (apply #'min (mapcar (lambda (l)
+                                     (string-match "\\` *" l)
+                                     (match-end 0))
+                                   non-empty-lines))
+            0)))
+    (if (> common-prefix 0)
+        (mapconcat (lambda (l)
+                     (if (string-empty-p l)
+                         l
+                       (substring l common-prefix)))
+                   lines "\n")
+      text)))
+
 (defun cc/pick-random (l)
   "Pick a random element from a list L."
   (nth (random (length l)) l))

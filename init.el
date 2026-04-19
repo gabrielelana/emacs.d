@@ -2102,7 +2102,19 @@ Highlight syntax uses `==' markers."
 ;; (use-package org-present)
 
 (use-package org
+  :hook ((org-mode . cc/--setup-org))
   :preface
+  (defun cc/--setup-org ()
+    "Configure Org buffer."
+    (setq-local filter-buffer-substring-function
+                #'cc/org-filter-buffer-substring))
+  (defun cc/org-filter-buffer-substring (beg end &optional delete)
+    "Filter substring from BEG to END for the kill ring in org-mode.
+Removes common leading whitespace from all lines while preserving
+relative indentation."
+    (let ((text (buffer-substring-no-properties beg end)))
+      (when delete (delete-region beg end))
+      (cc/strip-common-leading-whitespace text)))
   (defun cc/org-move-up ()
     "Move current element up based on context.
 If at item, move item up. If at subtree, move subtree up.
