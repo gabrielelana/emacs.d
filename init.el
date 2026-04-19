@@ -1296,7 +1296,25 @@ If TERMINAL-NAME is empty, gives the buffer a random identifier."
 
 (use-package highlight-indent-guides
   :hook ((yaml-mode . highlight-indent-guides-mode)
-         (json-mode . highlight-indent-guides-mode))
+         (json-mode . highlight-indent-guides-mode)
+         (yaml-ts-mode . highlight-indent-guides-mode)
+         (json-ts-mode . highlight-indent-guides-mode)
+         (highlight-indent-guides-mode . cc/--setup-highlight-indent-guides))
+  :preface
+  (defun cc/--highlight-indent-guides-filter-buffer-substring (beg end &optional delete)
+    "Filter buffer substring to exclude highlight-indent-guides display properties.
+Returns the raw buffer text, preventing indent guide characters from
+being copied to the kill ring."
+    (let ((text (buffer-substring-no-properties beg end)))
+      (when delete (delete-region beg end))
+      text))
+
+  (defun cc/--setup-highlight-indent-guides ()
+    "Configure highlight-indent-guides to not copy guide characters to kill ring."
+    (if highlight-indent-guides-mode
+        (setq-local filter-buffer-substring-function
+                    #'cc/--highlight-indent-guides-filter-buffer-substring)
+      (kill-local-variable 'filter-buffer-substring-function)))
   :custom
   (highlight-indent-guides-method 'character))
 
