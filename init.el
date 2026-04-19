@@ -1325,6 +1325,43 @@ being copied to the kill ring."
   :bind (("M-=" . cc/count-words)
          ("C-x M-t" . cc/count-tokens-dwim)))
 
+(use-package treesit-fold
+  :straight (treesit-fold :type git :host github :repo "emacs-tree-sitter/treesit-fold")
+  :bind (:map treesit-fold-mode-map
+              ("C-~" . treesit-fold-toggle)))
+;; TODO: hydra for fold commands
+;; TODO: command to fold all the nodes like this (sibling nodes?)
+
+;; NOTE: to fix bug in the upstream current version unable to fold list items
+(with-eval-after-load 'treesit-fold
+  (defun cc/treesit-fold-yaml-block-sequence-item (node offset)
+    (let* ((key (treesit-search-subtree
+                 node
+                 (lambda (n)
+                   (equal (treesit-node-field-name n) "key"))))
+           (value (treesit-search-subtree
+                   node
+                   (lambda (n)
+                     (equal (treesit-node-field-name n) "value"))))
+           (beg (cond
+                 ((and value
+                       (string= (treesit-node-type value) "block_node")
+                       key)
+                  (treesit-node-end key))
+                 (value
+                  (treesit-node-end value))
+                 (t
+                  (treesit-fold--eol (treesit-node-start node)))))
+           (end (treesit-node-end node)))
+      (unless (>= beg end)
+        (treesit-fold--cons-add (cons beg end) offset))))
+
+  (dolist (mode '(yaml-ts-mode yaml-mode))
+    (let ((rules (copy-tree (alist-get mode treesit-fold-range-alist))))
+      (setf (alist-get 'block_sequence_item rules)
+            #'cc/treesit-fold-yaml-block-sequence-item)
+      (setf (alist-get mode treesit-fold-range-alist) rules))))
+
 ;; Prettify
 (use-package apheleia
   :diminish (apheleia-mode . " ")
