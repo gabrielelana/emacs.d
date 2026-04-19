@@ -818,6 +818,7 @@ The buffer will be named *{PROJECT-NAME}-{CHAT-NAME}* and the
 (use-package gptel-agent
   :straight (gptel-agent :type git :host github :repo "karthink/gptel-agent")
   :after gptel
+  :bind (("C-c i a" . gptel-agent))
   :config (gptel-agent-update))
 
 (use-package cc-gptel-flash
