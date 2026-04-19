@@ -28,6 +28,7 @@ Style:
   characters.
 - If a body is needed then separate the subject line and the body with a blank
   line.
+- Do not capitalize the subject line.
 - Do not end the subject line with a period.
 - Remove unnecessary punctuation marks.
 
