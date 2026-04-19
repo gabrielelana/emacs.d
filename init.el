@@ -1334,6 +1334,10 @@ being copied to the kill ring."
   (push '(cue-mode . cuefmt) apheleia-mode-alist)
   (push '(regofmt . ("opa" "fmt" inplace)) apheleia-formatters)
   (push '(rego-mode . regofmt) apheleia-mode-alist)
+  ;; yamlfmt for YAML files
+  (push '(yamlfmt . ("yamlfmt" "-in")) apheleia-formatters)
+  (setf (alist-get 'yaml-mode apheleia-mode-alist) 'yamlfmt)
+  (setf (alist-get 'yaml-ts-mode apheleia-mode-alist) 'yamlfmt)
   ;; TODO: only if the project has biome configured
   (push '(biome . ("apheleia-npx" "biome" "format" "--stdin-file-path" filepath)) apheleia-formatters)
   (push '(typescript-mode . biome) apheleia-mode-alist)
@@ -1421,11 +1425,23 @@ being copied to the kill ring."
                '(tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src"))
   (add-to-list 'treesit-language-source-alist
                '(scala "https://github.com/tree-sitter/tree-sitter-scala" "master" "src"))
+  (add-to-list 'treesit-language-source-alist
+               '(json "https://github.com/tree-sitter/tree-sitter-json"))
+  ;; NOTE: unfortunatelly I had to clone the repository an use explictly v0.7.0 because
+  ;; the next versions uses the ABI 15 for the library and I have ABI 14
+  ;; git checkout v0.7.0
+  ;; cc -fPIC -I./src -c src/parser.c -o parser.o
+  ;; cc -fPIC -I./src -c src/scanner.c -o scanner.o
+  ;; cc -shared parser.o scanner.o -o libtree-sitter-yaml.so
+  ;; cp libtree-sitter-yaml.so ~/.emacs.d/tree-sitter
+  (add-to-list 'treesit-language-source-alist
+               '(yaml "https://github.com/tree-sitter-grammars/tree-sitter-yaml"))
   ;; Auto-install missing grammars when needed
   (defun cc/--ensure-treesit-grammars ()
     "Install tree-sitter grammars if they are missing."
     (interactive)
-    (dolist (grammar '(typescript tsx scala))
+    ;; NOTE: do not install yaml intentionally, look above
+    (dolist (grammar '(typescript tsx scala json))
       (unless (treesit-language-available-p grammar)
         (treesit-install-language-grammar grammar))))
   ;; Run once at startup to ensure grammars are installed
@@ -1481,17 +1497,24 @@ being copied to the kill ring."
   (lsp-biome-format-on-save t))
 
 ;; YAML
-(use-package yaml-mode
-  :mode (("\\.yaml\\'" . yaml-mode)
-         ("\\.neon\\'" . yaml-mode))
-  :hook ((yaml-mode . lsp))
-  ;; :custom
-  ;; ;; TODO: apparently the format is wrong
-  ;; ;; look for schemas at https://www.schemastore.org/json/
-  ;; (lsp-yaml-schemas
-  ;;  [((fileMatch . ["*docker-compose*"])
-  ;;    (url . "https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"))])
-  )
+(use-package yaml-ts-mode
+  :straight (:type built-in)
+  :mode (("\\.ya?ml\\'" . yaml-ts-mode)
+         ("\\.neon\\'" . yaml-ts-mode))
+  :hook (yaml-ts-mode . cc/--setup-yaml)
+  :preface
+  (defun cc/--setup-yaml ()
+    "Configure YAML buffers."
+    (treesit-fold-mode 1)
+    (require 'lsp-yaml)
+    (lsp))
+  :custom
+  (lsp-yaml-server-command '("yaml-language-server" "--stdio"))
+  (lsp-yaml-schemas
+   '(("https://json.schemastore.org/github-workflow.json" "/.github/workflows/*")
+     ("https://json.schemastore.org/docker-compose.json" "/docker-compose*.yml")
+     ("https://json.schemastore.org/kubernetes.json" "/*.k8s.yaml"))))
+
 
 ;; JSON
 (use-package json-mode
