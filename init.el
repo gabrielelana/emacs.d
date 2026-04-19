@@ -2229,10 +2229,6 @@ Otherwise use drag-stuff-down."
 ;; The following is needed to override a strange behaviour from latest org-mode
 ;; which ovverides the standard keybiding
 (bind-key* "C-x C-s" #'save-buffer)
-;; Using gptel
-(bind-key "C-c i n" #'cc/gptel-guess-next-line)
-(bind-key "C-c i N" #'cc/gptel-guess-next-n-lines)
-(bind-key "C-c i C-n" #'cc/gptel-guess-complete-pattern)
 
 (define-key cc/kill-keymap (kbd "b") #'cc/kill-current-buffer)
 (define-key cc/kill-keymap (kbd "w") #'kill-buffer-and-window)
