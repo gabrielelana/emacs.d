@@ -41,6 +41,11 @@
   (setq cc/marked-windows (take 2 (cons (selected-window) cc/marked-windows)))
   (force-mode-line-update t))
 
+(defun cc/reset-marked-windows ()
+  "Reset the pair of marked windows."
+  (interactive)
+  (setq cc/marked-windows '(nil nil)))
+
 (defun cc/toggle-window ()
   "Toggle current window to the other marked window."
   (interactive)
