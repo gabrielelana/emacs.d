@@ -2260,11 +2260,12 @@ Otherwise use drag-stuff-down."
   (switch-to-buffer "*html*")
   (read-only-mode t))
 
-;; VERSION=emacs-30.1
-;; CFLAGS="-O2 -fno-semantic-interposition -floop-parallelize-all -ftree-parallelize-loops=4 -g3"
-;; ./configure --prefix=~/opt/$VERSION --bindir=~/opt/$VERSION/bin --with-tree-sitter --with-imagemagick --with-pgtk --without-dbus --with-native-compilation=aot --with-wide-int --with-mailutils
+;; export VERSION=emacs-30.2
+;; export CFLAGS="-Os -march=native -mtune=native -fno-semantic-interposition -floop-parallelize-all -ftree-parallelize-loops=4 -g0"
+;; ./autogen.sh
+;; ./configure --prefix="$HOME/opt/$VERSION" --bindir="$HOME/opt/$VERSION/bin" --with-tree-sitter --with-imagemagick --with-pgtk --without-dbus --with-native-compilation=aot --with-wide-int --with-mailutils
 ;; make -j"$(nproc)" && make install
-;; ln -ls "$HOME/opt/emacs-30.0.92/bin/emacs" "$HOME/.local/bin/emacs-30.0.92"
+;; ln -ls "$HOME/opt/$VERSION/bin/emacs" "$HOME/.local/bin/$VERSION"
 
 ;;; BUILD INSTALL LATEST IGC BRANCH
 ;; export VERSION=emacs-igc
@@ -2274,7 +2275,7 @@ Otherwise use drag-stuff-down."
 ;; export LDFLAGS="-L/home/coder/opt/mps"
 ;; ./configure --prefix=/home/coder/opt/$VERSION --bindir=/home/coder/opt/$VERSION/bin --with-tree-sitter --with-imagemagick --with-pgtk --without-dbus --with-native-compilation=aot --with-wide-int --with-mailutils --with-mps
 ;; make -j"$(nproc)" && make install
-;; ln -ls "$HOME/opt/$VERSION/bin/emacs" "$HOME/.local/bin/$VERSION"
+;; ln -s "$HOME/opt/$VERSION/bin/emacs" "$HOME/.local/bin/$VERSION"
 
 ;; TRY: minuet with local models
 
