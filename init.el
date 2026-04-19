@@ -615,10 +615,11 @@ The inserted format is @RELATIVE/PATH."
 
 (use-package cape
   :after corfu
-  :init
-  (add-to-list 'completion-at-point-functions #'cape-file t)
-  (add-to-list 'completion-at-point-functions #'cape-dabbrev t)
-  (add-to-list 'completion-at-point-functions #'cape-keyword t)
+  ;; NOTE: if you want them you need to configure it locally, see Scala
+  ;; :init
+  ;; (add-to-list 'completion-at-point-functions #'cape-file t)
+  ;; (add-to-list 'completion-at-point-functions #'cape-dabbrev t)
+  ;; (add-to-list 'completion-at-point-functions #'cape-keyword t)
   :config
   (setq cape-dabbrev-min-length 3
         cape-dabbrev-check-other-buffers t
