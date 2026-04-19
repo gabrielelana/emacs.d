@@ -1517,26 +1517,28 @@ being copied to the kill ring."
 
 
 ;; JSON
-(use-package json-mode
-  :hook ((json-mode . lsp)
-         (json-mode . cc/--setup-json))
+(use-package json-ts-mode
+  :straight (:type built-in)
+  :hook ((json-ts-mode . lsp)           ; TODO: put it in cc/--setup-json
+         (json-ts-mode . cc/--setup-json))
   :preface
   (defun cc/--setup-json ()
-    (when (eq major-mode 'json-mode)
+    "Configure JSON buffers."
+    (when (derived-mode-p 'json-ts-mode)
       ;; TODO: review this
       (when (executable-find "biome")
         (apheleia-mode 1)
-        ;; XXX: we are letting apheleia do his job, biome/lsp-biome adds an
-        ;; extra `}` at the end of the file for some reason
+        ;; XXX: we are letting apheleia do its job, biome/lsp-biome adds an
+        ;; extra =}= at the end of the file for some reason
         (setq-local lsp-biome-format-on-save nil))
       (when (executable-find "jsonlint")
         (flycheck-mode t)
-        ;; NOTE: needed to override the JSON lsp server will
+        ;; NOTE: needed to override the JSON lsp server
         (run-at-time 1 nil (lambda ()
                              (flycheck-select-checker 'json-jsonlint))))))
   :init
   ;; cannot use :mode macro because mode list contains a non literal value
-  (add-to-list 'auto-mode-alist `(,JSON_FILES_RX . json-mode))
+  (add-to-list 'auto-mode-alist `(,JSON_FILES_RX . json-ts-mode))
   :custom
   ;; look for schemas at https://www.schemastore.org/json/
   (lsp-json-schemas
