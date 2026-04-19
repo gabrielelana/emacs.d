@@ -220,6 +220,11 @@
 ;; (cc/load-theme 'subatomic)             ; dark
 ;; (cc/load-theme 'modus-vivendi-tinted)
 ;; (cc/load-theme 'modus-operandi-tinted)
+
+;;; TODO: try https://github.com/protesilaos/ef-themes *****
+;;; TODO: try https://github.com/protesilaos/modus-themes ****
+
+;;; TODO: try https://github.com/ember-theme/emacs
 ;;; TODO: try https://github.com/crmsnbleyd/evangelion-theme
 ;;; TODO: try https://github.com/petergardfjall/emacs-immaterial-theme
 ;;; TODO: try https://github.com/muirdm/emacs-nova-theme
