@@ -625,34 +625,6 @@ The inserted format is @RELATIVE/PATH."
         cape-dabbrev-ignore-case t
         cape-dabbrev-upcase nil))
 
-;; Company
-;; (use-package company
-;;   :diminish company-mode
-;;   :bind (("C-<tab>" . company-complete)
-;;          :map company-active-map
-;;          ("M-n" . nil)
-;;          ("M-p" . nil)
-;;          ("M-." . company-show-location)
-;;          ("<tab>" . company-complete-common-or-cycle)
-;;          ("C-s" . company-search-candidates)
-;;          ("C-d" . company-show-doc-buffer)
-;;          ("C-n" . company-select-next)
-;;          ("C-p" . company-select-previous))
-;;   :custom
-;;   (company-idle-delay 0.5)
-;;   (company-minimum-prefix-length 1)
-;;   (company-selection-wrap-around t)
-;;   (company-show-numbers t)
-;;   (company-dabbrev-downcase nil)
-;;   (company-dabbrev-ignore-case t)
-;;   (company-dabbrev-other-buffers nil)
-;;   (company-backends '(company-nxml
-;;                       company-css
-;;                       company-capf
-;;                       company-dabbrev-code
-;;                       company-files
-;;                       company-dabbrev)))
-
 ;; AI
 (use-package gptel
   :diminish (gptel-mode . " ✨")
