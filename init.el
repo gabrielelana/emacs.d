@@ -838,8 +838,6 @@ The buffer will be named *{PROJECT-NAME}-{CHAT-NAME}* and the
        ("reflection" "emacs_visible_buffers"))))
   :bind (("C-c i i" . cc/gptel-flash-pair)))
 
-;;; TODO: configure agent claude with acp
-;;; TODO: configure agent https://pi.dev/
 (use-package agent-shell
   :ensure t
   :after direnv
@@ -850,10 +848,17 @@ The buffer will be named *{PROJECT-NAME}-{CHAT-NAME}* and the
          ("C-c M-o" . cc/agent-shell-toggle-view-and-preference)
          :map agent-shell-viewport-view-mode-map
          ("C-c M-o" . cc/agent-shell-toggle-view-and-preference))
-  :hook ((agent-shell-mode . cc/--setup-agent-shell))
+  :hook ((agent-shell-mode . cc/--setup-agent-shell)
+         (agent-shell-viewport-view-mode . cc/--setup-agent-shell-viewport)
+         (agent-shell-viewport-edit-mode . cc/--setup-agent-shell-viewport))
   :preface
   (defun cc/--setup-agent-shell ()
+    (setq-local truncate-lines nil)
     (hl-line-mode -1))
+
+  (defun cc/--setup-agent-shell-viewport ()
+    (setq-local truncate-lines nil))
+
   (defun cc/agent-shell-toggle-view-and-preference ()
     "Toggle between agent-shell chat and viewport buffers.
 
@@ -879,13 +884,22 @@ Always show the resulting preference in the echo area."
       (user-error "Not in an agent-shell or agent-shell viewport buffer"))))
   :config
   (setq agent-shell-header-style 'text)
-  (setq agent-shell-preferred-agent-config 'opencode)
-  ;; NOTE: find out all the available models with `opencode models openrouter`
-  (setq agent-shell-opencode-default-model-id "openrouter/openai/gpt-5.4")
-  (setq agent-shell-opencode-environment
-        (agent-shell-make-environment-variables
-         :inherit-env t
-         "OPENROUTER_API_KEY" (cc/read-key-from-env "OPENROUTER_API_KEY"))))
+  (setq agent-shell-preferred-agent-config nil)
+  ;; TODO: do I need this?
+  (setq agent-shell-opencode-default-model-id "openrouter/openai/gpt-5.4"
+        agent-shell-opencode-environment (agent-shell-make-environment-variables
+                                          :inherit-env t
+                                          "OPENROUTER_API_KEY" (cc/read-key-from-env "OPENROUTER_API_KEY")))
+  ;; (setq agent-shell-pi-environment (agent-shell-make-environment-variables
+  ;;                                   :inherit-env nil
+  ;;                                   "OPENROUTER_API_KEY" (cc/read-key-from-env "OPENROUTER_API_KEY")))
+  (setq agent-shell-goose-acp-command '("goose" "acp")
+        agent-shell-goose-authentication (agent-shell-make-goose-authentication :none t)
+        agent-shell-goose-environment (agent-shell-make-environment-variables
+                                       :inherit-env t
+                                       "OPENROUTER_API_KEY" (cc/read-key-from-env "OPENROUTER_API_KEY")
+                                       "GOOSE_PROVIDER" "openrouter"
+                                       "GOOSE_MODEL" "openai/gpt-5.4")))
 
 ;;; TODO: macher has been moved to melpa, update the installation
 ;; (use-package macher
