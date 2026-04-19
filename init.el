@@ -1318,7 +1318,7 @@ being copied to the kill ring."
   :custom
   (highlight-indent-guides-method 'character))
 
-(use-package cc-count-words
+(use-package cc-count-tokens
   :straight nil
   :load-path "local-packages"
   :commands (cc/count-words cc/count-tokens-dwim)
