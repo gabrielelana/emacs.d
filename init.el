@@ -955,6 +955,12 @@ Automatically create missing files/directories."
   :custom
   (read-process-output-max (* 1024 1024))
   (lsp-keymap-prefix "C-c l")
+  ;; NOTE: lsp-auto-configure is going to do a lot of things under the hood
+  ;; including using company for completion, this configuration switched from
+  ;; company to corfu, to do completions with corfu you need to set locally
+  ;; `completion-at-point-functions' to use cape with at least
+  ;; `lsp-completion-at-point' as backend. See Scala configuration for an
+  ;; example
   (lsp-auto-configure t)
   (lsp-auto-guess-root t)
   (lsp-completion-enable t)
@@ -1747,16 +1753,30 @@ If TERMINAL-NAME is empty, gives the buffer a random identifier."
               ("M-]" . scala3-indent-shift-right)
               ("M-["  . scala3-indent-shift-left))
   :preface
+  (defun cc/--setup-scala ()
+    (setq-local treesit-font-lock-level 4
+                scala-indent:step 2)
+    (setq-local corfu-auto t
+                corfu-auto-delay 0.2
+                corfu-auto-prefix 2)
+    (setq-local python-indent-offset scala-ts-indent-offset)
+    (treesit-font-lock-recompute-features)
+    (lsp)
+    (lsp-ui-mode)
+    (eldoc-mode -1)
+    (setq-local completion-at-point-functions
+                (list (cape-capf-super
+                       #'lsp-completion-at-point
+                       #'cape-file
+                       #'cape-keyword))))
   (defun scala3-indent-shift-right ()
     "Shift region right by `scala-ts-indent-offset' columns, using `python-indent-shift-right'."
     (interactive)
-    (let ((python-indent-offset scala-ts-indent-offset))
-      (call-interactively #'python-indent-shift-right)))
+    (call-interactively #'python-indent-shift-right))
   (defun scala3-indent-shift-left ()
     "Shift region left by `scala-ts-indent-offset' columns, using `python-indent-shift-left'."
     (interactive)
-    (let ((python-indent-offset scala-ts-indent-offset))
-      (call-interactively #'python-indent-shift-left)))
+    (call-interactively #'python-indent-shift-left))
   (defun cc/ensure-scala-ts-mode ()
     "Ensure scala-ts-mode is used instead of scala-mode for all Scala files."
     ;; Remove all scala-mode associations from auto-mode-alist
@@ -1767,13 +1787,7 @@ If TERMINAL-NAME is empty, gives the buffer a random identifier."
     ;; Ensure scala-ts-mode is used for all Scala files
     (add-to-list 'auto-mode-alist '("\\.scala\\'" . scala-ts-mode))
     (add-to-list 'auto-mode-alist '("\\.sbt\\'" . scala-ts-mode))
-    (add-to-list 'auto-mode-alist '("\\.sc\\'" . scala-ts-mode)))
-  (defun cc/--setup-scala ()
-    (setq-local treesit-font-lock-level 4
-                scala-indent:step 2)
-    (eldoc-mode -1)
-    (treesit-font-lock-recompute-features)
-    (lsp)))
+    (add-to-list 'auto-mode-alist '("\\.sc\\'" . scala-ts-mode))))
 
 (use-package sbt-mode
   :commands sbt-start sbt-command
