@@ -701,6 +701,15 @@ The buffer will be named *{PROJECT-NAME}-{CHAT-NAME}* and the
   (gptel-make-deepseek "DeepSeek"
     :stream t
     :key (cc/read-key-from-env "DEEPSEEK_API_KEY"))
+  ;; TODO: function to update available models from API
+  ;; curl 'https://openrouter.ai/api/frontend/models' \
+  ;; -H 'accept: */*' \
+  ;; -H 'accept-language: en-US,en;q=0.9' \
+  ;; -H 'if-modified-since: Fri, 17 Apr 2026 08:53:52 GMT' \
+  ;; -H 'priority: u=1, i' \
+  ;; -H 'sec-fetch-dest: empty' \
+  ;; -H 'sec-fetch-mode: cors' \
+  ;; -H 'sec-fetch-site: same-origin'
   (gptel-make-openai "OpenRouter"
     :host "openrouter.ai"
     :endpoint "/api/v1/chat/completions"
@@ -727,18 +736,18 @@ The buffer will be named *{PROJECT-NAME}-{CHAT-NAME}* and the
                :output-cost 14.00
                :context-window 400
                :cutoff-date "24-02-2026")
-              (anthropic/claude-opus-4.6
-               :description "Claude Opus 4.6 is Anthropic’s frontier reasoning model optimized for complex software engineering, agentic workflows, and long-horizon computer use."
+              (anthropic/claude-opus-4.7
+               :description "Opus 4.7 is the next generation of Anthropic's Opus family, built for long-running, asynchronous agents."
                :capabilities (reasoning tool-use json url media)
                :input-cost 5
                :output-cost 25
                :context-window 1000
-               :cutoff-date "04-02-2026")
-              (qwen/qwen3.6-plus:free
+               :cutoff-date "16-04-2026")
+              (qwen/qwen3.6-plus
                :description "Qwen 3.6 Plus builds on a hybrid architecture that combines efficient linear attention with sparse mixture-of-experts routing, enabling strong scalability and high-performance inference."
                :capabilities (reasoning tool-use json url media)
-               :input-cost 0
-               :output-cost 0
+               :input-cost 0.3
+               :output-cost 1.95
                :context-window 1048
                :cutoff-date "02-04-2026")
               (xiaomi/mimo-v2-pro
@@ -755,13 +764,13 @@ The buffer will be named *{PROJECT-NAME}-{CHAT-NAME}* and the
                :output-cost 1.2
                :context-window 204
                :cutoff-date "04-03-2026")
-              (z-ai/glm-5
-               :description "GLM-5 is Z.ai’s flagship open-source foundation model engineered for complex systems design and long-horizon agent workflows."
+              (z-ai/glm-5.1
+               :description "GLM-5.1 delivers a major leap in coding capability, with particularly significant gains in handling long-horizon tasks."
                :capabilities (reasoning tool-use json url media)
-               :input-cost 0.8
-               :output-cost 2.56
+               :input-cost 1.26
+               :output-cost 3.96
                :context-window 200
-               :cutoff-date "11-02-2026")
+               :cutoff-date "07-04-2026")
               (google/gemini-3.1-pro-preview
                :description "Gemini 3.1 Pro is Google’s flagship frontier model for high-precision multimodal reasoning"
                :capabilities (reasoning tool-use json url media)
