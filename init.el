@@ -1509,6 +1509,9 @@ being copied to the kill ring."
 ;; Mermaid
 (use-package mermaid-mode)
 
+;; Just
+(use-package just-mode)
+
 ;; Rego
 (use-package rego-mode)
 ;; TODO: linting with regal
