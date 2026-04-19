@@ -299,7 +299,7 @@
   :custom
   (completion-styles '(orderless basic))
   (orderless-matching-styles '(orderless-regexp))
-  (orderless-component-separator "[ &]+" "In company use `&` to separate components")
+  (orderless-component-separator "[ &]+" "use also `&` to separate components")
   ;; (completion-category-overrides '((file (styles basic partial-completion))))
   (completion-category-overrides
    '((file (styles basic partial-completion))
