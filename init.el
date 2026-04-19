@@ -1942,23 +1942,12 @@ Highlight syntax uses `==' markers."
   (lsp-register-client
    (make-lsp-client :new-connection (lsp-stdio-connection '("protols"))
                     :activation-fn (lsp-activate-on "protobuf")
-                    :server-id 'protobuf-language-server
+                    :server-id 'protols
                     :download-server-fn (lambda (_client callback error-callback _update?)
                                           (lsp-async-start-process
                                            callback
                                            error-callback
-                                           "cargo" "install" "protols"))))
-
-  ;; (lsp-register-client
-  ;;  (make-lsp-client :new-connection (lsp-stdio-connection '("protobuf-language-server" "-stdio"))
-  ;;                   :activation-fn (lsp-activate-on "protobuf")
-  ;;                   :server-id 'protobuf-language-server
-  ;;                   :download-server-fn (lambda (_client callback error-callback _update?)
-  ;;                                         (lsp-async-start-process
-  ;;                                          callback
-  ;;                                          error-callback
-  ;;                                          "go" "install" "github.com/lasorda/protobuf-language-server@latest"))))
-  )
+                                           "cargo" "install" "protols")))))
 
 ;; Agda
 (when (executable-find "agda-mode")
