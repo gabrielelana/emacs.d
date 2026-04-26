@@ -701,83 +701,22 @@ The buffer will be named *{PROJECT-NAME}-{CHAT-NAME}* and the
   (gptel-make-deepseek "DeepSeek"
     :stream t
     :key (cc/read-key-from-env "DEEPSEEK_API_KEY"))
-  ;; TODO: function to update available models from API
-  ;; curl 'https://openrouter.ai/api/frontend/models' \
-  ;; -H 'accept: */*' \
-  ;; -H 'accept-language: en-US,en;q=0.9' \
-  ;; -H 'if-modified-since: Fri, 17 Apr 2026 08:53:52 GMT' \
-  ;; -H 'priority: u=1, i' \
-  ;; -H 'sec-fetch-dest: empty' \
-  ;; -H 'sec-fetch-mode: cors' \
-  ;; -H 'sec-fetch-site: same-origin'
+  (require 'cc-gptel-openrouter)
   (gptel-make-openai "OpenRouter"
     :host "openrouter.ai"
     :endpoint "/api/v1/chat/completions"
     :stream t
     :key (cc/read-key-from-env "OPENROUTER_API_KEY")
-    :models '((openai/gpt-5.4
-               :description "GPT-5.4 is OpenAI’s latest frontier model, unifying the Codex and GPT lines into a single system. It features a 1M+ token context window with support for text and image inputs, enabling high-context reasoning, coding, and multimodal analysis within the same workflow."
-               :capabilities (reasoning tool-use json url media)
-               :input-cost 2.5
-               :output-cost 15.00
-               :context-window 1000
-               :cutoff-date "05-03-2026")
-              (openai/gpt-5.4-pro
-               :description "GPT-5.4 Pro is OpenAI's most advanced model."
-               :capabilities (reasoning tool-use json url media)
-               :input-cost 30
-               :output-cost 180
-               :context-window 1000
-               :cutoff-date "05-03-2026")
-              (openai/gpt-5.3-codex
-               :description "GPT-5.3-Codex is OpenAI’s most advanced agentic coding model, combining the frontier software engineering performance of GPT-5.2-Codex with the broader reasoning and professional knowledge capabilities of GPT-5.2"
-               :capabilities (reasoning tool-use json url media)
-               :input-cost 1.75
-               :output-cost 14.00
-               :context-window 400
-               :cutoff-date "24-02-2026")
-              (anthropic/claude-opus-4.7
-               :description "Opus 4.7 is the next generation of Anthropic's Opus family, built for long-running, asynchronous agents."
-               :capabilities (reasoning tool-use json url media)
-               :input-cost 5
-               :output-cost 25
-               :context-window 1000
-               :cutoff-date "16-04-2026")
-              (qwen/qwen3.6-plus
-               :description "Qwen 3.6 Plus builds on a hybrid architecture that combines efficient linear attention with sparse mixture-of-experts routing, enabling strong scalability and high-performance inference."
-               :capabilities (reasoning tool-use json url media)
-               :input-cost 0.3
-               :output-cost 1.95
-               :context-window 1048
-               :cutoff-date "02-04-2026")
-              (xiaomi/mimo-v2-pro
-               :description "MiMo-V2-Pro is Xiaomi's flagship foundation model, featuring over 1T total parameters and a 1M context length, deeply optimized for agentic scenarios. It is highly adaptable to general agent frameworks like OpenClaw. It ranks among the global top tier in the standard PinchBench and ClawBench benchmarks, with perceived performance approaching that of Opus 4.6."
-               :capabilities (reasoning tool-use json url media)
-               :input-cost 1
-               :output-cost 3
-               :context-window 1048
-               :cutoff-date "27-03-2026")
-              (minimax/minimax-m2.7
-               :description "MiniMax-M2.7 is a next-generation large language model designed for autonomous, real-world productivity and continuous improvement. Built to actively participate in its own evolution, M2.7 integrates advanced agentic capabilities through multi-agent collaboration, enabling it to plan, execute, and refine complex tasks across dynamic environments."
-               :capabilities (reasoning tool-use json url media)
-               :input-cost 0.3
-               :output-cost 1.2
-               :context-window 204
-               :cutoff-date "04-03-2026")
-              (z-ai/glm-5.1
-               :description "GLM-5.1 delivers a major leap in coding capability, with particularly significant gains in handling long-horizon tasks."
-               :capabilities (reasoning tool-use json url media)
-               :input-cost 1.26
-               :output-cost 3.96
-               :context-window 200
-               :cutoff-date "07-04-2026")
-              (google/gemini-3.1-pro-preview
-               :description "Gemini 3.1 Pro is Google’s flagship frontier model for high-precision multimodal reasoning"
-               :capabilities (reasoning tool-use json url media)
-               :input-cost 2
-               :output-cost 12
-               :context-window 1050
-               :cutoff-date "18-11-2025")))
+    :models (cc/gptel-openrouter-models
+             '("openai/*"
+               "anthropic/*"
+               "google/gemini*"
+               "qwen/qwen-3.6*"
+               "moonshotai/kimi-k2.6"
+               "xiaomi/mimo-v2.5*"
+               "minimax/minimax-m2.7"
+               "z-ai/glm-5.1"
+               "deepseek/deepseek-v4*")))
   (gptel-make-ollama "Ollama"
     :host "starbuck.local:11434"
     :stream t

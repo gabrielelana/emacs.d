@@ -12,7 +12,7 @@
 /projects
 /var
 /multisession
-projectile.cache
+*.cache
 tramp
 /custom.el
 /eln-cache/
