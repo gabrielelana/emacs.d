@@ -1,0 +1,21 @@
+# -*- mode: snippet -*-
+# contributor: Gabriele Lana
+# name : agent skill metadata and instructions
+# key : skill
+# uuid: 1c09b170-e230-4269-b160-55fbc6c6f70c
+# --
+---
+name: `(file-name-nondirectory
+         (directory-file-name
+          (file-name-directory (or (buffer-file-name) default-directory))))`
+description: ${1:short description}
+---
+
+<!--
+remove this section when the skill is ready, do not consume tokens
+
+- doc at https://code.claude.com/docs/en/skills
+- doc at https://agentskills.io/specification
+-->
+
+$0
