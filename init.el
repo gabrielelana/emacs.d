@@ -761,12 +761,14 @@ The buffer will be named *{PROJECT-NAME}-{CHAT-NAME}* and the
 (use-package cc-gptel-flash
   :straight nil
   :load-path "local-packages"
-  :after gptel
   :commands (cc/gptel-flash)
   :preface
   (defun cc/gptel-flash-pair ()
     "Open a flash gptel buffer."
     (interactive)
+    (require 'gptel)
+    (require 'cc-gptel-prompts)
+    (require 'cc-gptel-flash)
     (cc/gptel-flash
      (gptel-get-backend "OpenRouter")
      'openai/gpt-5.4
