@@ -853,6 +853,8 @@ Always show the resulting preference in the echo area."
 ;;; TODO: use https://github.com/manzaltu/claude-code-ide.el to have claude code
 ;;; integration in Emacs
 
+;;; TODO: try https://github.com/dnouri/pi-coding-agent
+
 (use-package diff-mode
   :straight (:type built-in)
   :bind (:map diff-mode-map
